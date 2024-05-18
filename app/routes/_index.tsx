@@ -1,4 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { YoyoModel } from "~/components/YoyoModel";
+import { WineBottle } from "~/components/wine";
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,35 +11,20 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+// MEMO: 下記のサンプルコードをそのまま表示してみている
+// https://codesandbox.io/p/sandbox/gifted-varahamihira-rrppl0y8l4?file=%2Fsrc%2FApp.js
+
 export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+      <div id="canvas-container">
+        <Canvas>
+          <ambientLight />
+          <pointLight position={[10, 10, 10]} />
+          <YoyoModel />
+          <OrbitControls />
+        </Canvas>
+      </div>
     </div>
   );
 }

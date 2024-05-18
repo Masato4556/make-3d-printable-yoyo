@@ -14,6 +14,12 @@ module.exports = {
       jsx: true,
     },
   },
+  rules: {
+    "react/no-unknown-property": [
+      "error",
+      { ignore: ["css", "args", "wireframe"] },
+    ],
+  },
   env: {
     browser: true,
     commonjs: true,
