@@ -27,12 +27,11 @@ export const YoyoModel = function () {
 
   // LatheGeometryを作成します
   const geometry = new LatheGeometry(combinedPoints, 30);
+  geometry.computeVertexNormals();
 
   return (
-    <>
-      <mesh geometry={geometry}>
-        <meshStandardMaterial color="blue" />
-      </mesh>
-    </>
+    <mesh geometry={geometry}>
+      <meshStandardMaterial attach="material" color={"#6be092"} />
+    </mesh>
   );
 };
