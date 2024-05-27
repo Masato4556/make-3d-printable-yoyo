@@ -1,8 +1,10 @@
 import type { MetaFunction, LinksFunction } from "@remix-run/node";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { YoyoModel } from "~/components/3d-model/yoyo-moodel";
+import { useYoyoGeometry } from "~/hooks/use-yoyo-geometry";
 import styles from "~/styles/index.css?url";
+import { ChangeEventHandler, useState } from "react";
+import { ExportStl } from "~/components/export-stl";
 
 export const meta: MetaFunction = () => {
   return [
@@ -25,8 +27,43 @@ export const links: LinksFunction = () => {
 // https://codesandbox.io/p/sandbox/gifted-varahamihira-rrppl0y8l4?file=%2Fsrc%2FApp.js
 
 export default function Index() {
+  const [diameter, setDiameter] = useState<number>(30);
+  const [width, setWidth] = useState<number>(25);
+  const [stl, setStl] = useState<string | null>(null);
+  const changeDiameter: ChangeEventHandler<HTMLInputElement> = (e) =>
+    setDiameter(Number(e.target.value));
+  const changeWidth: ChangeEventHandler<HTMLInputElement> = (e) =>
+    setWidth(Number(e.target.value));
+  const { geometry } = useYoyoGeometry({ diameter, width });
+
+  const downloaStl = () => {
+    if (!stl) return;
+    const element = document.createElement("a");
+    const file = new Blob([stl], { type: "application/stl" });
+    element.href = URL.createObjectURL(file);
+    element.download = "yoyo.stl";
+    document.body.appendChild(element);
+    element.click();
+    element.remove();
+  };
+
   return (
     <div id="canvas-container">
+      <input
+        type="number"
+        defaultValue={diameter}
+        onChange={changeDiameter}
+        min={20}
+        max={100}
+      />
+      <input
+        type="number"
+        defaultValue={width}
+        onChange={changeWidth}
+        min={20}
+        max={100}
+      />
+      <button onClick={downloaStl}>ダウンロード</button>
       <Canvas>
         <ambientLight intensity={Math.PI / 2} />
         <spotLight
@@ -37,8 +74,16 @@ export default function Index() {
           intensity={Math.PI}
         />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <YoyoModel />
+        <mesh geometry={geometry}>
+          <meshStandardMaterial attach="material" color={"#6be092"} />
+        </mesh>
         <OrbitControls />
+        <ExportStl
+          setStl={(s: string) => {
+            console.log(s);
+            setStl(s);
+          }}
+        />
       </Canvas>
     </div>
   );
