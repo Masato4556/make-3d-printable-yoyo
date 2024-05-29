@@ -23,9 +23,6 @@ export const links: LinksFunction = () => {
   ];
 };
 
-// MEMO: 下記のサンプルコードをそのまま表示してみている
-// https://codesandbox.io/p/sandbox/gifted-varahamihira-rrppl0y8l4?file=%2Fsrc%2FApp.js
-
 export default function Index() {
   const [diameter, setDiameter] = useState<number>(30);
   const [width, setWidth] = useState<number>(25);

@@ -77,6 +77,9 @@ module.exports = {
         "plugin:import/recommended",
         "plugin:import/typescript",
       ],
+      rules: {
+        "react/no-unknown-property": "off",
+      },
     },
 
     // Node
