@@ -24,8 +24,8 @@ export const links: LinksFunction = () => {
 };
 
 export default function Index() {
-  const [diameter, setDiameter] = useState<number>(30);
-  const [width, setWidth] = useState<number>(25);
+  const [diameter, setDiameter] = useState<number>(55);
+  const [width, setWidth] = useState<number>(48);
   const [stl, setStl] = useState<string | null>(null);
   const changeDiameter: ChangeEventHandler<HTMLInputElement> = (e) =>
     setDiameter(Number(e.target.value));
