@@ -6,61 +6,96 @@ type Props = {
   width: number;
 };
 
+const BEARING_SIZE: Record<BearingType, { width: number }> = {
+  sizeC: { width: 3.18 },
+} as const;
+
+type BearingType = "sizeC";
+
+const BEARING_TYPES: Record<string, BearingType> = {
+  sizeC: "sizeC",
+} as const;
+
+const useYoyoCorePath = function (bearingType: BearingType) {
+  const corePath: Vector2[] = useMemo(() => {
+    // coreのパスを作成
+    // 底面のy座標を0とし、ベアリング受けの部位をy軸負方向に伸ばしている
+    // FIXME: y軸負方向に伸ばしているのは分かりにくいので、正方向に伸ばすように修正したい
+    switch (
+      bearingType // FIXME: switch文を使わずにオブジェクトのプロパティを参照するように修正する
+    ) {
+      case BEARING_TYPES.sizeC:
+        return [new Vector2()].concat(
+          new Vector2(0, -1), // 底部の開始点
+          new Vector2(2, -1),
+          new Vector2(2, -5),
+          new CubicBezierCurve(
+            new Vector2(2.5, -5), // 開始点
+            new Vector2(3.15, -5), // コントロールポイント1
+            new Vector2(3.15, -5), // コントロールポイント2
+            new Vector2(3.15, -4.5) // 終点
+          ).getPoints(8),
+          new Vector2(3.15, -3),
+          new CubicBezierCurve(
+            new Vector2(3.85, -3), // 開始点
+            new Vector2(4.15, -3), // コントロールポイント1
+            new Vector2(4.15, -3), // コントロールポイント2
+            new Vector2(4.15, -2.7) // 終点
+          ).getPoints(8),
+          new Vector2(4.15, -1.59),
+          new Vector2(6.45, -1.59),
+          new CubicBezierCurve(
+            new Vector2(6.45, -(3.14 - 0.2)), // 開始点
+            new Vector2(6.45, -3.14), // コントロールポイント1
+            new Vector2(6.45, -3.14), // コントロールポイント2
+            new Vector2(6.45 - 0.2, -3.14) // 終点
+          ).getPoints(8),
+          new CubicBezierCurve(
+            new Vector2(7.1 - 0.2, -3.14), // 開始点
+            new Vector2(7.1, -3.14), // コントロールポイント1
+            new Vector2(7.1, -3.14), // コントロールポイント2
+            new Vector2(7.1, -(3.14 - 0.2)) // 終点
+          ).getPoints(8),
+          new Vector2(7.1, -1.885),
+          new Vector2(9.55, -1.885),
+          new CubicBezierCurve(
+            new Vector2(9.55, -(3.085 - 0.3)), // 開始点
+            new Vector2(9.55, -3.085), // コントロールポイント1
+            new Vector2(9.55, -3.085), // コントロールポイント2
+            new Vector2(9.55 - 0.3, -3.085) // 終点
+          ).getPoints(8),
+          new Vector2(10.55, -3.085)
+        );
+      default:
+        return [];
+    }
+  }, [bearingType]);
+  const [coreWidth, coreHeight] = corePath.reduce(
+    (acc, cur) => {
+      return [Math.max(acc[0], cur.x), Math.max(acc[1], -cur.y)];
+    },
+    [0, 0]
+  );
+  return { corePath, coreWidth, coreHeight };
+};
+
 export const useYoyoGeometry = function (props: Props) {
+  const bearingType = BEARING_TYPES.sizeC; // TODO: ベアリングの種類を選択できるようにする
   const { diameter, width } = props;
 
-  const geometry = useMemo(() => {
-    const core_height = 3.085;
-    const bearing_height = 3.18;
-    const wing_height = width / 2 - core_height - bearing_height / 2;
+  // coreのパスを作成
+  const { corePath, coreHeight } = useYoyoCorePath(bearingType);
 
-    // coreのパスを作成
-    const core: Vector2[] = [new Vector2()].concat(
-      new Vector2(0, -1), // 底部の開始点
-      new Vector2(2, -1),
-      new Vector2(2, -5),
-      new CubicBezierCurve(
-        new Vector2(2.5, -5), // 開始点
-        new Vector2(3.15, -5), // コントロールポイント1
-        new Vector2(3.15, -5), // コントロールポイント2
-        new Vector2(3.15, -4.5) // 終点
-      ).getPoints(8),
-      new Vector2(3.15, -3),
-      new CubicBezierCurve(
-        new Vector2(3.85, -3), // 開始点
-        new Vector2(4.15, -3), // コントロールポイント1
-        new Vector2(4.15, -3), // コントロールポイント2
-        new Vector2(4.15, -2.7) // 終点
-      ).getPoints(8),
-      new Vector2(4.15, -1.59),
-      new Vector2(6.45, -1.59),
-      new CubicBezierCurve(
-        new Vector2(6.45, -(3.14 - 0.2)), // 開始点
-        new Vector2(6.45, -3.14), // コントロールポイント1
-        new Vector2(6.45, -3.14), // コントロールポイント2
-        new Vector2(6.45 - 0.2, -3.14) // 終点
-      ).getPoints(8),
-      new CubicBezierCurve(
-        new Vector2(7.1 - 0.2, -3.14), // 開始点
-        new Vector2(7.1, -3.14), // コントロールポイント1
-        new Vector2(7.1, -3.14), // コントロールポイント2
-        new Vector2(7.1, -(3.14 - 0.2)) // 終点
-      ).getPoints(8),
-      new Vector2(7.1, -1.885),
-      new Vector2(9.55, -1.885),
-      new CubicBezierCurve(
-        new Vector2(9.55, -(3.085 - 0.3)), // 開始点
-        new Vector2(9.55, -3.085), // コントロールポイント1
-        new Vector2(9.55, -3.085), // コントロールポイント2
-        new Vector2(9.55 - 0.3, -3.085) // 終点
-      ).getPoints(8),
-      new Vector2(10.55, -3.085)
-    );
+  const geometry = useMemo(() => {
+    // ヨーヨーのウィングを作成
+    // TODO: ウィングの形状を変更できるようにする
+    const wing_height =
+      width / 2 - coreHeight - BEARING_SIZE[bearingType].width / 2;
 
     // wingのパスを作成
     const wing: Vector2[] = [new Vector2()].concat(
       new CubicBezierCurve(
-        new Vector2(10.55, -core_height), // 開始点
+        corePath.at(-1), // 開始点
         new Vector2(12, 5), // コントロールポイント1
         new Vector2(diameter / 2, 5), // コントロールポイント2
         new Vector2(diameter / 2, wing_height) // 終点
@@ -69,9 +104,9 @@ export const useYoyoGeometry = function (props: Props) {
     );
 
     // パスを回転してヨーヨーの形状を作成
-    const geometry = new LatheGeometry(core.concat(wing), 100);
+    const geometry = new LatheGeometry(corePath.concat(wing), 100);
     return geometry;
-  }, [diameter, width]);
+  }, [width, coreHeight, bearingType, corePath, diameter]);
 
   return { geometry };
 };
