@@ -3,8 +3,9 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useYoyoGeometry } from "~/hooks/use-yoyo-geometry";
 import styles from "~/styles/index.css?url";
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { ExportStl } from "~/components/export-stl";
+import { LatheGeometry, MeshBasicMaterial, Vector3 } from "three";
 
 export const meta: MetaFunction = () => {
   return [
@@ -31,7 +32,20 @@ export default function Index() {
     setDiameter(Number(e.target.value));
   const changeWidth: ChangeEventHandler<HTMLInputElement> = (e) =>
     setWidth(Number(e.target.value));
+  const mirroredGeometryRef = useRef<LatheGeometry>();
   const { geometry } = useYoyoGeometry({ diameter, width });
+
+  useEffect(() => {
+    // ミラーボックスジオメトリの作成
+    const mirroredGeometry = geometry.clone();
+    mirroredGeometry.scale(-1, 1, 1);
+
+    // `useRef` に保存して再レンダリング時に変更しないようにする
+    mirroredGeometryRef.current = mirroredGeometry;
+  }, [geometry]);
+
+  // マテリアル
+  const material = new MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
 
   const downloaStl = () => {
     if (!stl) return;
@@ -71,13 +85,25 @@ export default function Index() {
           intensity={Math.PI}
         />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <mesh geometry={geometry}>
-          <meshStandardMaterial attach="material" color={"#6be092"} />
-        </mesh>
+
+        <group visible={!!mirroredGeometryRef.current}>
+          <mesh
+            name="yoyo"
+            geometry={geometry}
+            material={material}
+            position={new Vector3(-6, 0, 0)}
+          />
+          åå
+          <mesh
+            geometry={mirroredGeometryRef.current}
+            material={material}
+            position={new Vector3(6, 0, 0)}
+          />
+        </group>
+
         <OrbitControls />
         <ExportStl
           setStl={(s: string) => {
-            console.log(s);
             setStl(s);
           }}
         />

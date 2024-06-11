@@ -105,6 +105,9 @@ export const useYoyoGeometry = function (props: Props) {
 
     // パスを回転してヨーヨーの形状を作成
     const geometry = new LatheGeometry(corePath.concat(wing), 100);
+
+    // TODO: vector2の座標を入れ替えて、rotateZを使わないようにする
+    geometry.rotateZ(Math.PI / 2);
     return geometry;
   }, [width, coreHeight, bearingType, corePath, diameter]);
 
