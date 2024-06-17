@@ -3,9 +3,10 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useYoyoGeometry } from "~/hooks/use-yoyo-geometry";
 import styles from "~/styles/index.css?url";
-import { ChangeEventHandler, useEffect, useRef, useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 import { ExportStl } from "~/components/export-stl";
-import { LatheGeometry, MeshBasicMaterial, Vector3 } from "three";
+import { MeshBasicMaterial, Vector3 } from "three";
+import { useMirroredGeometry } from "~/hooks/use-mirrored-geometry";
 
 export const meta: MetaFunction = () => {
   return [
@@ -32,17 +33,8 @@ export default function Index() {
     setDiameter(Number(e.target.value));
   const changeWidth: ChangeEventHandler<HTMLInputElement> = (e) =>
     setWidth(Number(e.target.value));
-  const mirroredGeometryRef = useRef<LatheGeometry>();
   const { geometry } = useYoyoGeometry({ diameter, width });
-
-  useEffect(() => {
-    // ミラーボックスジオメトリの作成
-    const mirroredGeometry = geometry.clone();
-    mirroredGeometry.scale(-1, 1, 1);
-
-    // `useRef` に保存して再レンダリング時に変更しないようにする
-    mirroredGeometryRef.current = mirroredGeometry;
-  }, [geometry]);
+  const mirroredGeometry = useMirroredGeometry(geometry);
 
   // マテリアル
   const material = new MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
@@ -86,16 +78,15 @@ export default function Index() {
         />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
 
-        <group visible={!!mirroredGeometryRef.current}>
+        <group visible={!!mirroredGeometry}>
           <mesh
             name="yoyo"
             geometry={geometry}
             material={material}
             position={new Vector3(-6, 0, 0)}
           />
-          åå
           <mesh
-            geometry={mirroredGeometryRef.current}
+            geometry={mirroredGeometry}
             material={material}
             position={new Vector3(6, 0, 0)}
           />

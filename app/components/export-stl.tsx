@@ -7,7 +7,7 @@ type Props = {
   setStl: (stl: string) => void;
 };
 
-export const ExportStl = function (props: Props) {
+export function ExportStl(props: Props) {
   const { setStl } = props;
   const { scene } = useThree();
   useEffect(() => {
@@ -19,4 +19,4 @@ export const ExportStl = function (props: Props) {
     setStl(stl);
   }, [scene, setStl]);
   return null;
-};
+}
