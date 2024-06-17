@@ -5,19 +5,24 @@ import { ExportStl } from "~/components/export-stl";
 import { MeshBasicMaterial, Vector3 } from "three";
 import { useMirroredGeometry } from "~/hooks/use-mirrored-geometry";
 import { useFormState } from "~/contexts/FormContext";
+import { useModelDispatch } from "~/contexts/ModelContext";
+import { useCallback } from "react";
 
-type Props = {
-  setStl: (stl: string) => void;
-};
-
-export default function ModelViewer(props: Props) {
-  const { setStl } = props;
+export default function ModelViewer() {
   const { diameter, width } = useFormState();
+  const dispatch = useModelDispatch();
   const { geometry } = useYoyoGeometry({ diameter, width });
   const mirroredGeometry = useMirroredGeometry(geometry);
 
   // マテリアル
   const material = new MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+
+  const setStl = useCallback(
+    (s: string) => {
+      dispatch({ type: "SET_STL", payload: s });
+    },
+    [dispatch]
+  );
 
   return (
     <Canvas id="model-viewer">
