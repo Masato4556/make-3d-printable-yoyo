@@ -18,3 +18,22 @@ body {
     width: 100%;
     height: 100%;
 }
+
+#model-viewer{
+    position: absolute;
+    min-height: 100vh;
+    width: 100%;
+    /* height: 100%; */
+}
+
+.overlay-form-box {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}

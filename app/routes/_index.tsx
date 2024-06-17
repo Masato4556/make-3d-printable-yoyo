@@ -52,22 +52,26 @@ export default function Index() {
 
   return (
     <div id="canvas-container">
-      <input
-        type="number"
-        defaultValue={diameter}
-        onChange={changeDiameter}
-        min={20}
-        max={100}
-      />
-      <input
-        type="number"
-        defaultValue={width}
-        onChange={changeWidth}
-        min={20}
-        max={100}
-      />
-      <button onClick={downloaStl}>ダウンロード</button>
-      <Canvas>
+      <div className="overlay-form-box">
+        <input
+          name="diameter"
+          type="number"
+          defaultValue={diameter}
+          onChange={changeDiameter}
+          min={20}
+          max={100}
+        />
+        <input
+          type="number"
+          defaultValue={width}
+          onChange={changeWidth}
+          min={20}
+          max={100}
+        />
+        <button onClick={downloaStl}>ダウンロード</button>
+      </div>
+
+      <Canvas id="model-viewer">
         <ambientLight intensity={Math.PI / 2} />
         <spotLight
           position={[10, 10, 10]}
