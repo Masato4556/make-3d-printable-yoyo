@@ -1,8 +1,8 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls } from "@react-three/drei";
 import { useYoyoGeometry } from "~/hooks/use-yoyo-geometry";
 import { ExportStl } from "~/components/export-stl";
-import { MeshBasicMaterial, Vector3 } from "three";
+import { MeshPhysicalMaterial, Vector3 } from "three";
 import { useMirroredGeometry } from "~/hooks/use-mirrored-geometry";
 import { useFormState } from "~/contexts/FormContext";
 import { useModelDispatch } from "~/contexts/ModelContext";
@@ -14,8 +14,11 @@ export default function ModelViewer() {
   const { geometry } = useYoyoGeometry({ diameter, width });
   const mirroredGeometry = useMirroredGeometry(geometry);
 
-  // マテリアル
-  const material = new MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+  const material = new MeshPhysicalMaterial({
+    color: 0x00ff00,
+    metalness: 1,
+    roughness: 0.4,
+  });
 
   const setStl = useCallback(
     (s: string) => {
@@ -26,15 +29,12 @@ export default function ModelViewer() {
 
   return (
     <Canvas id="model-viewer">
-      <ambientLight intensity={Math.PI / 2} />
-      <spotLight
-        position={[10, 10, 10]}
-        angle={0.15}
-        penumbra={1}
-        decay={0}
-        intensity={Math.PI}
+      <Environment
+        preset="studio"
+        background={true}
+        backgroundBlurriness={2.0}
+        backgroundIntensity={0.7}
       />
-      <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
 
       <group visible={!!mirroredGeometry}>
         <mesh
