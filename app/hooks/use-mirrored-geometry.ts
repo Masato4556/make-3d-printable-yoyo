@@ -3,9 +3,9 @@ import { BufferGeometry } from "three";
 
 export function useMirroredGeometry(geometry: BufferGeometry) {
   const mirroredGeometry = useMemo(() => {
-    // ミラーボックスジオメトリの作成
     const mirroredGeometry = geometry.clone();
-    mirroredGeometry.scale(-1, 1, 1);
+    mirroredGeometry.scale(-1, -1, 1); // 法線が反転するため、X軸だけでなくY軸も反転させる
+
     return mirroredGeometry;
   }, [geometry]);
 
