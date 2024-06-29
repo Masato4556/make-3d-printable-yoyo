@@ -4,23 +4,34 @@ import { useModelState } from "~/contexts/ModelContext";
 
 export function Form() {
   const { diameter, width } = useFormState();
-  const { blob, type } = useModelState();
+  const { core, wing } = useModelState();
   const dispatch = useFormDispatch();
   const changeDiameter: ChangeEventHandler<HTMLInputElement> = (e) =>
     dispatch({ type: "SET_DIAMETER", payload: e.target.value });
   const changeWidth: ChangeEventHandler<HTMLInputElement> = (e) =>
     dispatch({ type: "SET_WIDTH", payload: e.target.value });
 
-  const downloadStl = useCallback(() => {
-    if (!blob || !type) return;
+  const downloadCore = useCallback(() => {
+    if (!core.blob || !core.type) return;
     const element = document.createElement("a");
-    const file = new Blob([blob], { type: type });
+    const file = new Blob([core.blob], { type: core.type });
     element.href = URL.createObjectURL(file);
     element.download = "yoyo.stl";
     document.body.appendChild(element);
     element.click();
     element.remove();
-  }, [blob, type]);
+  }, [core]);
+
+  const downloadWing = useCallback(() => {
+    if (!wing.blob || !wing.type) return;
+    const element = document.createElement("a");
+    const file = new Blob([wing.blob], { type: wing.type });
+    element.href = URL.createObjectURL(file);
+    element.download = "yoyo.stl";
+    document.body.appendChild(element);
+    element.click();
+    element.remove();
+  }, [wing]);
 
   return (
     <div className="overlay-form-box">
@@ -39,7 +50,8 @@ export function Form() {
         min={20}
         max={100}
       />
-      <button onClick={downloadStl}>ダウンロード</button>
+      <button onClick={downloadCore}>COREダウンロード</button>
+      <button onClick={downloadWing}>WINGダウンロード</button>
     </div>
   );
 }

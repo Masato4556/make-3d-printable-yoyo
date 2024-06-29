@@ -57,7 +57,9 @@ const CORE_PATH: Record<BearingType, Vector2[]> = {
       new Vector2(9.55, 3.085), // コントロールポイント2
       new Vector2(9.55 - 0.3, 3.085) // 終点
     ).getPoints(8),
-    new Vector2(10.55, 3.085)
+    new Vector2(10.55, 3.085),
+    new Vector2(10.55, 0),
+    new Vector2(0, 0)
   ),
 } as const;
 
@@ -93,16 +95,19 @@ export const useYoyoGeometry = function (props: Props) {
   // coreのパスを作成
   const { corePath, coreHeight } = useYoyoCorePath(bearingType);
 
-  const geometry = useMemo(() => {
+  return useMemo(() => {
     // ヨーヨーのウィングを作成
     // TODO: ウィングの形状を変更できるようにする
     const wing_height =
       width / 2 - coreHeight - BEARING_SIZE[bearingType].width / 2;
 
     // wingのパスを作成
-    const wing: Vector2[] = [new Vector2()].concat(
+    const wingPath: Vector2[] = [new Vector2()].concat(
+      new Vector2(0, -0.5),
+      new Vector2(10.55, -0.5),
+      new Vector2(10.55, -3.085),
       new CubicBezierCurve(
-        corePath.at(-1), // 開始点
+        new Vector2(10.55 + 1, -3.085), // 開始点
         new Vector2(12, 5), // コントロールポイント1
         new Vector2(diameter / 2, 5), // コントロールポイント2
         new Vector2(diameter / 2, wing_height) // 終点
@@ -111,12 +116,8 @@ export const useYoyoGeometry = function (props: Props) {
     );
 
     // パスを回転してヨーヨーの形状を作成
-    const geometry = new LatheGeometry(corePath.concat(wing), 100);
-
-    // TODO: vector2の座標を入れ替えて、rotateZを使わないようにする
-    geometry.rotateZ(Math.PI / 2);
-    return geometry;
+    const coreGeometry = new LatheGeometry(corePath, 100).rotateZ(Math.PI / 2);
+    const wingGeometry = new LatheGeometry(wingPath, 100).rotateZ(Math.PI / 2);
+    return { coreGeometry, wingGeometry };
   }, [width, coreHeight, bearingType, corePath, diameter]);
-
-  return { geometry };
 };

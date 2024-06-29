@@ -11,8 +11,12 @@ import { useCallback } from "react";
 export default function ModelViewer() {
   const { diameter, width } = useFormState();
   const dispatch = useModelDispatch();
-  const { geometry } = useYoyoGeometry({ diameter, width });
-  const mirroredGeometry = useMirroredGeometry(geometry);
+  const { coreGeometry, wingGeometry } = useYoyoGeometry({
+    diameter,
+    width,
+  });
+  const mirroredCoreGeometry = useMirroredGeometry(coreGeometry);
+  const mirroredWingGeometry = useMirroredGeometry(wingGeometry);
 
   const material = new MeshPhysicalMaterial({
     color: 0x00ff00,
@@ -20,9 +24,16 @@ export default function ModelViewer() {
     roughness: 0.4,
   });
 
-  const setStl = useCallback(
+  const setCore = useCallback(
     (s: string) => {
-      dispatch({ type: "SET_STL", payload: s });
+      dispatch({ type: "SET_CORE", payload: s });
+    },
+    [dispatch]
+  );
+
+  const setWing = useCallback(
+    (s: string) => {
+      dispatch({ type: "SET_WING", payload: s });
     },
     [dispatch]
   );
@@ -35,16 +46,26 @@ export default function ModelViewer() {
         backgroundBlurriness={2.0}
         backgroundIntensity={0.7}
       />
-
-      <group visible={!!mirroredGeometry}>
+      <group visible={!!coreGeometry}>
         <mesh
-          name="yoyo"
-          geometry={geometry}
+          name="core"
+          geometry={coreGeometry}
           material={material}
           position={new Vector3(-6, 0, 0)}
         />
         <mesh
-          geometry={mirroredGeometry}
+          name="wing"
+          geometry={wingGeometry}
+          material={material}
+          position={new Vector3(-6, 0, 0)}
+        />
+        <mesh
+          geometry={mirroredCoreGeometry}
+          material={material}
+          position={new Vector3(6, 0, 0)}
+        />
+        <mesh
+          geometry={mirroredWingGeometry}
           material={material}
           position={new Vector3(6, 0, 0)}
         />
@@ -52,8 +73,11 @@ export default function ModelViewer() {
 
       <OrbitControls />
       <ExportStl
-        setStl={(s: string) => {
-          setStl(s);
+        setCore={(s: string) => {
+          setCore(s);
+        }}
+        setWing={(s: string) => {
+          setWing(s);
         }}
       />
     </Canvas>

@@ -6,16 +6,28 @@ import {
   ReactNode,
 } from "react";
 
-interface ModelState {
+type File = {
   blob: string;
   type: string;
+};
+interface ModelState {
+  core: File;
+  wing: File;
 }
 
-type Action = { type: "SET_STL"; payload: string };
+type Action =
+  | { type: "SET_CORE"; payload: string }
+  | { type: "SET_WING"; payload: string };
 
 const initialState: ModelState = {
-  blob: "",
-  type: "application/stl",
+  core: {
+    blob: "",
+    type: "application/stl",
+  },
+  wing: {
+    blob: "",
+    type: "application/stl",
+  },
 };
 
 const ModelStateContext = createContext<ModelState>(initialState);
@@ -25,8 +37,16 @@ const ModelDispatchContext = createContext<Dispatch<Action> | undefined>(
 
 const modelReducer = (state: ModelState, action: Action) => {
   switch (action.type) {
-    case "SET_STL":
-      return { ...state, blob: action.payload, type: "application/stl" };
+    case "SET_CORE":
+      return {
+        ...state,
+        core: { blob: action.payload, type: "application/stl" },
+      };
+    case "SET_WING":
+      return {
+        ...state,
+        wing: { blob: action.payload, type: "application/stl" },
+      };
     default:
       throw new Error(`Unknown action`);
   }
