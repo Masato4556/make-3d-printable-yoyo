@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { Vector2, LatheGeometry, CubicBezierCurve } from "three";
+import { Vector2, LatheGeometry, CubicBezierCurve, Mesh } from "three";
+import { CSG } from "three-csg-ts";
 
 type Props = {
   diameter: number;
@@ -21,7 +22,6 @@ const CORE_HEIGHT = 3; // coreの高さ
 // coreのパスを作成
 const CORE_PATH: Record<BearingType, Vector2[]> = {
   sizeC: [new Vector2()].concat(
-    new Vector2(0, 0), // 底部の開始点
     new Vector2(2, 0),
     new Vector2(2, 4),
     new CubicBezierCurve(
@@ -60,12 +60,14 @@ const CORE_PATH: Record<BearingType, Vector2[]> = {
       new Vector2(9.55 - 0.3, 2.085) // 終点
     ).getPoints(8),
     new Vector2(10.55, 2.085),
+    new Vector2(10.55, 0),
     new Vector2(10.55, -CORE_HEIGHT),
-    new Vector2(0, -CORE_HEIGHT)
+    new Vector2(2, -CORE_HEIGHT)
   ),
 } as const;
 
 const useYoyoCore = function (bearingType: BearingType) {
+  // TODO: ロジックがややこしくなってきてしまったので整理する
   const corePath: Vector2[] = useMemo(() => {
     // coreのパスを作成
     // 底面のy座標を0とし、ベアリング受けの部位をy軸負方向に伸ばしている
@@ -75,17 +77,46 @@ const useYoyoCore = function (bearingType: BearingType) {
     }
 
     return CORE_PATH[bearingType];
-  }, [bearingType]).map((v) => new Vector2(v.x, -v.y));
+  }, [bearingType]);
 
   const [coreWidth, coreHeight] = corePath.reduce(
     (acc, cur) => {
-      return [Math.max(acc[0], cur.x), Math.max(acc[1], -cur.y)];
+      return [Math.max(acc[0], cur.x), Math.max(acc[1], cur.y)];
     },
     [0, 0]
   );
 
+  const coreGeometry = useMemo(() => {
+    const t1 = new LatheGeometry(corePath, 100);
+
+    const t2 = new LatheGeometry(
+      [new Vector2()].concat(
+        new Vector2(0, 0), // 切り抜いた際に面が残らないようにy座標を1にしている
+        new Vector2(4, 0),
+        new Vector2(4, -CORE_HEIGHT),
+        new Vector2(0, -CORE_HEIGHT)
+      ),
+      6
+    ).scale(-1, 1, 1);
+
+    // メッシュを作成
+    const mesh1 = new Mesh(t1);
+    const mesh2 = new Mesh(t2);
+
+    // CSG操作
+    const csg1 = CSG.fromMesh(mesh1);
+    const csg2 = CSG.fromMesh(mesh2);
+    const resultCSG = csg2.union(csg1);
+    const resultMesh = CSG.toMesh(resultCSG, mesh2.matrix);
+    resultMesh.updateMatrix();
+    const geometry = resultMesh.geometry.scale(1, -1, 1);
+    geometry.computeVertexNormals();
+
+    return geometry;
+  }, [corePath]);
+
   return {
-    coreGeometry: new LatheGeometry(corePath, 100).rotateZ(Math.PI / 2),
+    coreGeometry: coreGeometry.rotateZ(Math.PI / 2),
     coreWidth,
     coreHeight,
   };
