@@ -17,7 +17,7 @@ type Action =
 
 const initialState: FormState = {
   diameter: 55,
-  width: 55,
+  width: 25,
 };
 
 const FormStateContext = createContext<FormState | undefined>(undefined);
