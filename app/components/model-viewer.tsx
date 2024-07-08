@@ -8,7 +8,12 @@ import { useFormState } from "~/contexts/FormContext";
 import { useModelDispatch } from "~/contexts/ModelContext";
 import { useCallback } from "react";
 
-export default function ModelViewer() {
+type Props = {
+  hidden: boolean;
+};
+
+export default function ModelViewer(props: Props) {
+  const { hidden } = props;
   const { diameter, width } = useFormState();
   const dispatch = useModelDispatch();
   const { coreGeometry, wingGeometry } = useYoyoGeometry({
@@ -39,7 +44,7 @@ export default function ModelViewer() {
   );
 
   return (
-    <Canvas id="model-viewer">
+    <Canvas id="model-viewer" hidden={hidden}>
       <Environment
         preset="studio"
         background={true}

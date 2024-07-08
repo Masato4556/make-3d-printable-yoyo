@@ -4,6 +4,8 @@ import { FormProvider } from "~/contexts/FormContext";
 import { Form } from "~/components/form";
 import ModelViewer from "~/components/model-viewer";
 import { ModelProvider } from "~/contexts/ModelContext";
+import PathViewer from "~/components/path-viewer";
+import { useCallback, useState } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -22,13 +24,22 @@ export const links: LinksFunction = () => {
   ];
 };
 
+// TODO: モード切り替えのロジックのリファクタリング
+type Mode = "path" | "model";
+
 export default function Index() {
+  const [mode, setMode] = useState<Mode>("model");
+  const toggleMode = useCallback(() => {
+    setMode(mode == "path" ? "model" : "path");
+  }, [mode, setMode]);
   return (
     <FormProvider>
       <ModelProvider>
         <div id="canvas-container">
-          <Form />
-          <ModelViewer />
+          <Form toggleMode={toggleMode} />
+          <ModelViewer hidden={mode != "model"} />
+
+          <PathViewer hidden={mode != "path"} />
         </div>
       </ModelProvider>
     </FormProvider>

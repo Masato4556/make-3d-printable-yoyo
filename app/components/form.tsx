@@ -2,7 +2,12 @@ import { ChangeEventHandler, useCallback } from "react";
 import { useFormState, useFormDispatch } from "~/contexts/FormContext";
 import { useModelState } from "~/contexts/ModelContext";
 
-export function Form() {
+type Props = {
+  toggleMode: () => void;
+};
+
+export function Form(props: Props) {
+  const { toggleMode } = props;
   const { diameter, width } = useFormState();
   const { core, wing } = useModelState();
   const dispatch = useFormDispatch();
@@ -35,6 +40,7 @@ export function Form() {
 
   return (
     <div className="overlay-form-box">
+      <button onClick={toggleMode}>toggleMode</button>
       <input
         name="diameter"
         type="number"
