@@ -67,7 +67,7 @@ export default function ModelViewer() {
         <mesh
           geometry={mirroredWingGeometry}
           material={material}
-          position={new Vector3(6, 0, 0)}
+          position={new Vector3(20, 0, 0)}
         />
       </group>
 
