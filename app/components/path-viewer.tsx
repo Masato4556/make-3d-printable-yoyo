@@ -1,6 +1,6 @@
 import { DragControls, Environment } from "@react-three/drei";
 import { Canvas, MeshProps } from "@react-three/fiber";
-import { useMemo, useReducer, useRef } from "react";
+import { Dispatch, useEffect, useMemo, useReducer, useRef } from "react";
 import {
   BoxGeometry,
   BufferGeometry,
@@ -11,6 +11,10 @@ import {
   TubeGeometry,
   Vector3,
 } from "three";
+import {
+  useYoyoPathDispatch,
+  YoyoPathAction,
+} from "~/contexts/YoyoPathContext";
 
 type PointShape = "circle" | "rectangle";
 const POINT_GEOMETRY: Record<PointShape, BufferGeometry> = {
@@ -82,8 +86,12 @@ function reducerFunc(
   return next_state;
 }
 
-function DraggableCubicBezierCurve() {
-  const [bezierCurvePath, dispatch] = useReducer(
+function DraggableCubicBezierCurve(props: {
+  hidden: boolean;
+  yoyoPathDispatch: Dispatch<YoyoPathAction>;
+}) {
+  const { hidden, yoyoPathDispatch } = props;
+  const [bezierCurvePath, bezierCurveDispatch] = useReducer(
     reducerFunc,
     new CubicBezierCurve3(
       new Vector3(0, 0),
@@ -109,6 +117,12 @@ function DraggableCubicBezierCurve() {
     };
   }, [bezierCurvePath]);
 
+  // TODO: useEffectを用いない実装にする
+  // TODO: DraggableCubicBezierCurveの外側でyoyoPathDispatchを実行するようにする
+  useEffect(() => {
+    yoyoPathDispatch({ type: "SET_PATH", path: bezierCurvePath.getPoints(64) });
+  }, [hidden, yoyoPathDispatch]);
+
   return (
     <>
       <mesh geometry={bezierCurveGeometry} material={globalMaterial} />
@@ -117,27 +131,27 @@ function DraggableCubicBezierCurve() {
       <DraggablePoint
         initialPosition={initialbezierCurvePath.current.v0}
         onDrag={(v) => {
-          dispatch({ target: "start", v });
+          bezierCurveDispatch({ target: "start", v });
         }}
       />
       <DraggablePoint
         initialPosition={initialbezierCurvePath.current.v1}
         onDrag={(v) => {
-          dispatch({ target: "first_control", v });
+          bezierCurveDispatch({ target: "first_control", v });
         }}
         shape={"rectangle"}
       />
       <DraggablePoint
         initialPosition={initialbezierCurvePath.current.v2}
         onDrag={(v) => {
-          dispatch({ target: "second_control", v });
+          bezierCurveDispatch({ target: "second_control", v });
         }}
         shape={"rectangle"}
       />
       <DraggablePoint
         initialPosition={initialbezierCurvePath.current.v3}
         onDrag={(v) => {
-          dispatch({ target: "end", v });
+          bezierCurveDispatch({ target: "end", v });
         }}
       />
     </>
@@ -150,6 +164,8 @@ type Props = {
 
 export default function PathViewer(props: Props) {
   const { hidden } = props;
+  // TODO: 画面を3Dモデル表示に切り替えるタイミングで、yoyoのpathをproviderのdispath経由で登録
+  const yoyoPathDispatch = useYoyoPathDispatch();
 
   return (
     <Canvas
@@ -169,7 +185,10 @@ export default function PathViewer(props: Props) {
         backgroundBlurriness={2.0}
         backgroundIntensity={0.7}
       />
-      <DraggableCubicBezierCurve />
+      <DraggableCubicBezierCurve
+        hidden={hidden}
+        yoyoPathDispatch={yoyoPathDispatch}
+      />
     </Canvas>
   );
 }

@@ -9,6 +9,8 @@ import {
 import { CSG } from "three-csg-ts";
 import { BEARING_TYPES, BearingType } from "~/const/bearing";
 
+// TODO: どのベアリングを選択したかなどのmodel-viewerとpath-viewerで共に用いるデータをproviderから取得できるようにする
+
 type Props = {
   diameter: number;
   width: number;

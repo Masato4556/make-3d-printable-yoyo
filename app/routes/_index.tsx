@@ -6,6 +6,7 @@ import ModelViewer from "~/components/model-viewer";
 import { ModelProvider } from "~/contexts/ModelContext";
 import PathViewer from "~/components/path-viewer";
 import { useCallback, useState } from "react";
+import { YoyoPathProvider } from "~/contexts/YoyoPathContext";
 
 export const meta: MetaFunction = () => {
   return [
@@ -34,14 +35,15 @@ export default function Index() {
   }, [mode, setMode]);
   return (
     <FormProvider>
-      <ModelProvider>
-        <div id="canvas-container">
-          <Form toggleMode={toggleMode} />
-          <ModelViewer hidden={mode != "model"} />
-
-          <PathViewer hidden={mode != "path"} />
-        </div>
-      </ModelProvider>
+      <YoyoPathProvider>
+        <ModelProvider>
+          <div id="canvas-container">
+            <Form toggleMode={toggleMode} />
+            <ModelViewer hidden={mode != "model"} />
+            <PathViewer hidden={mode != "path"} />
+          </div>
+        </ModelProvider>
+      </YoyoPathProvider>
     </FormProvider>
   );
 }
