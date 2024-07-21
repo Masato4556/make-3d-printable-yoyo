@@ -4,7 +4,7 @@ import { FormProvider } from "~/contexts/FormContext";
 import { Form } from "~/components/form";
 import ModelViewer from "~/components/model-viewer";
 import { ModelProvider } from "~/contexts/ModelContext";
-import PathViewer from "~/components/path-viewer";
+import PathEditor from "~/components/path-editor/path-editor";
 import { useCallback, useState } from "react";
 import { YoyoPathProvider } from "~/contexts/YoyoPathContext";
 
@@ -40,7 +40,7 @@ export default function Index() {
           <div id="canvas-container">
             <Form toggleMode={toggleMode} />
             <ModelViewer hidden={mode != "model"} />
-            <PathViewer hidden={mode != "path"} />
+            <PathEditor hidden={mode != "path"} />
           </div>
         </ModelProvider>
       </YoyoPathProvider>
