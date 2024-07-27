@@ -1,12 +1,7 @@
 import { useCallback } from "react";
 import { useModelState } from "~/contexts/ModelContext";
 
-type Props = {
-  toggleMode: () => void;
-};
-
-export function Form(props: Props) {
-  const { toggleMode } = props;
+export function DownoadButton() {
   const { core, wing } = useModelState();
 
   const downloadCore = useCallback(() => {
@@ -33,7 +28,6 @@ export function Form(props: Props) {
 
   return (
     <div className="overlay-form-box">
-      <button onClick={toggleMode}>toggleMode</button>
       <button onClick={downloadCore}>COREダウンロード</button>
       <button onClick={downloadWing}>WINGダウンロード</button>
     </div>

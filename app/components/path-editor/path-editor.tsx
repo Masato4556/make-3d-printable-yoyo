@@ -97,7 +97,7 @@ type Props = {
   hidden: boolean;
 };
 
-export default function PathEditor(props: Props) {
+export function PathEditor(props: Props) {
   const { hidden } = props;
   const yoyoPathDispatch = useYoyoPathDispatch();
 
