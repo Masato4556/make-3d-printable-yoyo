@@ -1,5 +1,6 @@
 import { useReducer } from "react";
 import { CubicBezierCurve3, Vector3 } from "three";
+import { CORE_PARAMS } from "~/const/core";
 
 function reducerFunc(
   state: CubicBezierCurve3,
@@ -33,10 +34,10 @@ export function useYoyoCurve() {
   const [yoyoCurve, yoyoCurveDispatch] = useReducer(
     reducerFunc,
     new CubicBezierCurve3(
-      new Vector3(0, 0),
-      new Vector3(2, 2),
-      new Vector3(10, 20),
-      new Vector3(20, 10)
+      new Vector3(-CORE_PARAMS["sizeC"].height, 10.55 + 0.2),
+      new Vector3(-CORE_PARAMS["sizeC"].height + 10, 17),
+      new Vector3(-CORE_PARAMS["sizeC"].height + 10, 28),
+      new Vector3(-CORE_PARAMS["sizeC"].height + 20, 28)
     )
   );
   return { yoyoCurve, yoyoCurveDispatch };

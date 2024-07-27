@@ -1,5 +1,4 @@
-import { ChangeEventHandler, useCallback } from "react";
-import { useFormState, useFormDispatch } from "~/contexts/FormContext";
+import { useCallback } from "react";
 import { useModelState } from "~/contexts/ModelContext";
 
 type Props = {
@@ -8,13 +7,7 @@ type Props = {
 
 export function Form(props: Props) {
   const { toggleMode } = props;
-  const { diameter, width } = useFormState();
   const { core, wing } = useModelState();
-  const dispatch = useFormDispatch();
-  const changeDiameter: ChangeEventHandler<HTMLInputElement> = (e) =>
-    dispatch({ type: "SET_DIAMETER", payload: e.target.value });
-  const changeWidth: ChangeEventHandler<HTMLInputElement> = (e) =>
-    dispatch({ type: "SET_WIDTH", payload: e.target.value });
 
   const downloadCore = useCallback(() => {
     if (!core.blob || !core.type) return;
@@ -41,21 +34,6 @@ export function Form(props: Props) {
   return (
     <div className="overlay-form-box">
       <button onClick={toggleMode}>toggleMode</button>
-      <input
-        name="diameter"
-        type="number"
-        defaultValue={diameter}
-        onChange={changeDiameter}
-        min={20}
-        max={100}
-      />
-      <input
-        type="number"
-        defaultValue={width}
-        onChange={changeWidth}
-        min={20}
-        max={100}
-      />
       <button onClick={downloadCore}>COREダウンロード</button>
       <button onClick={downloadWing}>WINGダウンロード</button>
     </div>

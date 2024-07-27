@@ -4,7 +4,6 @@ import { useYoyoGeometry } from "~/hooks/use-yoyo-geometry";
 import { ExportStl } from "~/components/export-stl";
 import { MeshPhysicalMaterial, Vector3 } from "three";
 import { useMirroredGeometry } from "~/hooks/use-mirrored-geometry";
-import { useFormState } from "~/contexts/FormContext";
 import { useModelDispatch } from "~/contexts/ModelContext";
 import { useCallback } from "react";
 
@@ -14,12 +13,8 @@ type Props = {
 
 export default function ModelViewer(props: Props) {
   const { hidden } = props;
-  const { diameter, width } = useFormState();
   const dispatch = useModelDispatch();
-  const { coreGeometry, wingGeometry } = useYoyoGeometry({
-    diameter,
-    width,
-  });
+  const { coreGeometry, wingGeometry } = useYoyoGeometry();
   const mirroredCoreGeometry = useMirroredGeometry(coreGeometry);
   const mirroredWingGeometry = useMirroredGeometry(wingGeometry);
 
@@ -44,7 +39,17 @@ export default function ModelViewer(props: Props) {
   );
 
   return (
-    <Canvas id="model-viewer" hidden={hidden}>
+    <Canvas
+      id="model-viewer"
+      hidden={hidden}
+      camera={{
+        fov: 75,
+        near: 0.1,
+        far: 1000,
+        position: [0, 0, 100],
+        type: "OrthographicCamera",
+      }}
+    >
       <Environment
         preset="studio"
         background={true}
@@ -56,23 +61,23 @@ export default function ModelViewer(props: Props) {
           name="core"
           geometry={coreGeometry}
           material={material}
-          position={new Vector3(-6, 0, 0)}
+          position={new Vector3(-10, 0, 0)}
         />
         <mesh
           name="wing"
           geometry={wingGeometry}
           material={material}
-          position={new Vector3(-6, 0, 0)}
+          position={new Vector3(-10, 0, 0)}
         />
         <mesh
           geometry={mirroredCoreGeometry}
           material={material}
-          position={new Vector3(6, 0, 0)}
+          position={new Vector3(10, 0, 0)}
         />
         <mesh
           geometry={mirroredWingGeometry}
           material={material}
-          position={new Vector3(20, 0, 0)}
+          position={new Vector3(10, 0, 0)}
         />
       </group>
 

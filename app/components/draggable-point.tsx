@@ -22,12 +22,23 @@ export function DraggablePoint(
     onDrag: (vector: Vector3) => void;
     shape?: "circle" | "rectangle";
     material?: Material | Material[] | undefined;
+    fixed?: boolean;
   }
 ) {
-  const { onDrag, initialPosition, shape = "circle", material } = props;
+  const { onDrag, initialPosition, shape = "circle", material, fixed } = props;
   const geometry = useMemo(() => {
     return POINT_GEOMETRY[shape];
   }, [shape]);
+  if (fixed) {
+    return (
+      <mesh
+        geometry={geometry}
+        material={material}
+        {...props}
+        position={initialPosition}
+      ></mesh>
+    );
+  }
   return (
     <DragControls
       axisLock="z"

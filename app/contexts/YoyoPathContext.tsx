@@ -5,13 +5,13 @@ import {
   Dispatch,
   ReactNode,
 } from "react";
-import { Vector3 } from "three";
+import { Vector2 } from "three";
 
 interface YoyoPathState {
-  path: Vector3[];
+  path: Vector2[];
 }
 
-export type YoyoPathAction = { type: "SET_PATH"; path: Vector3[] };
+export type YoyoPathAction = { type: "SET_PATH"; path: Vector2[] };
 
 const initialState: YoyoPathState = {
   path: [],
