@@ -1,11 +1,11 @@
 import {
-  useYoyoSizeDispatch,
-  useYoyoSizeState,
-} from "~/contexts/YoyoSizeContext";
+  useYoyoPathDispatch,
+  useYoyoPathState,
+} from "~/contexts/YoyoPathContext";
 
 export function SizeForm() {
-  const { diameter, width, trapezeWidth } = useYoyoSizeState();
-  const yoyoSizeReducer = useYoyoSizeDispatch();
+  const { diameter, width, trapezeWidth } = useYoyoPathState();
+  const yoyoSizeReducer = useYoyoPathDispatch();
 
   return (
     <div className="overlay-form-box">

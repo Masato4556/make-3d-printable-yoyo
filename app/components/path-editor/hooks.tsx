@@ -1,15 +1,22 @@
-import { useReducer } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import { CubicBezierCurve3, Vector3 } from "three";
 import { CORE_PARAMS } from "~/const/core";
 
 function reducerFunc(
   state: CubicBezierCurve3,
-  action: {
-    target: "start" | "first_control" | "second_control" | "end";
-    v: Vector3;
-  }
+  action:
+    | {
+        target: "start" | "first_control" | "second_control" | "end";
+        v: Vector3;
+      }
+    | {
+        target: "path";
+        v: CubicBezierCurve3;
+      }
 ) {
   const { target, v } = action;
+  if (target == "path") return v;
+
   const next_state = state.clone();
   switch (target) {
     case "start":
@@ -50,5 +57,27 @@ export function useYoyoCurve(
       new Vector3(-CORE_PARAMS["sizeC"].height + wing_width, radius)
     )
   );
-  return { yoyoCurve, yoyoCurveDispatch };
+
+  // TODO: YoyoPathProviderにも同様のロジックが存在するので、統一する
+  const flatEndPoint = useMemo(
+    () => new Vector3(width / 2, yoyoCurve.v3.y),
+    [width, yoyoCurve.v3.y]
+  );
+
+  useEffect(() => {
+    yoyoCurveDispatch({
+      target: "path",
+      v: new CubicBezierCurve3(
+        new Vector3(
+          -CORE_PARAMS["sizeC"].height,
+          CORE_PARAMS["sizeC"].radius + 0.2 // コアを覆う幅が必要なので一旦仮で0.2を設定
+        ),
+        new Vector3(-CORE_PARAMS["sizeC"].height + wing_width / 2, radius / 2),
+        new Vector3(-CORE_PARAMS["sizeC"].height + wing_width / 2, radius),
+        new Vector3(-CORE_PARAMS["sizeC"].height + wing_width, radius)
+      ),
+    });
+  }, [radius, wing_width]);
+
+  return { yoyoCurve, yoyoCurveDispatch, flatEndPoint };
 }

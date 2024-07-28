@@ -23,9 +23,21 @@ export function DraggablePoint(
     shape?: "circle" | "rectangle";
     material?: Material | Material[] | undefined;
     fixed?: boolean;
+    dragLimits?: [
+      [number, number] | undefined,
+      [number, number] | undefined,
+      [number, number] | undefined
+    ];
   }
 ) {
-  const { onDrag, initialPosition, shape = "circle", material, fixed } = props;
+  const {
+    onDrag,
+    initialPosition,
+    shape = "circle",
+    material,
+    fixed,
+    dragLimits,
+  } = props;
   const geometry = useMemo(() => {
     return POINT_GEOMETRY[shape];
   }, [shape]);
@@ -52,6 +64,7 @@ export function DraggablePoint(
 
         onDrag(v);
       }}
+      dragLimits={dragLimits}
     >
       <mesh
         geometry={geometry}

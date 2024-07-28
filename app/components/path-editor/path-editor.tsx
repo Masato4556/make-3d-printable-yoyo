@@ -10,13 +10,13 @@ import {
 } from "three";
 import {
   useYoyoPathDispatch,
+  useYoyoPathState,
   YoyoPathAction,
 } from "~/contexts/YoyoPathContext";
 import { DraggableCubicBezierCurve } from "../draggable-cubic-bezier-curve";
 import { useYoyoCurve } from "./hooks";
 import { XAxis } from "./XAxis";
-import { useYoyoSizeState } from "~/contexts/YoyoSizeContext";
-import { Mode } from "~/routes/_index";
+import { DraggablePoint } from "../draggable-point";
 
 const pointMaterial = new MeshBasicMaterial({ color: "black" });
 const curveMaterial = new MeshBasicMaterial({ color: "black" });
@@ -27,8 +27,8 @@ function EditableYoYoPath(props: {
   yoyoPathDispatch: Dispatch<YoyoPathAction>;
 }) {
   const { hidden, yoyoPathDispatch } = props;
-  const { diameter, width, trapezeWidth } = useYoyoSizeState();
-  const { yoyoCurve, yoyoCurveDispatch } = useYoyoCurve(
+  const { diameter, width, trapezeWidth } = useYoyoPathState();
+  const { yoyoCurve, yoyoCurveDispatch, flatEndPoint } = useYoyoCurve(
     diameter,
     width,
     trapezeWidth
@@ -40,15 +40,13 @@ function EditableYoYoPath(props: {
     // このパスとコアのパスでx軸とy軸が入れ替わってしまっているため、ここでその違いを吸収する
     // TODO: 軸を揃える
     const path = yoyoCurve.getPoints(64).map((v) => {
-      return new Vector2(v.y, v.x);
+      return new Vector2(v.x, v.y);
     });
-    // パスを閉じる
-    path.push(new Vector2(0, path.at(-1)?.y ?? 0));
     yoyoPathDispatch({
-      type: "SET_PATH",
+      type: "SET_WING_PATH",
       path,
     });
-  }, [hidden, yoyoPathDispatch]);
+  }, [flatEndPoint, hidden, yoyoCurve, yoyoPathDispatch]);
 
   const mirrerdYoyoCurveGeometry = useMemo(() => {
     const geometry = new TubeGeometry(yoyoCurve, 64, 0.2);
@@ -56,18 +54,39 @@ function EditableYoYoPath(props: {
     return geometry;
   }, [yoyoCurve]);
 
-  // TODO: パスに含まれていない最後の直線をつい
-  const lastLineGeometry = useMemo(() => {
+  const flatLineGeometry = useMemo(() => {
+    const geometry = new TubeGeometry(
+      new LineCurve3(yoyoCurve.v3, flatEndPoint),
+      64,
+      0.2
+    );
+    return geometry;
+  }, [flatEndPoint, yoyoCurve.v3]);
+
+  const mirreredFlatLineGeometry = useMemo(() => {
     const geometry = new TubeGeometry(
       new LineCurve3(
-        yoyoCurve.v3,
-        new Vector3(yoyoCurve.v3.x, -yoyoCurve.v3.y, 0)
+        new Vector3(yoyoCurve.v3.x, -yoyoCurve.v3.y, 0),
+        new Vector3(flatEndPoint.x, -flatEndPoint.y, 0)
       ),
       64,
       0.2
     );
     return geometry;
-  }, [yoyoCurve]);
+  }, [flatEndPoint, yoyoCurve.v3]);
+
+  // TODO: パスに含まれていない最後の直線をつい
+  const lastLineGeometry = useMemo(() => {
+    const geometry = new TubeGeometry(
+      new LineCurve3(
+        flatEndPoint,
+        new Vector3(flatEndPoint.x, -flatEndPoint.y, 0)
+      ),
+      64,
+      0.2
+    );
+    return geometry;
+  }, [flatEndPoint]);
 
   return (
     <>
@@ -93,46 +112,54 @@ function EditableYoYoPath(props: {
         }}
         fixedPoints="start"
       />
+      <DraggablePoint
+        initialPosition={flatEndPoint}
+        onDrag={() => {}}
+        material={pointMaterial}
+        fixed={true}
+      />
       <XAxis />
+
       <mesh geometry={mirrerdYoyoCurveGeometry} material={curveMaterial} />
+      <mesh geometry={flatLineGeometry} material={curveMaterial} />
+      <mesh geometry={mirreredFlatLineGeometry} material={curveMaterial} />
       <mesh geometry={lastLineGeometry} material={curveMaterial} />
     </>
   );
 }
 
 type Props = {
-  mode: Mode;
+  hidden: boolean;
 };
 
 export function PathEditor(props: Props) {
-  const { mode } = props;
+  const { hidden } = props;
   const yoyoPathDispatch = useYoyoPathDispatch();
 
-  if (mode == "size") return <></>; // サイズ選択モードに戻った場合、パスを初期化する
+  if (hidden) return <></>;
 
   return (
-    <Canvas
-      id="path-viewer"
-      hidden={mode != "path"}
-      camera={{
-        fov: 75,
-        near: 0.1,
-        far: 1000,
-        position: [0, 0, 100],
-        type: "OrthographicCamera",
-      }}
-    >
-      <Environment
-        preset="studio"
-        background={true}
-        backgroundBlurriness={2.0}
-        backgroundIntensity={0.7}
-      />
-      <EditableYoYoPath
-        hidden={mode != "path"}
-        yoyoPathDispatch={yoyoPathDispatch}
-      />
-    </Canvas>
+    <>
+      <Canvas
+        id="path-viewer"
+        hidden={hidden}
+        camera={{
+          fov: 75,
+          near: 0.1,
+          far: 1000,
+          position: [0, 0, 100],
+          type: "OrthographicCamera",
+        }}
+      >
+        <Environment
+          preset="studio"
+          background={true}
+          backgroundBlurriness={2.0}
+          backgroundIntensity={0.7}
+        />
+        <EditableYoYoPath hidden={hidden} yoyoPathDispatch={yoyoPathDispatch} />
+      </Canvas>
+    </>
   );
 }
 

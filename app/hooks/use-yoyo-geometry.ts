@@ -3,7 +3,7 @@ import { Vector2, LatheGeometry, Mesh, BufferGeometry } from "three";
 import { CSG } from "three-csg-ts";
 import { BEARING_TYPES, BearingType } from "~/const/bearing";
 import { CORE_HEIGHT, CORE_PARAMS } from "~/const/core";
-import { useYoyoPathState } from "~/contexts/YoyoPathContext";
+import { useYoyoPath } from "~/contexts/YoyoPathContext";
 
 // TODO: どのベアリングを選択したかなどのmodel-viewerとpath-viewerで共に用いるデータをproviderから取得できるようにする
 
@@ -65,7 +65,7 @@ export const useYoyoGeometry = function () {
   // coreのパスを作成
   const { coreGeometry } = useYoyoCore(bearingType);
 
-  const { path } = useYoyoPathState();
+  const { yoyoPath } = useYoyoPath();
 
   const wingGeometry = useMemo(() => {
     // wingのパスを作成
@@ -75,12 +75,13 @@ export const useYoyoGeometry = function () {
         new Vector2(10.55 + GAP, 0),
         new Vector2(10.55 + GAP, -CORE_PARAMS[bearingType].height)
       )
-      .concat(...path);
+      // TODO: ウィングのパスとコアのパスで軸の向きが違うのをここで調整している。この調整せずに済むようにする
+      .concat(...yoyoPath.map((v) => new Vector2(v.y, v.x)));
 
     const geometry = new LatheGeometry(wingPath, 100).rotateZ(Math.PI / 2);
     geometry.computeVertexNormals();
     return geometry;
-  }, [bearingType, path]);
+  }, [bearingType, yoyoPath]);
 
   return { coreGeometry, wingGeometry };
 };
