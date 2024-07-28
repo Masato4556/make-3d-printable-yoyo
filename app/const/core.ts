@@ -3,6 +3,7 @@ import { BearingType } from "./bearing";
 
 type Core = {
   height: number;
+  radius: number;
   path: Vector2[];
 };
 
@@ -11,6 +12,7 @@ export const CORE_HEIGHT = 4; // コアの中心部分の高さ
 export const CORE_PARAMS: Record<BearingType, Core> = {
   sizeC: {
     height: 2.085 + CORE_HEIGHT, // コアの側面のお高さ
+    radius: 10.55, //  コアの半径
     path: [new Vector2()].concat(
       new Vector2(2, 0),
       new Vector2(2, 4),

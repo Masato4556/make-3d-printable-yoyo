@@ -1,3 +1,5 @@
+import { SizeForm } from "./size-form";
+
 type Props = {
   hidden: boolean;
 };
@@ -5,5 +7,10 @@ type Props = {
 export function SizeEditor(props: Props) {
   const { hidden } = props;
   if (hidden) return <></>;
-  return <div>工事中</div>;
+  return (
+    <>
+      <div>工事中</div>
+      <SizeForm />
+    </>
+  );
 }

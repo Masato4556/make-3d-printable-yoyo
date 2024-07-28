@@ -30,14 +30,24 @@ function reducerFunc(
   return next_state;
 }
 
-export function useYoyoCurve() {
+export function useYoyoCurve(
+  diameter: number,
+  width: number,
+  trapezeWidth: number
+) {
+  // TODO: ベアリングの幅を考慮したサイズになっていないので修正が必要
+  const wing_width = trapezeWidth / 2;
+  const radius = diameter / 2;
   const [yoyoCurve, yoyoCurveDispatch] = useReducer(
     reducerFunc,
     new CubicBezierCurve3(
-      new Vector3(-CORE_PARAMS["sizeC"].height, 10.55 + 0.2),
-      new Vector3(-CORE_PARAMS["sizeC"].height + 10, 17),
-      new Vector3(-CORE_PARAMS["sizeC"].height + 10, 28),
-      new Vector3(-CORE_PARAMS["sizeC"].height + 20, 28)
+      new Vector3(
+        -CORE_PARAMS["sizeC"].height,
+        CORE_PARAMS["sizeC"].radius + 0.2 // コアを覆う幅が必要なので一旦仮で0.2を設定
+      ),
+      new Vector3(-CORE_PARAMS["sizeC"].height + wing_width / 2, radius / 2),
+      new Vector3(-CORE_PARAMS["sizeC"].height + wing_width / 2, radius),
+      new Vector3(-CORE_PARAMS["sizeC"].height + wing_width, radius)
     )
   );
   return { yoyoCurve, yoyoCurveDispatch };

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { YoyoPathProvider } from "~/contexts/YoyoPathContext";
 import { ModeSwitch } from "~/components/mode-switch/mode-swtich";
 import { SizeEditor } from "~/components/size-editor/size-editor";
+import { YoyoSizeProvider } from "~/contexts/YoyoSizeContext";
 
 export const meta: MetaFunction = () => {
   return [
@@ -29,18 +30,20 @@ export const links: LinksFunction = () => {
 export type Mode = "size" | "path" | "model";
 
 export default function Index() {
-  // MODEの状態管理のリファクタ
+  // TODO: MODEの状態管理のリファクタ
   const [mode, setMode] = useState<Mode>("path");
   return (
-    <YoyoPathProvider>
-      <ModelProvider>
-        <div id="canvas-container">
-          <ModeSwitch setMode={setMode} />
-          <SizeEditor hidden={mode != "size"} />
-          <ModelViewer hidden={mode != "model"} />
-          <PathEditor hidden={mode != "path"} />
-        </div>
-      </ModelProvider>
-    </YoyoPathProvider>
+    <YoyoSizeProvider>
+      <YoyoPathProvider>
+        <ModelProvider>
+          <div id="canvas-container">
+            <ModeSwitch setMode={setMode} />
+            <SizeEditor hidden={mode != "size"} />
+            <ModelViewer hidden={mode != "model"} />
+            <PathEditor mode={mode} />
+          </div>
+        </ModelProvider>
+      </YoyoPathProvider>
+    </YoyoSizeProvider>
   );
 }

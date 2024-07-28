@@ -15,6 +15,8 @@ import {
 import { DraggableCubicBezierCurve } from "../draggable-cubic-bezier-curve";
 import { useYoyoCurve } from "./hooks";
 import { XAxis } from "./XAxis";
+import { useYoyoSizeState } from "~/contexts/YoyoSizeContext";
+import { Mode } from "~/routes/_index";
 
 const pointMaterial = new MeshBasicMaterial({ color: "black" });
 const curveMaterial = new MeshBasicMaterial({ color: "black" });
@@ -25,7 +27,12 @@ function EditableYoYoPath(props: {
   yoyoPathDispatch: Dispatch<YoyoPathAction>;
 }) {
   const { hidden, yoyoPathDispatch } = props;
-  const { yoyoCurve, yoyoCurveDispatch } = useYoyoCurve();
+  const { diameter, width, trapezeWidth } = useYoyoSizeState();
+  const { yoyoCurve, yoyoCurveDispatch } = useYoyoCurve(
+    diameter,
+    width,
+    trapezeWidth
+  );
 
   // TODO: useEffectを用いない実装にする
   // TODO: DraggableCubicBezierCurveの外側でyoyoPathDispatchを実行するようにする
@@ -94,17 +101,19 @@ function EditableYoYoPath(props: {
 }
 
 type Props = {
-  hidden: boolean;
+  mode: Mode;
 };
 
 export function PathEditor(props: Props) {
-  const { hidden } = props;
+  const { mode } = props;
   const yoyoPathDispatch = useYoyoPathDispatch();
+
+  if (mode == "size") return <></>; // サイズ選択モードに戻った場合、パスを初期化する
 
   return (
     <Canvas
       id="path-viewer"
-      hidden={hidden}
+      hidden={mode != "path"}
       camera={{
         fov: 75,
         near: 0.1,
@@ -119,7 +128,10 @@ export function PathEditor(props: Props) {
         backgroundBlurriness={2.0}
         backgroundIntensity={0.7}
       />
-      <EditableYoYoPath hidden={hidden} yoyoPathDispatch={yoyoPathDispatch} />
+      <EditableYoYoPath
+        hidden={mode != "path"}
+        yoyoPathDispatch={yoyoPathDispatch}
+      />
     </Canvas>
   );
 }
@@ -127,3 +139,5 @@ export function PathEditor(props: Props) {
 // パス編集時に、ヨーヨー全体のパスが表示されるようにしたい
 // - ベアリング受けの部分
 // - ウィングの反対側
+
+// flatな面を作成する
