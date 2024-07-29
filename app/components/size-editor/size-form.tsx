@@ -4,21 +4,11 @@ import {
 } from "~/contexts/YoyoPathContext";
 
 export function SizeForm() {
-  const { diameter, width, trapezeWidth } = useYoyoPathState();
+  const { width, trapezeWidth } = useYoyoPathState();
   const yoyoSizeReducer = useYoyoPathDispatch();
 
   return (
     <div className="overlay-form-box">
-      <input
-        type="number"
-        defaultValue={diameter}
-        onChange={(e) => {
-          yoyoSizeReducer({
-            type: "SET_DIAMETER",
-            value: Number(e.target.value),
-          });
-        }}
-      />
       <input
         type="number"
         defaultValue={width}

@@ -6,7 +6,6 @@ import { PathEditor } from "~/components/path-editor/path-editor";
 import { useState } from "react";
 import { YoyoPathProvider } from "~/contexts/YoyoPathContext";
 import { ModeSwitch } from "~/components/mode-switch/mode-swtich";
-import { SizeEditor } from "~/components/size-editor/size-editor";
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,7 +25,7 @@ export const links: LinksFunction = () => {
 };
 
 // TODO: モード切り替えのロジックのリファクタリング
-export type Mode = "size" | "path" | "model";
+export type Mode = "path" | "model";
 
 export default function Index() {
   // TODO: MODEの状態管理のリファクタ
@@ -36,7 +35,6 @@ export default function Index() {
       <ModelProvider>
         <div id="canvas-container">
           <ModeSwitch setMode={setMode} />
-          <SizeEditor hidden={mode != "size"} />
           <ModelViewer hidden={mode != "model"} />
           <PathEditor hidden={mode != "path"} />
         </div>

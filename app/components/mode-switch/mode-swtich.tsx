@@ -11,15 +11,6 @@ export function ModeSwitch(props: Props) {
       <button
         className="mode-button flex-item"
         onClick={() => {
-          setMode("size");
-        }}
-      >
-        SIZE
-      </button>
-      <div>{" > "}</div>
-      <button
-        className="mode-button flex-item"
-        onClick={() => {
           setMode("path");
         }}
       >

@@ -6,24 +6,23 @@ import {
   ReactNode,
   useMemo,
 } from "react";
-import { CubicBezierCurve3, Vector2, Vector3 } from "three";
-import { CORE_PARAMS } from "~/const/core";
+import { Vector2 } from "three";
 
 interface YoyoPathState {
   wingPath: Vector2[];
-  diameter: number;
+  flatEndPoint: Vector2;
   width: number;
   trapezeWidth: number;
 }
 
 export type YoyoPathAction =
   | { type: "SET_WING_PATH"; path: Vector2[] }
-  | { type: "SET_DIAMETER"; value: number }
+  | { type: "SET_FLAT_END_POINT"; value: Vector2 }
   | { type: "SET_WIDTH"; value: number }
   | { type: "SET_TRAPEZE_WIDTH"; value: number };
 const initialState: YoyoPathState = {
   wingPath: [],
-  diameter: 55,
+  flatEndPoint: new Vector2(0, 0),
   width: 45,
   trapezeWidth: 42,
 };
@@ -33,48 +32,27 @@ const YoyoPathDispatchContext = createContext<
   Dispatch<YoyoPathAction> | undefined
 >(undefined);
 
-function initWingPath(diameter: number, width: number, trapezeWidth: number) {
-  const wing_width = trapezeWidth / 2;
-  const radius = diameter / 2;
-
-  return new CubicBezierCurve3(
-    new Vector3(
-      -CORE_PARAMS["sizeC"].height,
-      CORE_PARAMS["sizeC"].radius + 0.2 // コアを覆う幅が必要なので一旦仮で0.2を設定
-    ),
-    new Vector3(-CORE_PARAMS["sizeC"].height + wing_width / 2, radius / 2),
-    new Vector3(-CORE_PARAMS["sizeC"].height + wing_width / 2, radius),
-    new Vector3(-CORE_PARAMS["sizeC"].height + wing_width, radius)
-  )
-    .getPoints(64)
-    .map((v) => new Vector2(v.x, v.y));
-}
-
 const yoyoPathReducer = (state: YoyoPathState, action: YoyoPathAction) => {
-  const { diameter, width, trapezeWidth } = state;
   switch (action.type) {
     case "SET_WING_PATH":
       return {
         ...state,
         wingPath: action.path,
       };
-    case "SET_DIAMETER":
+    case "SET_FLAT_END_POINT":
       return {
         ...state,
-        diameter: action.value,
-        wingPath: initWingPath(diameter, width, trapezeWidth),
+        flatEndPoint: action.value,
       };
     case "SET_WIDTH":
       return {
         ...state,
         width: action.value,
-        wingPath: initWingPath(diameter, width, trapezeWidth),
       };
     case "SET_TRAPEZE_WIDTH":
       return {
         ...state,
         trapezeWidth: action.value,
-        wingPath: initWingPath(diameter, width, trapezeWidth),
       };
     default:
       throw new Error(`Unknown action`);
@@ -118,17 +96,15 @@ const useYoyoPathDispatch = () => {
 const useYoyoPath = () => {
   const context = useYoyoPathState();
 
-  const { wingPath, width } = context;
+  const { wingPath, flatEndPoint } = context;
 
   const yoyoPath = useMemo(() => {
-    const flatEndPoint = new Vector3(width / 2, wingPath.at(-1)?.y ?? 0);
-
     return [
       ...wingPath,
       new Vector2(flatEndPoint.x, flatEndPoint.y),
       new Vector2(flatEndPoint.x, 0),
     ];
-  }, [width, wingPath]);
+  }, [flatEndPoint, wingPath]);
   return { yoyoPath };
 };
 

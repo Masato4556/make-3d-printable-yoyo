@@ -1,6 +1,6 @@
 import { Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Dispatch, useEffect, useMemo } from "react";
+import { Dispatch, useEffect, useMemo, useRef } from "react";
 import {
   LineCurve3,
   MeshBasicMaterial,
@@ -27,12 +27,9 @@ function EditableYoYoPath(props: {
   yoyoPathDispatch: Dispatch<YoyoPathAction>;
 }) {
   const { hidden, yoyoPathDispatch } = props;
-  const { diameter, width, trapezeWidth } = useYoyoPathState();
-  const { yoyoCurve, yoyoCurveDispatch, flatEndPoint } = useYoyoCurve(
-    diameter,
-    width,
-    trapezeWidth
-  );
+  const { width, trapezeWidth } = useYoyoPathState();
+  const { yoyoCurve, yoyoCurveDispatch, flatEndPoint, setFlatEndPoint } =
+    useYoyoCurve(width, trapezeWidth);
 
   // TODO: useEffectを用いない実装にする
   // TODO: DraggableCubicBezierCurveの外側でyoyoPathDispatchを実行するようにする
@@ -45,6 +42,10 @@ function EditableYoYoPath(props: {
     yoyoPathDispatch({
       type: "SET_WING_PATH",
       path,
+    });
+    yoyoPathDispatch({
+      type: "SET_FLAT_END_POINT",
+      value: new Vector2(flatEndPoint.x, flatEndPoint.y),
     });
   }, [flatEndPoint, hidden, yoyoCurve, yoyoPathDispatch]);
 
@@ -88,6 +89,8 @@ function EditableYoYoPath(props: {
     return geometry;
   }, [flatEndPoint]);
 
+  const initailFlatEndPoint = useRef(flatEndPoint);
+
   return (
     <>
       <DraggableCubicBezierCurve
@@ -103,6 +106,11 @@ function EditableYoYoPath(props: {
         }}
         onDragEndPoint={(v) => {
           yoyoCurveDispatch({ target: "end", v });
+          setFlatEndPoint(new Vector3(flatEndPoint.x, v.y));
+          initailFlatEndPoint.current = new Vector3(
+            initailFlatEndPoint.current.x,
+            flatEndPoint.y
+          );
         }}
         materials={{
           edgePoint: pointMaterial,
@@ -113,10 +121,13 @@ function EditableYoYoPath(props: {
         fixedPoints="start"
       />
       <DraggablePoint
-        initialPosition={flatEndPoint}
-        onDrag={() => {}}
+        initialPosition={initailFlatEndPoint.current}
+        onDrag={(v) => {
+          setFlatEndPoint(new Vector3(v.x, flatEndPoint.y));
+        }}
         material={pointMaterial}
-        fixed={true}
+        // fixed={true}
+        dragLimits={[undefined, [0, 0], [0, 0]]}
       />
       <XAxis />
 
@@ -135,8 +146,6 @@ type Props = {
 export function PathEditor(props: Props) {
   const { hidden } = props;
   const yoyoPathDispatch = useYoyoPathDispatch();
-
-  if (hidden) return <></>;
 
   return (
     <>
