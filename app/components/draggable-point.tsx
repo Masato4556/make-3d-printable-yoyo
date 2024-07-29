@@ -1,6 +1,6 @@
 import { DragControls } from "@react-three/drei";
 import { MeshProps } from "@react-three/fiber";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import {
   BoxGeometry,
   BufferGeometry,
@@ -18,7 +18,7 @@ export type PointShape = "circle" | "rectangle";
 
 export function DraggablePoint(
   props: MeshProps & {
-    initialPosition: Vector3;
+    position: Vector3;
     onDrag: (vector: Vector3) => void;
     shape?: "circle" | "rectangle";
     material?: Material | Material[] | undefined;
@@ -32,12 +32,13 @@ export function DraggablePoint(
 ) {
   const {
     onDrag,
-    initialPosition,
+    position,
     shape = "circle",
     material,
     fixed,
     dragLimits,
   } = props;
+  const positionRef = useRef(position);
   const geometry = useMemo(() => {
     return POINT_GEOMETRY[shape];
   }, [shape]);
@@ -47,7 +48,7 @@ export function DraggablePoint(
         geometry={geometry}
         material={material}
         {...props}
-        position={initialPosition}
+        position={positionRef.current}
       ></mesh>
     );
   }
@@ -56,7 +57,7 @@ export function DraggablePoint(
       axisLock="z"
       onDrag={(e) => {
         // 移動後のポイントのpositionをonDragに渡す
-        const v = initialPosition.clone();
+        const v = positionRef.current.clone();
         const move_v = new Vector3();
 
         move_v.setFromMatrixPosition(e);
@@ -70,7 +71,7 @@ export function DraggablePoint(
         geometry={geometry}
         material={material}
         {...props}
-        position={initialPosition}
+        position={positionRef.current}
       ></mesh>
     </DragControls>
   );

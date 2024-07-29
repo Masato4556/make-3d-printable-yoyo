@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import {
   CubicBezierCurve3,
   LineCurve3,
@@ -34,7 +34,6 @@ export function DraggableCubicBezierCurve(props: {
     materials,
     fixedPoints,
   } = props;
-  const initialbezierCurvePath = useRef(bezierCurvePath.clone());
   const { bezierCurveGeometry, controlWire1, controlWire2 } = useMemo(() => {
     return {
       bezierCurveGeometry: new TubeGeometry(bezierCurvePath, 64, 0.2),
@@ -56,7 +55,7 @@ export function DraggableCubicBezierCurve(props: {
       <mesh geometry={controlWire1} material={materials?.wire} />
       <mesh geometry={controlWire2} material={materials?.wire} />
       <DraggablePoint
-        initialPosition={initialbezierCurvePath.current.v0}
+        position={bezierCurvePath.v0}
         onDrag={(v) => {
           onDragStartPoint(v);
         }}
@@ -64,7 +63,7 @@ export function DraggableCubicBezierCurve(props: {
         fixed={fixedPoints == "start" || fixedPoints == "both"}
       />
       <DraggablePoint
-        initialPosition={initialbezierCurvePath.current.v1}
+        position={bezierCurvePath.v1}
         onDrag={(v) => {
           onDragFirstControlPoint(v);
         }}
@@ -72,7 +71,7 @@ export function DraggableCubicBezierCurve(props: {
         shape={"rectangle"}
       />
       <DraggablePoint
-        initialPosition={initialbezierCurvePath.current.v2}
+        position={bezierCurvePath.v2}
         onDrag={(v) => {
           onDragSecondControlPoint(v);
         }}
@@ -80,7 +79,7 @@ export function DraggableCubicBezierCurve(props: {
         shape={"rectangle"}
       />
       <DraggablePoint
-        initialPosition={initialbezierCurvePath.current.v3}
+        position={bezierCurvePath.v3}
         onDrag={(v) => {
           onDragEndPoint(v);
         }}

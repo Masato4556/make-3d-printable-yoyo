@@ -55,9 +55,14 @@ export function useYoyoCurve(width: number, trapezeWidth: number) {
   );
 
   // TODO: YoyoPathProviderにも同様のロジックが存在するので、統一する
-  const [flatEndPoint, setFlatEndPoint] = useState(
+  const [rimOutsidePosition, setRimOutsidePosition] = useState(
     new Vector3(width / 2, yoyoCurve.v3.y)
   );
 
-  return { yoyoCurve, yoyoCurveDispatch, flatEndPoint, setFlatEndPoint };
+  return {
+    yoyoCurve,
+    yoyoCurveDispatch,
+    rimOutsidePosition,
+    setRimOutsidePosition,
+  };
 }

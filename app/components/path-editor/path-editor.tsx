@@ -1,6 +1,6 @@
 import { Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Dispatch, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import {
   LineCurve3,
   MeshBasicMaterial,
@@ -11,7 +11,6 @@ import {
 import {
   useYoyoPathDispatch,
   useYoyoPathState,
-  YoyoPathAction,
 } from "~/contexts/YoyoPathContext";
 import { DraggableCubicBezierCurve } from "../draggable-cubic-bezier-curve";
 import { useYoyoCurve } from "./hooks";
@@ -22,20 +21,18 @@ const pointMaterial = new MeshBasicMaterial({ color: "black" });
 const curveMaterial = new MeshBasicMaterial({ color: "black" });
 const wireMaterial = new MeshBasicMaterial({ color: "grey" });
 
-function EditableYoYoPath(props: {
-  hidden: boolean;
-  yoyoPathDispatch: Dispatch<YoyoPathAction>;
-}) {
-  const { hidden, yoyoPathDispatch } = props;
+function EditableYoYoPath() {
+  const yoyoPathDispatch = useYoyoPathDispatch();
   const { width, trapezeWidth } = useYoyoPathState();
-  const { yoyoCurve, yoyoCurveDispatch, flatEndPoint, setFlatEndPoint } =
-    useYoyoCurve(width, trapezeWidth);
+  const {
+    yoyoCurve,
+    yoyoCurveDispatch,
+    rimOutsidePosition,
+    setRimOutsidePosition,
+  } = useYoyoCurve(width, trapezeWidth);
 
-  // TODO: useEffectを用いない実装にする
-  // TODO: DraggableCubicBezierCurveの外側でyoyoPathDispatchを実行するようにする
+  // TODO: パスを操作するたびに登録を行なっているので処理が遅延しているのを解消
   useEffect(() => {
-    // このパスとコアのパスでx軸とy軸が入れ替わってしまっているため、ここでその違いを吸収する
-    // TODO: 軸を揃える
     const path = yoyoCurve.getPoints(64).map((v) => {
       return new Vector2(v.x, v.y);
     });
@@ -45,9 +42,9 @@ function EditableYoYoPath(props: {
     });
     yoyoPathDispatch({
       type: "SET_FLAT_END_POINT",
-      value: new Vector2(flatEndPoint.x, flatEndPoint.y),
+      value: new Vector2(rimOutsidePosition.x, rimOutsidePosition.y),
     });
-  }, [flatEndPoint, hidden, yoyoCurve, yoyoPathDispatch]);
+  }, [rimOutsidePosition, yoyoCurve, yoyoPathDispatch]);
 
   const mirrerdYoyoCurveGeometry = useMemo(() => {
     const geometry = new TubeGeometry(yoyoCurve, 64, 0.2);
@@ -57,39 +54,41 @@ function EditableYoYoPath(props: {
 
   const flatLineGeometry = useMemo(() => {
     const geometry = new TubeGeometry(
-      new LineCurve3(yoyoCurve.v3, flatEndPoint),
+      new LineCurve3(yoyoCurve.v3, rimOutsidePosition),
       64,
       0.2
     );
     return geometry;
-  }, [flatEndPoint, yoyoCurve.v3]);
+  }, [rimOutsidePosition, yoyoCurve.v3]);
 
   const mirreredFlatLineGeometry = useMemo(() => {
     const geometry = new TubeGeometry(
       new LineCurve3(
         new Vector3(yoyoCurve.v3.x, -yoyoCurve.v3.y, 0),
-        new Vector3(flatEndPoint.x, -flatEndPoint.y, 0)
+        new Vector3(rimOutsidePosition.x, -rimOutsidePosition.y, 0)
       ),
       64,
       0.2
     );
     return geometry;
-  }, [flatEndPoint, yoyoCurve.v3]);
+  }, [rimOutsidePosition, yoyoCurve.v3]);
 
   // TODO: パスに含まれていない最後の直線をつい
   const lastLineGeometry = useMemo(() => {
     const geometry = new TubeGeometry(
       new LineCurve3(
-        flatEndPoint,
-        new Vector3(flatEndPoint.x, -flatEndPoint.y, 0)
+        rimOutsidePosition,
+        new Vector3(rimOutsidePosition.x, -rimOutsidePosition.y, 0)
       ),
       64,
       0.2
     );
     return geometry;
-  }, [flatEndPoint]);
+  }, [rimOutsidePosition]);
 
-  const initailFlatEndPoint = useRef(flatEndPoint);
+  const rimPosition = useMemo(() => {
+    return new Vector3(rimOutsidePosition.x, 0);
+  }, [rimOutsidePosition]);
 
   return (
     <>
@@ -106,11 +105,7 @@ function EditableYoYoPath(props: {
         }}
         onDragEndPoint={(v) => {
           yoyoCurveDispatch({ target: "end", v });
-          setFlatEndPoint(new Vector3(flatEndPoint.x, v.y));
-          initailFlatEndPoint.current = new Vector3(
-            initailFlatEndPoint.current.x,
-            flatEndPoint.y
-          );
+          setRimOutsidePosition(new Vector3(rimOutsidePosition.x, v.y));
         }}
         materials={{
           edgePoint: pointMaterial,
@@ -121,12 +116,11 @@ function EditableYoYoPath(props: {
         fixedPoints="start"
       />
       <DraggablePoint
-        initialPosition={initailFlatEndPoint.current}
+        position={rimPosition}
         onDrag={(v) => {
-          setFlatEndPoint(new Vector3(v.x, flatEndPoint.y));
+          setRimOutsidePosition(new Vector3(v.x, rimOutsidePosition.y));
         }}
         material={pointMaterial}
-        // fixed={true}
         dragLimits={[undefined, [0, 0], [0, 0]]}
       />
       <XAxis />
@@ -145,7 +139,6 @@ type Props = {
 
 export function PathEditor(props: Props) {
   const { hidden } = props;
-  const yoyoPathDispatch = useYoyoPathDispatch();
 
   return (
     <>
@@ -166,7 +159,7 @@ export function PathEditor(props: Props) {
           backgroundBlurriness={2.0}
           backgroundIntensity={0.7}
         />
-        <EditableYoYoPath hidden={hidden} yoyoPathDispatch={yoyoPathDispatch} />
+        <EditableYoYoPath />
       </Canvas>
     </>
   );
@@ -174,6 +167,4 @@ export function PathEditor(props: Props) {
 
 // パス編集時に、ヨーヨー全体のパスが表示されるようにしたい
 // - ベアリング受けの部分
-// - ウィングの反対側
-
-// flatな面を作成する
+// - リムに曲線をつけられるようにする
