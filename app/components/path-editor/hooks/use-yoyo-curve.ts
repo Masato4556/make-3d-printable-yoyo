@@ -1,6 +1,7 @@
 import { useReducer, useState } from "react";
 import { CubicBezierCurve3, Vector3 } from "three";
 import { CORE_PARAMS } from "~/const/core";
+import { useYoyoPathState } from "~/contexts/YoyoPathContext";
 
 function reducerFunc(
   state: CubicBezierCurve3,
@@ -37,13 +38,15 @@ function reducerFunc(
   return next_state;
 }
 
-export function useYoyoCurve(width: number, trapezeWidth: number) {
+export function useYoyoCurve() {
+  const { width, trapezeWidth } = useYoyoPathState();
+
   // TODO: ベアリングの幅を考慮したサイズになっていないので修正が必要
   const wing_width = trapezeWidth / 2;
   const radius = 55 / 2;
   const [yoyoCurve, yoyoCurveDispatch] = useReducer(
     reducerFunc,
-    new CubicBezierCurve3(
+    new CubicBezierCurve3( // ヨーヨーのウィングの初期値
       new Vector3(
         -CORE_PARAMS["sizeC"].height,
         CORE_PARAMS["sizeC"].radius + 0.2 // コアを覆う幅が必要なので一旦仮で0.2を設定
