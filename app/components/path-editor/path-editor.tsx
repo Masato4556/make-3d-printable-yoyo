@@ -1,7 +1,12 @@
-import { Environment } from "@react-three/drei";
+import { Environment, Text3D } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { useMemo } from "react";
-import { MeshBasicMaterial, Vector3 } from "three";
+import {
+  BufferGeometry,
+  LineBasicMaterial,
+  MeshBasicMaterial,
+  Vector3,
+} from "three";
 import { DraggableCubicBezierCurve } from "./draggable-cubic-bezier-curve";
 import { useYoyoCurve } from "./hooks/use-yoyo-curve";
 import { XAxis } from "./XAxis";
@@ -12,6 +17,11 @@ import { useLineGeometry } from "./hooks/use-line-geometry";
 const pointMaterial = new MeshBasicMaterial({ color: "black" });
 const curveMaterial = new MeshBasicMaterial({ color: "black" });
 const wireMaterial = new MeshBasicMaterial({ color: "grey" });
+const lineMaterial = new LineBasicMaterial({
+  color: "grey",
+  linewidth: 2,
+  linecap: "round",
+});
 
 function EditableYoYoPath() {
   const {
@@ -34,6 +44,74 @@ function EditableYoYoPath() {
     lastLineGeometry,
   } = useLineGeometry(yoyoCurve, rimOutsidePosition);
 
+  const { leftEdgeLine, rightEdgeLine, widhtLineGeometry } = useMemo(() => {
+    const leftEdgeLine = new BufferGeometry().setFromPoints([
+      new Vector3(yoyoCurve.v0.x, yoyoCurve.v0.y, 0),
+      new Vector3(yoyoCurve.v0.x, yoyoCurve.v3.y + 13, 0),
+    ]);
+    const rightEdgeLine = new BufferGeometry().setFromPoints([
+      new Vector3(rimOutsidePosition.x, yoyoCurve.v3.y, 0),
+      new Vector3(rimOutsidePosition.x, yoyoCurve.v3.y + 13, 0),
+    ]);
+
+    const widhtLineGeometry = new BufferGeometry().setFromPoints([
+      new Vector3(yoyoCurve.v0.x, yoyoCurve.v3.y + 10, 0),
+      new Vector3(rimOutsidePosition.x, yoyoCurve.v3.y + 10, 0),
+    ]);
+
+    // const positions = new
+    return {
+      leftEdgeLine,
+      rightEdgeLine,
+      widhtLineGeometry,
+    };
+  }, [rimOutsidePosition.x, yoyoCurve.v0.x, yoyoCurve.v0.y, yoyoCurve.v3.y]);
+
+  const { upperEdgeLine, bottomEdgeLine, heightLineGeometry } = useMemo(() => {
+    const upperEdgeLine = new BufferGeometry().setFromPoints([
+      new Vector3(rimOutsidePosition.x, yoyoCurve.v3.y, 0),
+      new Vector3(rimOutsidePosition.x + 15, yoyoCurve.v3.y, 0),
+    ]);
+    const bottomEdgeLine = new BufferGeometry().setFromPoints([
+      new Vector3(rimOutsidePosition.x, -yoyoCurve.v3.y, 0),
+      new Vector3(rimOutsidePosition.x + 15, -yoyoCurve.v3.y, 0),
+    ]);
+
+    const heightLineGeometry = new BufferGeometry().setFromPoints([
+      new Vector3(rimOutsidePosition.x + 10, yoyoCurve.v3.y, 0),
+      new Vector3(rimOutsidePosition.x + 10, -yoyoCurve.v3.y, 0),
+    ]);
+
+    // const positions = new
+    return {
+      upperEdgeLine,
+      bottomEdgeLine,
+      heightLineGeometry,
+    };
+  }, [rimOutsidePosition.x, yoyoCurve.v3.y]);
+
+  const { flatLeftEdgeLine, flatRightEdgeLine, flatWidthLine } = useMemo(() => {
+    const flatLeftEdgeLine = new BufferGeometry().setFromPoints([
+      new Vector3(yoyoCurve.v3.x, -yoyoCurve.v3.y, 0),
+      new Vector3(yoyoCurve.v3.x, -yoyoCurve.v3.y - 15, 0),
+    ]);
+    const flatRightEdgeLine = new BufferGeometry().setFromPoints([
+      new Vector3(rimOutsidePosition.x, -yoyoCurve.v3.y, 0),
+      new Vector3(rimOutsidePosition.x, -yoyoCurve.v3.y - 15, 0),
+    ]);
+
+    const flatWidthLine = new BufferGeometry().setFromPoints([
+      new Vector3(yoyoCurve.v3.x, -yoyoCurve.v3.y - 10, 0),
+      new Vector3(rimOutsidePosition.x, -yoyoCurve.v3.y - 10, 0),
+    ]);
+
+    // const positions = new
+    return {
+      flatLeftEdgeLine,
+      flatRightEdgeLine,
+      flatWidthLine,
+    };
+  }, [rimOutsidePosition.x, yoyoCurve.v3.y]);
   return (
     <>
       <DraggableCubicBezierCurve
@@ -73,6 +151,45 @@ function EditableYoYoPath() {
       <mesh geometry={mirreredFlatLineGeometry} material={curveMaterial} />
       <mesh geometry={flatLineGeometry} material={curveMaterial} />
       <mesh geometry={lastLineGeometry} material={curveMaterial} />
+
+      <Text3D
+        font={"/make-3d-printable-yoyo/font/Roboto_Regular.json"}
+        height={0.0001}
+        scale={4}
+        material={curveMaterial}
+        position={new Vector3(yoyoCurve.v0.x, yoyoCurve.v3.y + 14, 0)}
+      >
+        {`${(rimPosition.x - yoyoCurve.v0.x).toFixed(2)}mm`}
+      </Text3D>
+      <line geometry={leftEdgeLine} material={lineMaterial} />
+      <line geometry={rightEdgeLine} material={lineMaterial} />
+      <line geometry={widhtLineGeometry} material={lineMaterial} />
+
+      <Text3D
+        font={"/make-3d-printable-yoyo/font/Roboto_Regular.json"}
+        height={0.0001}
+        scale={4}
+        material={curveMaterial}
+        position={new Vector3(rimOutsidePosition.x + 15, 2, 0)}
+      >
+        {`${(yoyoCurve.v3.y * 2).toFixed(2)}mm`}
+      </Text3D>
+      <line geometry={upperEdgeLine} material={lineMaterial} />
+      <line geometry={bottomEdgeLine} material={lineMaterial} />
+      <line geometry={heightLineGeometry} material={lineMaterial} />
+
+      <Text3D
+        font={"/make-3d-printable-yoyo/font/Roboto_Regular.json"}
+        height={0.0001}
+        scale={4}
+        material={curveMaterial}
+        position={new Vector3(yoyoCurve.v3.x, -yoyoCurve.v3.y - 20, 0)}
+      >
+        {`${(rimOutsidePosition.x - yoyoCurve.v3.x).toFixed(2)}mm`}
+      </Text3D>
+      <line geometry={flatLeftEdgeLine} material={lineMaterial} />
+      <line geometry={flatRightEdgeLine} material={lineMaterial} />
+      <line geometry={flatWidthLine} material={lineMaterial} />
     </>
   );
 }

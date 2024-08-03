@@ -28,8 +28,13 @@ export function DownoadButton() {
 
   return (
     <div className="overlay-form-box">
-      <button onClick={downloadCore}>COREダウンロード</button>
-      <button onClick={downloadWing}>WINGダウンロード</button>
+      <div className="download-label">DOWNLOAD</div>
+      <button className="download-button" onClick={downloadCore}>
+        CORE
+      </button>
+      <button className="download-button" onClick={downloadWing}>
+        WING
+      </button>
     </div>
   );
 }
