@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+      {
+        "source": "/make-3d-printable-yoyo/:path*",
+        "destination": "/assets/:path*"
+      }
+    ]
+}
