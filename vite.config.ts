@@ -10,12 +10,12 @@ import { join } from "node:path";
 installGlobals();
 
 export default defineConfig({
-  base: "/",
+  base: "/make-3d-printable-yoyo/",
   plugins: [
     remix({
       presets: [vercelPreset()],
       ssr: false,
-      basename: "/",
+      basename: "/make-3d-printable-yoyo/",
       buildEnd: (args) => {
         if (!args.viteConfig.isProduction) return;
         const buildPath = args.viteConfig.build.outDir;
