@@ -14,6 +14,8 @@ import { DraggablePoint } from "./draggable-point";
 import { useSetYoyoPath } from "./hooks/use-set-yoyo-path";
 import { useLineGeometry } from "./hooks/use-line-geometry";
 
+import font from "";
+
 const pointMaterial = new MeshBasicMaterial({ color: "black" });
 const curveMaterial = new MeshBasicMaterial({ color: "black" });
 const wireMaterial = new MeshBasicMaterial({ color: "grey" });
@@ -153,7 +155,7 @@ function EditableYoYoPath() {
       <mesh geometry={lastLineGeometry} material={curveMaterial} />
 
       <Text3D
-        font={"/make-3d-printable-yoyo/font/Roboto_Regular.json"}
+        font={"/font/Roboto_Regular.json"}
         height={0.0001}
         scale={4}
         material={curveMaterial}
@@ -166,7 +168,7 @@ function EditableYoYoPath() {
       <line geometry={widhtLineGeometry} material={lineMaterial} />
 
       <Text3D
-        font={"/make-3d-printable-yoyo/font/Roboto_Regular.json"}
+        font={"/font/Roboto_Regular.json"} // TODO: フォントの指定の仕方をリファクタリングする
         height={0.0001}
         scale={4}
         material={curveMaterial}
@@ -179,7 +181,7 @@ function EditableYoYoPath() {
       <line geometry={heightLineGeometry} material={lineMaterial} />
 
       <Text3D
-        font={"/make-3d-printable-yoyo/font/Roboto_Regular.json"}
+        font={"/font/Roboto_Regular.json"}
         height={0.0001}
         scale={4}
         material={curveMaterial}
