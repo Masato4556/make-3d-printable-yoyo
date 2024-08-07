@@ -9,8 +9,11 @@ import { ModeSwitch } from "~/components/mode-switch/mode-swtich";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "PrintYoYo" },
+    {
+      name: "description",
+      content: "PrintYoYo is 3d printable yoyo generator",
+    },
   ];
 };
 

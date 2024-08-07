@@ -14,8 +14,6 @@ import { DraggablePoint } from "./draggable-point";
 import { useSetYoyoPath } from "./hooks/use-set-yoyo-path";
 import { useLineGeometry } from "./hooks/use-line-geometry";
 
-import font from "";
-
 const pointMaterial = new MeshBasicMaterial({ color: "black" });
 const curveMaterial = new MeshBasicMaterial({ color: "black" });
 const wireMaterial = new MeshBasicMaterial({ color: "grey" });
