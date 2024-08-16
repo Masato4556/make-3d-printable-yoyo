@@ -1,4 +1,5 @@
 import { Mode } from "~/routes/_index";
+import classes from "./style.module.scss";
 
 type Props = {
   setMode: (mode: Mode) => void;
@@ -7,9 +8,9 @@ type Props = {
 export function ModeSwitch(props: Props) {
   const { setMode } = props;
   return (
-    <div className="ui-header">
+    <div className={classes["ui-header"]}>
       <button
-        className="mode-button flex-item"
+        className={`${classes["mode-button"]} ${classes["mode-button"]}`}
         onClick={() => {
           setMode("path");
         }}
@@ -18,7 +19,7 @@ export function ModeSwitch(props: Props) {
       </button>
       <div>{" > "}</div>
       <button
-        className="mode-button flex-item"
+        className={`${classes["mode-button"]} ${classes["mode-button"]}`}
         onClick={() => {
           setMode("model");
         }}

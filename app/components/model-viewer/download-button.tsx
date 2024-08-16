@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useModelState } from "~/contexts/ModelContext";
+import classes from "./style.module.scss";
 
 export function DownoadButton() {
   const { core, wing } = useModelState();
@@ -27,12 +28,12 @@ export function DownoadButton() {
   }, [wing]);
 
   return (
-    <div className="overlay-form-box">
-      <div className="download-label">DOWNLOAD</div>
-      <button className="download-button" onClick={downloadCore}>
+    <div className={classes["overlay-form-box"]}>
+      <div className={classes["download-label"]}>DOWNLOAD</div>
+      <button className={classes["download-button"]} onClick={downloadCore}>
         CORE
       </button>
-      <button className="download-button" onClick={downloadWing}>
+      <button className={classes["download-button"]} onClick={downloadWing}>
         WING
       </button>
     </div>
