@@ -4,24 +4,32 @@
 .download-label {
     display: block;
     font-size: 20px;
-    margin-left: 10px;
-    color: #0D0D0D
+    border-bottom: 1px solid #BFBDBA;
 }
 
 .download-button {
     border-radius: 10px;
-    padding: 10px;
+    padding: 5px;
     background: none;
     text-decoration: none;
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    margin: 10px;
-    margin-top: 5px;
-    margin-bottom: 2px;
-    font-size: 18px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-left:4px;
+    background-color: #595958;
     &:hover {
-        background-color: #eaeaea;
+        background-color: #8C8A88;
     }
+
+    img {
+        display: block;
+        margin: auto;
+    }
+}
+
+.download-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 .overlay-form-box {
@@ -29,7 +37,7 @@
     top: 85%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(245, 245, 245, 0.9);
+    background-color: #262626;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

@@ -9,7 +9,7 @@ export function XAxis() {
         64,
         0.1
       ),
-      material: new MeshBasicMaterial({ color: "black" }),
+      material: new MeshBasicMaterial({ color: "white" }),
     }),
     []
   );

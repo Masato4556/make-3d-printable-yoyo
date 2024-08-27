@@ -14,8 +14,8 @@ import { DraggablePoint } from "./draggable-point";
 import { useSetYoyoPath } from "./hooks/use-set-yoyo-path";
 import { useLineGeometry } from "./hooks/use-line-geometry";
 
-const pointMaterial = new MeshBasicMaterial({ color: "black" });
-const curveMaterial = new MeshBasicMaterial({ color: "black" });
+const pointMaterial = new MeshBasicMaterial({ color: "white" });
+const curveMaterial = new MeshBasicMaterial({ color: "white" });
 const wireMaterial = new MeshBasicMaterial({ color: "grey" });
 const lineMaterial = new LineBasicMaterial({
   color: "grey",
@@ -210,15 +210,17 @@ export function PathEditor(props: Props) {
           fov: 75,
           near: 0.1,
           far: 1000,
-          position: [0, 0, 100],
+          position: [25, 0, 100],
+          lookAt: () => new Vector3(50, 0, 0),
           type: "OrthographicCamera",
         }}
+        style={{ background: "#0D0D0D" }}
       >
         <Environment
-          preset="studio"
-          background={true}
+          preset={"night"}
+          background={false}
           backgroundBlurriness={2.0}
-          backgroundIntensity={0.7}
+          backgroundIntensity={5.7}
         />
         <EditableYoYoPath />
       </Canvas>

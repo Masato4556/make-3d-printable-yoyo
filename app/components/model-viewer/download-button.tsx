@@ -30,12 +30,16 @@ export function DownoadButton() {
   return (
     <div className={classes["overlay-form-box"]}>
       <div className={classes["download-label"]}>DOWNLOAD</div>
-      <button className={classes["download-button"]} onClick={downloadCore}>
-        CORE
-      </button>
-      <button className={classes["download-button"]} onClick={downloadWing}>
-        WING
-      </button>
+      <div className={classes["download-button-container"]}>
+        <span>CORE</span>
+        <button className={classes["download-button"]} onClick={downloadCore}>
+          <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
+        </button>
+        <span>WING</span>
+        <button className={classes["download-button"]} onClick={downloadWing}>
+          <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
+        </button>
+      </div>
     </div>
   );
 }

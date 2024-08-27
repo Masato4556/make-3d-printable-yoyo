@@ -20,9 +20,13 @@ export function ModelViewer(props: Props) {
   const mirroredWingGeometry = useMirroredGeometry(wingGeometry);
 
   const material = new MeshPhysicalMaterial({
-    color: 0x00ff00,
-    metalness: 1,
-    roughness: 0.4,
+    color: 0xe64349,
+    metalness: 0.5,
+    roughness: 0.2,
+    ior: 1.5,
+    reflectivity: 0.8,
+    iridescence: 0.5,
+    specularColor: 0x000000,
   });
 
   const setCore = useCallback(
@@ -51,12 +55,13 @@ export function ModelViewer(props: Props) {
           position: [0, 0, 100],
           type: "OrthographicCamera",
         }}
+        style={{ background: "#0D0D0D" }}
       >
         <Environment
-          preset="studio"
-          background={true}
+          preset={"night"}
+          background={false}
           backgroundBlurriness={2.0}
-          backgroundIntensity={0.7}
+          backgroundIntensity={5.7}
         />
         <group visible={!!coreGeometry}>
           <mesh
@@ -82,6 +87,7 @@ export function ModelViewer(props: Props) {
             position={new Vector3(10, 0, 0)}
           />
         </group>
+        <ambientLight intensity={0.5} />
 
         <OrbitControls />
         <ExportStl
