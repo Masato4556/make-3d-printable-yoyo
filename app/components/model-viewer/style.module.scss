@@ -33,6 +33,8 @@
 }
 
 .overlay-form-box {
+    display: flex;
+    align-items: center;
     position: absolute;
     top: 85%;
     left: 50%;

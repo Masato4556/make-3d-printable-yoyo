@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useModelState } from "~/contexts/ModelContext";
 import classes from "./style.module.scss";
+import { BuyMeACoffee } from "./buy-me-a-coffee";
 
 export function DownoadButton() {
   const { core, wing } = useModelState();
@@ -29,17 +30,20 @@ export function DownoadButton() {
 
   return (
     <div className={classes["overlay-form-box"]}>
-      <div className={classes["download-label"]}>DOWNLOAD</div>
-      <div className={classes["download-button-container"]}>
-        <span>CORE</span>
-        <button className={classes["download-button"]} onClick={downloadCore}>
-          <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
-        </button>
-        <span>WING</span>
-        <button className={classes["download-button"]} onClick={downloadWing}>
-          <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
-        </button>
+      <div>
+        <div className={classes["download-label"]}>DOWNLOAD</div>
+        <div className={classes["download-button-container"]}>
+          <span>CORE</span>
+          <button className={classes["download-button"]} onClick={downloadCore}>
+            <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
+          </button>
+          <span>WING</span>
+          <button className={classes["download-button"]} onClick={downloadWing}>
+            <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
+          </button>
+        </div>
       </div>
+      <BuyMeACoffee />
     </div>
   );
 }
