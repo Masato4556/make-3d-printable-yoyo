@@ -4,7 +4,7 @@
 .download-label {
     display: block;
     font-size: 20px;
-    border-bottom: 1px solid #BFBDBA;
+    border-bottom: 1px solid var(--primary-text-color);
 }
 
 .download-button {
@@ -15,9 +15,9 @@
     margin-right: 10px;
     margin-top: 10px;
     margin-left:4px;
-    background-color: #595958;
+    background-color: var(--primary-button-color);
     &:hover {
-        background-color: #8C8A88;
+        background-color: var(--hover-button-color);
     }
 
     img {
@@ -39,7 +39,7 @@
     top: 85%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #262626;
+    background-color: var(--sub-background-color);
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
