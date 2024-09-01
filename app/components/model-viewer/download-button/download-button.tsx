@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useModelState } from "~/contexts/ModelContext";
 import classes from "./style.module.scss";
-import { BuyMeACoffee } from "./buy-me-a-coffee";
+import { BuyMeACoffee } from "./buy-me-a-coffee/buy-me-a-coffee";
 
 export function DownoadButton() {
   const { core, wing } = useModelState();

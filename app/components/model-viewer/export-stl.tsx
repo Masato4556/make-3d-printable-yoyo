@@ -1,16 +1,29 @@
 // ExportStl.tsx
 import { useThree } from "@react-three/fiber";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { STLExporter } from "three/examples/jsm/Addons.js";
+import { useModelDispatch } from "~/contexts/ModelContext";
 
-type Props = {
-  setCore: (stl: string) => void;
-  setWing: (stl: string) => void;
-};
-
-export function ExportStl(props: Props) {
-  const { setCore, setWing } = props;
+export function ExportStl() {
+  // const { setCore, setWing } = props;
   const { scene } = useThree();
+
+  const dispatch = useModelDispatch();
+
+  const setCore = useCallback(
+    (s: string) => {
+      dispatch({ type: "SET_CORE", payload: s });
+    },
+    [dispatch]
+  );
+
+  const setWing = useCallback(
+    (s: string) => {
+      dispatch({ type: "SET_WING", payload: s });
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     // 左右対称にモデルを配置しているが出力したいのは片側だけなので、”yoyo”とnameがついたオブジェクトだけを取得
     // MEMO: 今後複数パーツに分割して出力したい場合、個別にnameでパーツを取得しstl変換を行う

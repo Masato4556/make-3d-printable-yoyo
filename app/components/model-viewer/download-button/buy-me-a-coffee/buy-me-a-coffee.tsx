@@ -1,9 +1,11 @@
+import classes from "./style.module.scss";
+
 export function BuyMeACoffee() {
   return (
     <a
       href="https://www.buymeacoffee.com/moandmo"
       target="_blank"
-      style={{ height: "60px", width: "217px", "margin-left": "10px" }}
+      className={classes.link}
       rel="noreferrer"
     >
       <img
