@@ -1,15 +1,15 @@
 import { useDebounce } from "react-use";
-import { CubicBezierCurve3, Vector3, Vector2 } from "three";
+import { Vector3, Vector2 } from "three";
 import { useYoyoPathDispatch } from "~/contexts/YoyoPathContext";
 
 export function useSetYoyoPath(
-  yoyoCurve: CubicBezierCurve3,
+  yoyoCurve: Vector3[],
   rimOutsidePosition: Vector3
 ) {
   const yoyoPathDispatch = useYoyoPathDispatch();
   useDebounce(
     () => {
-      const path = yoyoCurve.getPoints(64).map((v) => {
+      const path = yoyoCurve.map((v) => {
         return new Vector2(v.x, v.y);
       });
       yoyoPathDispatch({

@@ -1,12 +1,8 @@
 import { useMemo } from "react";
-import {
-  CubicBezierCurve3,
-  LineCurve3,
-  Material,
-  TubeGeometry,
-  Vector3,
-} from "three";
+import { CubicBezierCurve3, Material, Vector3 } from "three";
 import { DraggablePoint } from "./draggable-point";
+import { Line } from "@react-three/drei";
+import { PATH_COLOR, WIRE_COLOR } from "~/styles/const";
 
 export function DraggableCubicBezierCurve(props: {
   bezierCurvePath: CubicBezierCurve3;
@@ -34,26 +30,19 @@ export function DraggableCubicBezierCurve(props: {
     materials,
     fixedPoints,
   } = props;
-  const { bezierCurveGeometry, controlWire1, controlWire2 } = useMemo(() => {
-    return {
-      bezierCurveGeometry: new TubeGeometry(bezierCurvePath, 64, 0.2),
-      controlWire1: new TubeGeometry(
-        new LineCurve3(bezierCurvePath.v0, bezierCurvePath.v1),
-        64,
-        0.1
-      ),
-      controlWire2: new TubeGeometry(
-        new LineCurve3(bezierCurvePath.v2, bezierCurvePath.v3),
-        64,
-        0.1
-      ),
-    };
-  }, [bezierCurvePath]);
+  const { bezierCurvePoints, controlWire1Points, controlWire2Points } =
+    useMemo(() => {
+      return {
+        bezierCurvePoints: bezierCurvePath.getPoints(1024),
+        controlWire1Points: [bezierCurvePath.v0, bezierCurvePath.v1],
+        controlWire2Points: [bezierCurvePath.v2, bezierCurvePath.v3],
+      };
+    }, [bezierCurvePath]);
   return (
     <>
-      <mesh geometry={bezierCurveGeometry} material={materials?.curve} />
-      <mesh geometry={controlWire1} material={materials?.wire} />
-      <mesh geometry={controlWire2} material={materials?.wire} />
+      <Line points={bezierCurvePoints} color={PATH_COLOR} lineWidth={3} />
+      <Line points={controlWire1Points} color={WIRE_COLOR} lineWidth={2} />
+      <Line points={controlWire2Points} color={WIRE_COLOR} lineWidth={2} />
       <DraggablePoint
         position={bezierCurvePath.v0}
         onDrag={(v) => {
