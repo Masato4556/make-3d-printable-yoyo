@@ -5,6 +5,7 @@ import { Vector3 } from "three";
 
 import { BACKGROUND_COLOR } from "~/styles/const";
 import { EditableYoyoPath } from "./editable-yoyo-path/editable-yoyo-path";
+import { XAxis } from "./XAxis";
 
 type Props = {
   hidden: boolean;
@@ -35,6 +36,7 @@ export function PathEditor(props: Props) {
           backgroundIntensity={5.7}
         />
         <EditableYoyoPath />
+        <XAxis />
       </Canvas>
     </>
   );

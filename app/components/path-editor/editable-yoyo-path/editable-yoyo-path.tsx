@@ -4,11 +4,11 @@ import { Vector3 } from "three";
 import { useSetYoyoPath } from "../hooks/use-set-yoyo-path";
 import { useLineGeometry } from "../hooks/use-line-geometry";
 import { DraggablePoint } from "./draggable-point";
-import { XAxis } from "../XAxis";
-import { Line, Text3D } from "@react-three/drei";
+import { Line } from "@react-three/drei";
 import { DraggableCubicBezierCurve } from "./draggable-cubic-bezier-curve";
 import { pointMaterial, curveMaterial, wireMaterial } from "./material";
-import { PATH_COLOR, WIRE_COLOR } from "~/styles/const";
+import { PATH_COLOR } from "~/styles/const";
+import { DimesionLine } from "./dimesion-line";
 
 export function EditableYoyoPath() {
   const {
@@ -17,6 +17,9 @@ export function EditableYoyoPath() {
     rimOutsidePosition,
     setRimOutsidePosition,
   } = useYoyoCurve();
+
+  const curveFirstPoint = yoyoCurve.v0;
+  const curveLastPoint = yoyoCurve.v3;
 
   const yoyoCurvePoints = useMemo(() => {
     return yoyoCurve.getPoints(1024);
@@ -32,93 +35,6 @@ export function EditableYoyoPath() {
     yoyoCurvePoints,
     rimOutsidePosition
   );
-
-  const yoyoCurveLastPoints = yoyoCurvePoints[yoyoCurvePoints.length - 1];
-
-  const lineProps = useMemo(() => {
-    return {
-      //
-      leftEdgeLine: {
-        points: [
-          new Vector3(yoyoCurvePoints[0].x, yoyoCurvePoints[0].y, 0),
-          new Vector3(yoyoCurvePoints[0].x, yoyoCurveLastPoints.y + 13, 0),
-        ],
-        color: WIRE_COLOR,
-        lineWidth: 1,
-      },
-      rightEdgeLine: {
-        points: [
-          new Vector3(rimOutsidePosition.x, yoyoCurveLastPoints.y, 0),
-          new Vector3(rimOutsidePosition.x, yoyoCurveLastPoints.y + 13, 0),
-        ],
-        color: WIRE_COLOR,
-        lineWidth: 1,
-      },
-      widhtLineGeometry: {
-        points: [
-          new Vector3(yoyoCurvePoints[0].x, yoyoCurveLastPoints.y + 10, 0),
-          new Vector3(rimOutsidePosition.x, yoyoCurveLastPoints.y + 10, 0),
-        ],
-        color: WIRE_COLOR,
-        lineWidth: 1,
-      },
-      //
-      upperEdgeLine: {
-        points: [
-          new Vector3(rimOutsidePosition.x, yoyoCurveLastPoints.y, 0),
-          new Vector3(rimOutsidePosition.x + 15, yoyoCurveLastPoints.y, 0),
-        ],
-        color: WIRE_COLOR,
-        lineWidth: 1,
-      },
-      bottomEdgeLine: {
-        points: [
-          new Vector3(rimOutsidePosition.x, -yoyoCurveLastPoints.y, 0),
-          new Vector3(rimOutsidePosition.x + 15, -yoyoCurveLastPoints.y, 0),
-        ],
-        color: WIRE_COLOR,
-        lineWidth: 1,
-      },
-      heightLineGeometry: {
-        points: [
-          new Vector3(rimOutsidePosition.x + 10, yoyoCurveLastPoints.y, 0),
-          new Vector3(rimOutsidePosition.x + 10, -yoyoCurveLastPoints.y, 0),
-        ],
-        color: WIRE_COLOR,
-        lineWidth: 1,
-      },
-      // Flat Width Line
-      flatLeftEdgeLine: {
-        points: [
-          new Vector3(yoyoCurveLastPoints.x, -yoyoCurveLastPoints.y, 0),
-          new Vector3(yoyoCurveLastPoints.x, -yoyoCurveLastPoints.y - 15, 0),
-        ],
-        color: WIRE_COLOR,
-        lineWidth: 1,
-      },
-      flatRightEdgeLine: {
-        points: [
-          new Vector3(rimOutsidePosition.x, -yoyoCurveLastPoints.y, 0),
-          new Vector3(rimOutsidePosition.x, -yoyoCurveLastPoints.y - 15, 0),
-        ],
-        color: WIRE_COLOR,
-        lineWidth: 1,
-      },
-      flatWidthLine: {
-        points: [
-          new Vector3(yoyoCurveLastPoints.x, -yoyoCurveLastPoints.y - 10, 0),
-          new Vector3(rimOutsidePosition.x, -yoyoCurveLastPoints.y - 10, 0),
-        ],
-        color: WIRE_COLOR,
-        lineWidth: 1,
-      },
-    };
-  }, [
-    rimOutsidePosition.x,
-    yoyoCurveLastPoints.x,
-    yoyoCurveLastPoints.y,
-    yoyoCurvePoints,
-  ]);
 
   return (
     <>
@@ -161,48 +77,11 @@ export function EditableYoyoPath() {
       <Line points={mirrerdPoints} color={PATH_COLOR} lineWidth={3} />
 
       {/* 寸法 */}
-      <Text3D
-        font={"/font/Roboto_Regular.json"}
-        height={0.0001}
-        scale={4}
-        material={curveMaterial}
-        position={
-          new Vector3(yoyoCurvePoints[0].x, yoyoCurveLastPoints.y + 14, 0)
-        }
-      >
-        {`${(rimPosition.x - yoyoCurvePoints[0].x).toFixed(2)}mm`}
-      </Text3D>
-
-      <Text3D
-        font={"/font/Roboto_Regular.json"} // TODO: フォントの指定の仕方をリファクタリングする
-        height={0.0001}
-        scale={4}
-        material={curveMaterial}
-        position={new Vector3(rimOutsidePosition.x + 15, 2, 0)}
-      >
-        {`${(yoyoCurveLastPoints.y * 2).toFixed(2)}mm`}
-      </Text3D>
-
-      <Text3D
-        font={"/font/Roboto_Regular.json"}
-        height={0.0001}
-        scale={4}
-        material={curveMaterial}
-        position={
-          new Vector3(yoyoCurveLastPoints.x, -yoyoCurveLastPoints.y - 20, 0)
-        }
-      >
-        {`${(rimOutsidePosition.x - yoyoCurveLastPoints.x).toFixed(2)}mm`}
-      </Text3D>
-
-      {Object.entries(lineProps).map(([key, { points, color, lineWidth }]) => {
-        return (
-          <Line key={key} points={points} color={color} lineWidth={lineWidth} />
-        );
-      })}
-
-      {/* 軸 */}
-      <XAxis />
+      <DimesionLine
+        curveFirstPoint={curveFirstPoint}
+        curveLastPoint={curveLastPoint}
+        rimOutsidePosition={rimOutsidePosition}
+      />
     </>
   );
 }
