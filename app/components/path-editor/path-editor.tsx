@@ -6,6 +6,7 @@ import { Vector3 } from "three";
 import { BACKGROUND_COLOR } from "~/styles/const";
 import { EditableYoyoPath } from "./editable-yoyo-path/editable-yoyo-path";
 import { XAxis } from "./XAxis";
+import { Inspector } from "./inspector/inspector";
 
 type Props = {
   hidden: boolean;
@@ -38,6 +39,7 @@ export function PathEditor(props: Props) {
         <EditableYoyoPath />
         <XAxis />
       </Canvas>
+      {!hidden && <Inspector />}
     </>
   );
 }
