@@ -1,5 +1,8 @@
-export const BEARING_SIZE: Record<BearingType, { width: number }> = {
-  sizeC: { width: 3.18 },
+export const BEARING_SIZE: Record<
+  BearingType,
+  { width: number; innerDiameter: number; outerDiameter: number }
+> = {
+  sizeC: { width: 4.76, innerDiameter: 6.35, outerDiameter: 12.7 },
 } as const;
 
 export type BearingType = "sizeC";

@@ -48,12 +48,12 @@ export function useYoyoCurve() {
     reducerFunc,
     new CubicBezierCurve3( // ヨーヨーのウィングの初期値
       new Vector3(
-        -CORE_PARAMS["sizeC"].height,
+        0,
         CORE_PARAMS["sizeC"].radius + 0.2 // コアを覆う幅が必要なので一旦仮で0.2を設定
       ),
-      new Vector3(-CORE_PARAMS["sizeC"].height + wing_width / 2, radius / 2),
-      new Vector3(-CORE_PARAMS["sizeC"].height + wing_width / 2, radius),
-      new Vector3(-CORE_PARAMS["sizeC"].height + wing_width, radius)
+      new Vector3(wing_width / 2, radius / 2),
+      new Vector3(wing_width / 2, radius),
+      new Vector3(wing_width, radius)
     )
   );
 

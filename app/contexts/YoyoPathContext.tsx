@@ -17,9 +17,8 @@ interface YoyoPathState {
 
 export type YoyoPathAction =
   | { type: "SET_WING_PATH"; path: Vector2[] }
-  | { type: "SET_FLAT_END_POINT"; value: Vector2 }
-  | { type: "SET_WIDTH"; value: number }
-  | { type: "SET_TRAPEZE_WIDTH"; value: number };
+  | { type: "SET_FLAT_END_POINT"; value: Vector2 };
+
 const initialState: YoyoPathState = {
   wingPath: [],
   flatEndPoint: new Vector2(0, 0),
@@ -43,16 +42,6 @@ const yoyoPathReducer = (state: YoyoPathState, action: YoyoPathAction) => {
       return {
         ...state,
         flatEndPoint: action.value,
-      };
-    case "SET_WIDTH":
-      return {
-        ...state,
-        width: action.value,
-      };
-    case "SET_TRAPEZE_WIDTH":
-      return {
-        ...state,
-        trapezeWidth: action.value,
       };
     default:
       throw new Error(`Unknown action`);

@@ -10,7 +10,12 @@ import { pointMaterial, curveMaterial, wireMaterial } from "./material";
 import { PATH_COLOR } from "~/styles/const";
 import { DimesionLine } from "./dimesion-line";
 
-export function EditableYoyoPath() {
+type Props = {
+  position: Vector3;
+};
+
+export function EditableYoyoPath(props: Props) {
+  const { position } = props;
   const {
     yoyoCurve,
     yoyoCurveDispatch,
@@ -37,7 +42,7 @@ export function EditableYoyoPath() {
   );
 
   return (
-    <>
+    <group position={position}>
       {/* ヨーヨーのパスの上半分 */}
       <DraggableCubicBezierCurve
         bezierCurvePath={yoyoCurve}
@@ -82,7 +87,7 @@ export function EditableYoyoPath() {
         curveLastPoint={curveLastPoint}
         rimOutsidePosition={rimOutsidePosition}
       />
-    </>
+    </group>
   );
 }
 

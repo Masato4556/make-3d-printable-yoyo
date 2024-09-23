@@ -71,9 +71,10 @@ export const useYoyoGeometry = function () {
     // wingのパスを作成
     const wingPath: Vector2[] = [new Vector2()]
       .concat(
-        new Vector2(0, 0),
-        new Vector2(10.55 + GAP, 0),
-        new Vector2(10.55 + GAP, -CORE_PARAMS[bearingType].height)
+        // coreを覆う部分
+        new Vector2(0, CORE_PARAMS[bearingType].height),
+        new Vector2(10.55 + GAP, CORE_PARAMS[bearingType].height),
+        new Vector2(10.55 + GAP, 0)
       )
       // TODO: ウィングのパスとコアのパスで軸の向きが違うのをここで調整している。この調整せずに済むようにする
       .concat(...yoyoPath.map((v) => new Vector2(v.y, v.x)));
