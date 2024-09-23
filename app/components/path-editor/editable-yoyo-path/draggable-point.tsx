@@ -65,6 +65,10 @@ export function DraggablePoint(
 
         onDrag(v);
       }}
+      onHover={(hovering) => {
+        // 操作できるポイントの上にカーソルがあるときはカーソルを掴むカーソルに変更
+        document.body.style.cursor = hovering ? "grab" : "auto";
+      }}
       dragLimits={dragLimits}
     >
       <mesh
