@@ -9,6 +9,7 @@ export function useSetYoyoPath(
   const yoyoPathDispatch = useYoyoPathDispatch();
   useDebounce(
     () => {
+      console.log("fire");
       const path = yoyoCurve.map((v) => {
         return new Vector2(v.x, v.y);
       });
@@ -21,7 +22,7 @@ export function useSetYoyoPath(
         value: new Vector2(rimOutsidePosition.x, rimOutsidePosition.y),
       });
     },
-    500,
+    5, // 変更がある場合、5ms毎に更新
     [rimOutsidePosition, yoyoCurve, yoyoPathDispatch]
   );
 }
