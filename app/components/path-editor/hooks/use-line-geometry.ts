@@ -2,13 +2,13 @@ import { useMemo } from "react";
 import { Vector3 } from "three";
 
 export function useLineGeometry(
-  yoyoCurve: Vector3[],
+  yoyoPath: Vector3[],
   rimOutsidePosition: Vector3
 ) {
   return useMemo(() => {
-    const yoyoCurveLastPoint = yoyoCurve[yoyoCurve.length - 1];
+    const yoyoCurveLastPoint = yoyoPath[yoyoPath.length - 1];
 
-    const mirrerdYoyoCurvePoints = yoyoCurve.map(
+    const mirrerdYoyoCurvePoints = yoyoPath.map(
       (v) => new Vector3(v.x, -v.y, 0)
     );
 
@@ -30,5 +30,5 @@ export function useLineGeometry(
       rimLinePoints,
       mirrerdPoints: [...mirrerdYoyoCurvePoints, ...mirreredFlatLinePoints],
     };
-  }, [rimOutsidePosition, yoyoCurve]);
+  }, [rimOutsidePosition, yoyoPath]);
 }

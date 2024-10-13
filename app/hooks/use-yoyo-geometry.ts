@@ -79,7 +79,7 @@ export const useYoyoGeometry = function () {
       // TODO: ウィングのパスとコアのパスで軸の向きが違うのをここで調整している。この調整せずに済むようにする
       .concat(...yoyoPath.map((v) => new Vector2(v.y, v.x)));
 
-    const geometry = new LatheGeometry(wingPath, 100).rotateZ(Math.PI / 2);
+    const geometry = new LatheGeometry(wingPath, 64).rotateZ(Math.PI / 2);
     geometry.computeVertexNormals();
     return geometry;
   }, [bearingType, yoyoPath]);
