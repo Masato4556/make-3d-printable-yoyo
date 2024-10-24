@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { CubicBezierCurve3, Material, Vector3 } from "three";
 import { DraggablePoint } from "./draggable-point";
 import { Line } from "@react-three/drei";
@@ -38,19 +38,42 @@ export function DraggableCubicBezierCurve(props: {
         controlWire2Points: [bezierCurvePath.v2, bezierCurvePath.v3],
       };
     }, [bezierCurvePath]);
+
+  const [onPointerEdge, setOnPointerEdge] = useState(false);
+
   return (
     <>
-      <Line points={bezierCurvePoints} color={PATH_COLOR} lineWidth={3} />
-      <Line points={controlWire1Points} color={WIRE_COLOR} lineWidth={2} />
-      <Line points={controlWire2Points} color={WIRE_COLOR} lineWidth={2} />
+      {/* 両端 */}
       <DraggablePoint
         position={bezierCurvePath.v0}
         onDrag={(v) => {
           onDragStartPoint(v);
         }}
+        onPointerEnter={() => {
+          setOnPointerEdge(true);
+        }}
+        onPointerLeave={() => {
+          setOnPointerEdge(false);
+        }}
         material={materials?.edgePoint}
         fixed={fixedPoints == "start" || fixedPoints == "both"}
       />
+      <DraggablePoint
+        position={bezierCurvePath.v3}
+        onDrag={(v) => {
+          onDragEndPoint(v);
+        }}
+        onPointerEnter={() => {
+          setOnPointerEdge(true);
+        }}
+        onPointerLeave={() => {
+          setOnPointerEdge(false);
+        }}
+        material={materials?.edgePoint}
+        fixed={fixedPoints == "end" || fixedPoints == "both"}
+      />
+
+      {/* 制御点 */}
       <DraggablePoint
         position={bezierCurvePath.v1}
         onDrag={(v) => {
@@ -67,13 +90,35 @@ export function DraggableCubicBezierCurve(props: {
         material={materials?.controlPoint}
         shape={"rectangle"}
       />
-      <DraggablePoint
-        position={bezierCurvePath.v3}
-        onDrag={(v) => {
-          onDragEndPoint(v);
+
+      {/* 制御点ライン */}
+      <Line points={controlWire1Points} color={WIRE_COLOR} lineWidth={2} />
+      <Line points={controlWire2Points} color={WIRE_COLOR} lineWidth={2} />
+
+      {/* ベジェ曲線 */}
+      <Line
+        points={bezierCurvePoints}
+        color={PATH_COLOR}
+        lineWidth={3}
+        onClick={(e) => {
+          console.log(e);
         }}
-        material={materials?.edgePoint}
-        fixed={fixedPoints == "end" || fixedPoints == "both"}
+        onPointerEnter={() => {
+          if (onPointerEdge) {
+            return;
+          }
+          // 操作できるポイントの上にカーソルがあるときはカーソルを掴むカーソルに変更
+          document.body.style.cursor = "copy";
+          console.log("pointer enter");
+        }}
+        onPointerLeave={() => {
+          if (onPointerEdge) {
+            return;
+          }
+          // 操作できるポイントの上にカーソルがあるときはカーソルを掴むカーソルに変更
+          document.body.style.cursor = "auto";
+          console.log("pointer enter");
+        }}
       />
     </>
   );
