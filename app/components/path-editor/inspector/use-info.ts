@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useYoyoPath } from "~/contexts/YoyoPathContext";
+import { useYoyoPath } from "~/contexts/YoyoUICurveContext";
 
 export function useInfo() {
   const { yoyoPath } = useYoyoPath();

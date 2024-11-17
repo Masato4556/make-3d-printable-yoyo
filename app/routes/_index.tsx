@@ -4,8 +4,8 @@ import { ModelViewer } from "~/components/model-viewer/model-viewer";
 import { ModelProvider } from "~/contexts/ModelContext";
 import { PathEditor } from "~/components/path-editor/path-editor";
 import { useState } from "react";
-import { YoyoPathProvider } from "~/contexts/YoyoPathContext";
 import { ModeSwitch } from "~/components/mode-switch/mode-swtich";
+import { YoyoUICurveProvider } from "~/contexts/YoyoUICurveContext";
 
 export const meta: MetaFunction = () => {
   return [
@@ -34,14 +34,15 @@ export default function Index() {
   // TODO: MODEの状態管理のリファクタ
   const [mode, setMode] = useState<Mode>("path");
   return (
-    <YoyoPathProvider>
+    <YoyoUICurveProvider>
       <ModelProvider>
         <div id="canvas-container">
           <ModeSwitch setMode={setMode} />
           <ModelViewer hidden={mode != "model"} />
+          {/* <PathEditor hidden={mode != "path"} /> */}
           <PathEditor hidden={mode != "path"} />
         </div>
       </ModelProvider>
-    </YoyoPathProvider>
+    </YoyoUICurveProvider>
   );
 }

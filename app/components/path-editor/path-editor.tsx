@@ -4,11 +4,11 @@ import { Canvas } from "@react-three/fiber";
 import { Vector2, Vector3 } from "three";
 
 import { BACKGROUND_COLOR } from "~/styles/const";
-import { EditableYoyoPath } from "./editable-yoyo-path/editable-yoyo-path";
 import { XAxis } from "./XAxis";
 import { Inspector } from "./inspector/inspector";
-import { useYoyoPath } from "~/contexts/YoyoPathContext";
+import { useYoyoPath } from "~/contexts/YoyoUICurveContext";
 import { BEARING_SIZE } from "~/const/bearing";
+import { EditableYoyoPath } from "./editable-yoyo-path";
 
 type Props = {
   hidden: boolean;
@@ -43,10 +43,12 @@ export function PathEditor(props: Props) {
         <EditableYoyoPath
           position={new Vector3(BEARING_SIZE.sizeC.width / 2, 0, 0)}
         />
-        <Line // 編集できない反対側のパス
-          points={genMirrerdPath(yoyoPath)}
-          position={new Vector3(-BEARING_SIZE.sizeC.width / 2, 0, 0)}
-        />
+        {yoyoPath.length > 0 && (
+          <Line // 編集できない反対側のパス
+            points={genMirrerdPath(yoyoPath)}
+            position={new Vector3(-BEARING_SIZE.sizeC.width / 2, 0, 0)}
+          />
+        )}
 
         <XAxis />
         <OrbitControls
