@@ -1,13 +1,13 @@
 import { Vector2 } from "three";
-import { UICurve } from "./UICurve";
 import { Line } from "@react-three/drei";
 import { PATH_COLOR } from "~/styles/const";
+import { YoyoCurve } from "./YoyoCurve";
 
-export class UIHorizontalLine implements UICurve {
+export class YoyoHorizontalLine implements YoyoCurve {
   v0: Vector2;
   v1: Vector2;
-  dispatch: (uiCurve: UICurve) => void;
-  constructor(v0: Vector2, v1: Vector2, dispatch: (uiCurve: UICurve) => void) {
+  dispatch: (curve: YoyoCurve) => void;
+  constructor(v0: Vector2, v1: Vector2, dispatch: (curve: YoyoCurve) => void) {
     this.v0 = v0;
     this.v1 = v1;
     this.dispatch = dispatch;

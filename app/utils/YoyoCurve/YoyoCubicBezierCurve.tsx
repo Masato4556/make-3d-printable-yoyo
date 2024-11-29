@@ -1,5 +1,5 @@
 import { CubicBezierCurve, Vector2, Vector3 } from "three";
-import { UICurve } from "./UICurve";
+import { YoyoCurve } from "./YoyoCurve";
 import { Line } from "@react-three/drei";
 import { PATH_COLOR, WIRE_COLOR } from "~/styles/const";
 import { DraggablePoint } from "./draggable-point";
@@ -9,16 +9,16 @@ type Option = {
   fixedEdge: "start" | "end" | "both";
 };
 
-export class UICubicBezierCurve implements UICurve {
+export class YoyoCubicBezierCurve implements YoyoCurve {
   curve: CubicBezierCurve;
-  dispatch: (uiCurve: UICurve) => void;
+  dispatch: (curve: YoyoCurve) => void;
   option?: Option;
   constructor(
     v0: Vector2,
     v1: Vector2,
     v2: Vector2,
     v3: Vector2,
-    dispatch: (uiCurve: UICurve) => void,
+    dispatch: (curve: YoyoCurve) => void,
     option?: Option
   ) {
     this.curve = new CubicBezierCurve(v0, v1, v2, v3);

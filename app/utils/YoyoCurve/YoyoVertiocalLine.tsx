@@ -1,22 +1,22 @@
 import { Vector2, Vector3 } from "three";
-import { UICurve } from "./UICurve";
 import { Line } from "@react-three/drei";
 import { PATH_COLOR } from "~/styles/const";
 import { DraggablePoint } from "./draggable-point";
+import { YoyoCurve } from "./YoyoCurve";
 
 type Option = {
   editablePoint?: "start" | "end";
 };
 
-export class UIVertiocalLine implements UICurve {
+export class YoyoVertiocalLine implements YoyoCurve {
   v0: Vector2;
   v1: Vector2;
-  dispatch: (uiCurve: UICurve) => void;
+  dispatch: (curve: YoyoCurve) => void;
   option?: Option;
   constructor(
     v0: Vector2,
     v1: Vector2,
-    dispatch: (uiCurve: UICurve) => void,
+    dispatch: (curve: YoyoCurve) => void,
     option?: Option
   ) {
     this.v0 = v0;

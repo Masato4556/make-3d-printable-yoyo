@@ -1,7 +1,7 @@
 import { Vector2 } from "three";
 
-export interface UICurve {
-  dispatch: (uiCurve: UICurve) => void;
+export interface YoyoCurve {
+  dispatch: (curve: YoyoCurve) => void;
   getPath(): Vector2[];
   getElement(): JSX.Element;
   getFirstPoint(): Vector2;

@@ -6,7 +6,7 @@ import { Vector2, Vector3 } from "three";
 import { BACKGROUND_COLOR } from "~/styles/const";
 import { XAxis } from "./XAxis";
 import { Inspector } from "./inspector/inspector";
-import { useYoyoPath } from "~/contexts/YoyoUICurveContext";
+import { useYoyoPath } from "~/contexts/YoyoCurveContext";
 import { BEARING_SIZE } from "~/const/bearing";
 import { EditableYoyoPath } from "./editable-yoyo-path";
 

@@ -3,7 +3,7 @@ import { Vector2, LatheGeometry, Mesh, BufferGeometry } from "three";
 import { CSG } from "three-csg-ts";
 import { BEARING_TYPES, BearingType } from "~/const/bearing";
 import { CORE_HEIGHT, CORE_PARAMS } from "~/const/core";
-import { useYoyoPath } from "~/contexts/YoyoUICurveContext";
+import { useYoyoPath } from "~/contexts/YoyoCurveContext";
 
 // TODO: どのベアリングを選択したかなどのmodel-viewerとpath-viewerで共に用いるデータをproviderから取得できるようにする
 
