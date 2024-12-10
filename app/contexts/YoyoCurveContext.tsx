@@ -13,10 +13,14 @@ interface YoyoCurveState {
   curves: YoyoCurve[];
 }
 
+// TODO: YoyoCurve[]だとステートの更新が検知されない実装を生み出しやすいので、YoyoCurveの配列のラッパークラスを作成し、そのクラスをステートとして持つようにする
+// そのクラスで変更処理を行う際は、必ず新たなインスタンスを生成して返すようにすることで、再レンダリングを検知させる
+
 export type YoyoCurveAction =
   | { type: "SET_CURVES"; curves: YoyoCurve[] }
   | { type: "APPEND_CURVE"; curve: YoyoCurve }
-  | { type: "UPDATE_CURVE"; curve: YoyoCurve; index: number };
+  | { type: "UPDATE_CURVE"; curve: YoyoCurve; index: number }
+  | { type: "DIVIDE_CURVE"; curves: YoyoCurve[]; index: number };
 
 const initialState: YoyoCurveState = {
   curves: [],
@@ -30,10 +34,14 @@ const YoyoCurveDispatchContext = createContext<
 const yoyoCurveReducer = (state: YoyoCurveState, action: YoyoCurveAction) => {
   switch (action.type) {
     case "SET_CURVES":
+      action.curves.forEach((curve, index) => {
+        curve.setIndex(index);
+      });
       return {
         curves: action.curves,
       };
     case "APPEND_CURVE":
+      action.curve.setIndex(state.curves.length);
       return {
         curves: [...state.curves, action.curve],
       };
@@ -51,9 +59,30 @@ const yoyoCurveReducer = (state: YoyoCurveState, action: YoyoCurveAction) => {
       return {
         curves: [...state.curves],
       };
+    case "DIVIDE_CURVE":
+      return {
+        curves: replaceDividedCurve(state.curves, action.index, action.curves),
+      };
     default:
       throw new Error(`Unknown action`);
   }
+};
+
+const replaceDividedCurve = (
+  curves: YoyoCurve[],
+  index: number,
+  newCurves: YoyoCurve[]
+) => {
+  const new_curves = [
+    ...curves.slice(0, index),
+    ...newCurves,
+    ...curves.slice(index + 1),
+  ];
+  new_curves.forEach((curve, index) => {
+    curve.setIndex(index);
+  });
+
+  return new_curves;
 };
 
 interface YoyoCurveProviderProps {

@@ -9,20 +9,23 @@ type Option = {
 };
 
 export class YoyoVertiocalLine implements YoyoCurve {
+  id: string;
+  index: number = 0;
   v0: Vector2;
   v1: Vector2;
-  dispatch: (curve: YoyoCurve) => void;
+  updateDispath: (curve: YoyoCurve, index: number) => void;
   option?: Option;
   constructor(
     v0: Vector2,
     v1: Vector2,
-    dispatch: (curve: YoyoCurve) => void,
+    updateDispath: (curve: YoyoCurve, index: number) => void,
     option?: Option
   ) {
     this.v0 = v0;
     this.v1 = v1;
-    this.dispatch = dispatch;
+    this.updateDispath = updateDispath;
     this.option = option;
+    this.id = `YoyoVertiocalLine_${Date.now()}_${v0.x}_${v0.y}_${v1.x}_${v1.y}`;
   }
   getPath(): Vector2[] {
     return [this.v0, this.v1];
@@ -37,7 +40,7 @@ export class YoyoVertiocalLine implements YoyoCurve {
             onDrag={(v) => {
               this.v0.x = v.x;
               this.v1.x = v.x;
-              this.dispatch(this);
+              this.updateDispath(this, this.index);
             }}
           />
         )}
@@ -47,7 +50,7 @@ export class YoyoVertiocalLine implements YoyoCurve {
             onDrag={(v) => {
               this.v0.x = v.x;
               this.v1.x = v.x;
-              this.dispatch(this);
+              this.updateDispath(this, this.index);
             }}
             dragLimits={[undefined, [0, 0], [0, 0]]}
           />
@@ -68,5 +71,8 @@ export class YoyoVertiocalLine implements YoyoCurve {
   updateLastPoint(v: Vector2): void {
     this.v1 = v;
     this.v0.setX(v.x);
+  }
+  setIndex(index: number): void {
+    this.index = index;
   }
 }

@@ -26,40 +26,51 @@ export function EditableYoyoPath(props: Props) {
         new YoyoCubicBezierCurve(
           new Vector2(0, 10.75),
           new Vector2(5.25, 10.75),
-          new Vector2(5.25, 18.3),
-          new Vector2(10.5, 18.3),
-          (curve) => {
-            dispatch({ type: "UPDATE_CURVE", index: 0, curve });
+          // new Vector2(5.25, 18.3),
+          // new Vector2(10.5, 18.3),
+          new Vector2(15.75, 27.5),
+          new Vector2(21, 27.5),
+          (curve, index) => {
+            dispatch({ type: "UPDATE_CURVE", index, curve });
+          },
+          (curves, index) => {
+            dispatch({ type: "DIVIDE_CURVE", index, curves: curves });
           },
           { fixedEdge: "start" }
         ),
-        new YoyoCubicBezierCurve(
-          new Vector2(10.5, 18.3),
-          new Vector2(15.75, 18.3),
-          new Vector2(15.75, 27.5),
-          new Vector2(21, 27.5),
-          (curve) => {
-            dispatch({ type: "UPDATE_CURVE", index: 1, curve });
-          }
-        ),
+        // new YoyoCubicBezierCurve(
+        //   new Vector2(10.5, 18.3),
+        //   new Vector2(15.75, 18.3),
+        //   new Vector2(15.75, 27.5),
+        //   new Vector2(21, 27.5),
+        //   (curve, index) => {
+        //     dispatch({ type: "UPDATE_CURVE", index, curve });
+        //   },
+        //   (curves, index) => {
+        //     dispatch({ type: "DIVIDE_CURVE", index, curves: curves });
+        //   }
+        // ),
         new YoyoHorizontalLine(
           new Vector2(21, 27.5),
           new Vector2(28, 27.5),
-          (curve) => {
-            dispatch({ type: "UPDATE_CURVE", index: 2, curve });
+          (curve, index) => {
+            dispatch({ type: "UPDATE_CURVE", index, curve });
           }
         ),
         new YoyoVertiocalLine(
           new Vector2(28, 27.5),
           new Vector2(28, 0),
-          (curve) => {
-            dispatch({ type: "UPDATE_CURVE", index: 3, curve });
+          (curve, index) => {
+            dispatch({ type: "UPDATE_CURVE", index, curve });
           },
           { editablePoint: "end" }
         ),
       ],
     });
   }, []);
+
+  console.log("RENDER");
+  console.log(curves);
 
   const mirreredPath = useMemo(
     () =>
@@ -71,7 +82,9 @@ export function EditableYoyoPath(props: Props) {
 
   return (
     <group position={position}>
-      {curves.map((curve) => curve.getElement())}
+      {curves.map((curve) => (
+        <group key={curve.id}>{curve.getElement()}</group>
+      ))}
       {curves.length > 0 && (
         <>
           <Line points={mirreredPath} />
