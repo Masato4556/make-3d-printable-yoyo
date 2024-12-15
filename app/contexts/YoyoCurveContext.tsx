@@ -7,7 +7,7 @@ import {
   useMemo,
 } from "react";
 import { Vector2 } from "three";
-import { YoyoCurve } from "~/utils/YoyoCurve/YoyoCurve";
+import { YoyoCurve } from "~/components/Curve/YoyoCurve";
 
 interface YoyoCurveState {
   curves: YoyoCurve[];

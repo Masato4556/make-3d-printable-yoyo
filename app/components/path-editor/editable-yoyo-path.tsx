@@ -4,9 +4,9 @@ import {
   useYoyoCurveDispatch,
   useYoyoCurveState,
 } from "~/contexts/YoyoCurveContext";
-import { YoyoCubicBezierCurve } from "~/utils/YoyoCurve/YoyoCubicBezierCurve";
-import { YoyoVertiocalLine } from "~/utils/YoyoCurve/YoyoVertiocalLine";
-import { YoyoHorizontalLine } from "~/utils/YoyoCurve/YoyoHorizontalLine";
+import { YoyoCubicBezierCurve } from "~/components/Curve/YoyoCubicBezierCurve";
+import { YoyoVertiocalLine } from "~/components/Curve/YoyoVertiocalLine";
+import { YoyoHorizontalLine } from "~/components/Curve/YoyoHorizontalLine";
 import { DimesionLine } from "./dimesion-line";
 import { Line } from "@react-three/drei";
 
