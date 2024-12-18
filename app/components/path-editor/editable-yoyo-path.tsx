@@ -4,9 +4,9 @@ import {
   useYoyoCurveDispatch,
   useYoyoCurveState,
 } from "~/contexts/YoyoCurveContext";
-import { YoyoCubicBezierCurve } from "~/components/Curve/YoyoCubicBezierCurve";
-import { YoyoVertiocalLine } from "~/components/Curve/YoyoVertiocalLine";
-import { YoyoHorizontalLine } from "~/components/Curve/YoyoHorizontalLine";
+import { YoyoCubicBezierCurve } from "~/contexts/curves/Curve/YoyoCubicBezierCurve";
+import { YoyoVertiocalLine } from "~/contexts/curves/Curve/YoyoVertiocalLine";
+import { YoyoHorizontalLine } from "~/contexts/curves/Curve/YoyoHorizontalLine";
 import { DimesionLine } from "./dimesion-line";
 import { Line } from "@react-three/drei";
 
@@ -68,9 +68,6 @@ export function EditableYoyoPath(props: Props) {
       ],
     });
   }, []);
-
-  console.log("RENDER");
-  console.log(curves);
 
   const mirreredPath = useMemo(
     () =>

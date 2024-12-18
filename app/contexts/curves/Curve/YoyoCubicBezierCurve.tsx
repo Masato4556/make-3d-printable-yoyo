@@ -2,7 +2,7 @@ import { CubicBezierCurve, Vector2, Vector3 } from "three";
 import { YoyoCurve } from "./YoyoCurve";
 import { Line } from "@react-three/drei";
 import { PATH_COLOR, WIRE_COLOR } from "~/styles/const";
-import { pointMaterial } from "../../utils/material";
+import { pointMaterial } from "../../../utils/material";
 import { DraggablePoint } from "./draggable-point";
 
 type Option = {
@@ -128,9 +128,6 @@ export class YoyoCubicBezierCurve implements YoyoCurve {
     return this.curve.getPoints(64);
   }
   getElement(): JSX.Element {
-    const { v0, v1, v2, v3 } = this.curve;
-    console.log({ index: this.index, v0, v1, v2, v3 });
-
     return <YoyoCubicBezierCurveNode instance={this} />;
   }
   getFirstPoint(): Vector2 {
@@ -155,14 +152,12 @@ function divide(
   t: number
 ): YoyoCubicBezierCurve[] {
   const { v0: p0, v1: p1, v2: p2, v3: p3 } = yoyoCubicBezierCurve.curve;
-  console.log(yoyoCubicBezierCurve.curve, t);
   const q0 = p0.clone().lerp(p1, t);
   const q1 = p1.clone().lerp(p2, t);
   const q2 = p2.clone().lerp(p3, t);
   const r0 = q0.clone().lerp(q1, t);
   const r1 = q1.clone().lerp(q2, t);
   const s = r0.clone().lerp(r1, t);
-  console.log(q0, q1, q2, r0, r1, s);
 
   return [
     new YoyoCubicBezierCurve(
