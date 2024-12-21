@@ -17,13 +17,12 @@ type NodeProps = {
 
 export function YoyoCubicBezierCurveNode(props: NodeProps) {
   const { instance } = props;
-  const { v0, v1, v2, v3 } = instance.curve;
 
   return (
     <>
       {/* 両端 */}
       <DraggablePoint
-        position={new Vector3(v0.x, v0.y)}
+        position={instance.curve.v0}
         onDrag={(v) => {
           instance.curve.v0 = new Vector2(v.x, v.y);
           instance.updateDispath(instance, instance.index);
@@ -41,7 +40,7 @@ export function YoyoCubicBezierCurveNode(props: NodeProps) {
         }
       />
       <DraggablePoint
-        position={new Vector3(v3.x, v3.y)}
+        position={instance.curve.v3}
         onDrag={(v) => {
           instance.curve.v3 = new Vector2(v.x, v.y);
           instance.updateDispath(instance, instance.index);
@@ -77,7 +76,7 @@ export function YoyoCubicBezierCurveNode(props: NodeProps) {
 
       {/* 編集点 */}
       <DraggablePoint
-        position={new Vector3(v1.x, v1.y)}
+        position={instance.curve.v1}
         material={pointMaterial}
         shape="rectangle"
         onDrag={(v) => {
@@ -86,7 +85,7 @@ export function YoyoCubicBezierCurveNode(props: NodeProps) {
         }}
       />
       <DraggablePoint
-        position={new Vector3(v2.x, v2.y)}
+        position={instance.curve.v2}
         material={pointMaterial}
         shape="rectangle"
         onDrag={(v) => {
@@ -94,8 +93,16 @@ export function YoyoCubicBezierCurveNode(props: NodeProps) {
           instance.updateDispath(instance, instance.index);
         }}
       />
-      <Line points={[v0, v1]} color={WIRE_COLOR} lineWidth={2} />
-      <Line points={[v2, v3]} color={WIRE_COLOR} lineWidth={2} />
+      <Line
+        points={[instance.curve.v0, instance.curve.v1]}
+        color={WIRE_COLOR}
+        lineWidth={2}
+      />
+      <Line
+        points={[instance.curve.v2, instance.curve.v3]}
+        color={WIRE_COLOR}
+        lineWidth={2}
+      />
     </>
   );
 }

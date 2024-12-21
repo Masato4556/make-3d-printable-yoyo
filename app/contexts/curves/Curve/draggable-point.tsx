@@ -6,6 +6,7 @@ import {
   BufferGeometry,
   Material,
   SphereGeometry,
+  Vector2,
   Vector3,
 } from "three";
 
@@ -17,9 +18,9 @@ const POINT_GEOMETRY: Record<PointShape, BufferGeometry> = {
 export type PointShape = "circle" | "rectangle";
 
 export function DraggablePoint(
-  props: MeshProps & {
-    position: Vector3;
-    onDrag: (vector: Vector3) => void;
+  props: Omit<MeshProps, "position"> & {
+    position: Vector2;
+    onDrag: (vector: Vector2) => void;
     shape?: "circle" | "rectangle";
     material?: Material | Material[] | undefined;
     fixed?: boolean;
@@ -48,7 +49,7 @@ export function DraggablePoint(
         geometry={geometry}
         material={material}
         {...props}
-        position={positionRef.current}
+        position={new Vector3(positionRef.current.x, positionRef.current.y, 0)}
       ></mesh>
     );
   }
@@ -75,7 +76,7 @@ export function DraggablePoint(
         geometry={geometry}
         material={material}
         {...props}
-        position={positionRef.current}
+        position={new Vector3(positionRef.current.x, positionRef.current.y, 0)}
       ></mesh>
     </DragControls>
   );
