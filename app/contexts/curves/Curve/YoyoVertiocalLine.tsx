@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from "three";
+import { Vector2 } from "three";
 import { Line } from "@react-three/drei";
 import { PATH_COLOR } from "~/styles/const";
 import { DraggablePoint } from "./draggable-point";
@@ -36,7 +36,7 @@ export class YoyoVertiocalLine implements YoyoCurve {
         <Line points={[this.v0, this.v1]} color={PATH_COLOR} lineWidth={3} />
         {this.option?.editablePoint == "start" && (
           <DraggablePoint
-            position={new Vector3(this.v0.x, this.v0.y)}
+            position={this.v0}
             onDrag={(v) => {
               this.v0.x = v.x;
               this.v1.x = v.x;
@@ -46,7 +46,7 @@ export class YoyoVertiocalLine implements YoyoCurve {
         )}
         {this.option?.editablePoint == "end" && (
           <DraggablePoint
-            position={new Vector3(this.v1.x, this.v1.y)}
+            position={this.v1}
             onDrag={(v) => {
               this.v0.x = v.x;
               this.v1.x = v.x;

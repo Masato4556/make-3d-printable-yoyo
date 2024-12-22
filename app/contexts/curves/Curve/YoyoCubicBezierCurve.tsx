@@ -1,4 +1,4 @@
-import { CubicBezierCurve, Vector2, Vector3 } from "three";
+import { CubicBezierCurve, Vector2 } from "three";
 import { YoyoCurve } from "./YoyoCurve";
 import { Line } from "@react-three/drei";
 import { PATH_COLOR, WIRE_COLOR } from "~/styles/const";
