@@ -5,10 +5,11 @@ import {
   useYoyoCurveState,
 } from "~/contexts/YoyoCurveContext";
 import { YoyoCubicBezierCurve } from "~/contexts/curves/Curve/YoyoCubicBezierCurve";
-import { YoyoVertiocalLine } from "~/contexts/curves/Curve/YoyoVertiocalLine";
+import { YoyoVerticalLine } from "~/contexts/curves/Curve/YoyoVerticalLine";
 import { YoyoHorizontalLine } from "~/contexts/curves/Curve/YoyoHorizontalLine";
 import { DimesionLine } from "./dimesion-line";
 import { Line } from "@react-three/drei";
+import { CurveComponent } from "./curves/CurveComponent";
 
 type Props = {
   position: Vector3;
@@ -57,7 +58,7 @@ export function EditableYoyoPath(props: Props) {
             dispatch({ type: "UPDATE_CURVE", index, curve });
           }
         ),
-        new YoyoVertiocalLine(
+        new YoyoVerticalLine(
           new Vector2(28, 27.5),
           new Vector2(28, 0),
           (curve, index) => {
@@ -79,9 +80,9 @@ export function EditableYoyoPath(props: Props) {
 
   return (
     <group position={position}>
-      {curves.map((curve) => (
-        <group key={curve.id}>{curve.getElement()}</group>
-      ))}
+      {curves.map((curve) => {
+        return <CurveComponent key={curve.id} curve={curve} />;
+      })}
       {curves.length > 0 && (
         <>
           <Line points={mirreredPath} />

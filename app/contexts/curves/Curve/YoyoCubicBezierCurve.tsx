@@ -1,114 +1,13 @@
 import { CubicBezierCurve, Vector2 } from "three";
 import { YoyoCurve } from "./YoyoCurve";
-import { Line } from "@react-three/drei";
-import { PATH_COLOR, WIRE_COLOR } from "~/styles/const";
-import { pointMaterial } from "../../../utils/material";
-import { DraggablePoint } from "./draggable-point";
 
 type Option = {
   fixedEdge?: "start" | "end" | "both";
 };
 
-const POINT_NUM = 64;
-
-type NodeProps = {
-  instance: YoyoCubicBezierCurve;
-};
-
-export function YoyoCubicBezierCurveNode(props: NodeProps) {
-  const { instance } = props;
-
-  return (
-    <>
-      {/* 両端 */}
-      <DraggablePoint
-        position={instance.curve.v0}
-        onDrag={(v) => {
-          instance.curve.v0 = new Vector2(v.x, v.y);
-          instance.updateDispath(instance, instance.index);
-        }}
-        // onPointerEnter={() => {
-        //   setOnPointerEdge(true);
-        // }}
-        // onPointerLeave={() => {
-        //   setOnPointerEdge(false);
-        // }}
-        material={pointMaterial}
-        fixed={
-          instance.option?.fixedEdge == "start" ||
-          instance.option?.fixedEdge == "both"
-        }
-      />
-      <DraggablePoint
-        position={instance.curve.v3}
-        onDrag={(v) => {
-          instance.curve.v3 = new Vector2(v.x, v.y);
-          instance.updateDispath(instance, instance.index);
-        }}
-        // onPointerEnter={() => {
-        //   setOnPointerEdge(true);
-        // }}
-        // onPointerLeave={() => {
-        //   setOnPointerEdge(false);
-        // }}
-        material={pointMaterial}
-        fixed={
-          instance.option?.fixedEdge == "end" ||
-          instance.option?.fixedEdge == "both"
-        }
-      />
-      <Line
-        points={instance.curve.getPoints(POINT_NUM)}
-        color={PATH_COLOR}
-        lineWidth={3}
-        onClick={(e) => {
-          // カーブを分割
-          const { faceIndex = POINT_NUM / 2 } = e;
-          const t = faceIndex / POINT_NUM;
-          if (t < 0.1 || 0.9 < t) {
-            // TODO: 両端をクリックした際にも分割が発生する問題を簡易的に修正。要リファクタリング
-            return;
-          }
-
-          instance.divedeDispath(divide(instance, t), instance.index);
-        }}
-      />
-
-      {/* 編集点 */}
-      <DraggablePoint
-        position={instance.curve.v1}
-        material={pointMaterial}
-        shape="rectangle"
-        onDrag={(v) => {
-          instance.curve.v1 = new Vector2(v.x, v.y);
-          instance.updateDispath(instance, instance.index);
-        }}
-      />
-      <DraggablePoint
-        position={instance.curve.v2}
-        material={pointMaterial}
-        shape="rectangle"
-        onDrag={(v) => {
-          instance.curve.v2 = new Vector2(v.x, v.y);
-          instance.updateDispath(instance, instance.index);
-        }}
-      />
-      <Line
-        points={[instance.curve.v0, instance.curve.v1]}
-        color={WIRE_COLOR}
-        lineWidth={2}
-      />
-      <Line
-        points={[instance.curve.v2, instance.curve.v3]}
-        color={WIRE_COLOR}
-        lineWidth={2}
-      />
-    </>
-  );
-}
-
 export class YoyoCubicBezierCurve implements YoyoCurve {
   index: number = 0;
+  type: string = "CubicBezierCurve";
   curve: CubicBezierCurve;
   updateDispath: (curve: YoyoCurve, index: number) => void;
   divedeDispath: (curve: YoyoCurve[], index: number) => void;
@@ -134,9 +33,6 @@ export class YoyoCubicBezierCurve implements YoyoCurve {
   getPath(): Vector2[] {
     return this.curve.getPoints(64);
   }
-  getElement(): JSX.Element {
-    return <YoyoCubicBezierCurveNode instance={this} />;
-  }
   getFirstPoint(): Vector2 {
     return this.curve.v0;
   }
@@ -152,44 +48,4 @@ export class YoyoCubicBezierCurve implements YoyoCurve {
   setIndex(index: number): void {
     this.index = index;
   }
-}
-
-function divide(
-  yoyoCubicBezierCurve: YoyoCubicBezierCurve,
-  t: number
-): YoyoCubicBezierCurve[] {
-  const { v0: p0, v1: p1, v2: p2, v3: p3 } = yoyoCubicBezierCurve.curve;
-  const q0 = p0.clone().lerp(p1, t);
-  const q1 = p1.clone().lerp(p2, t);
-  const q2 = p2.clone().lerp(p3, t);
-  const r0 = q0.clone().lerp(q1, t);
-  const r1 = q1.clone().lerp(q2, t);
-  const s = r0.clone().lerp(r1, t);
-
-  return [
-    new YoyoCubicBezierCurve(
-      p0,
-      q0,
-      r0,
-      s,
-      yoyoCubicBezierCurve.updateDispath,
-      yoyoCubicBezierCurve.divedeDispath,
-      yoyoCubicBezierCurve.option?.fixedEdge == "start" ||
-      yoyoCubicBezierCurve.option?.fixedEdge == "both"
-        ? { fixedEdge: "start" }
-        : {}
-    ),
-    new YoyoCubicBezierCurve(
-      s,
-      r1,
-      q2,
-      p3,
-      yoyoCubicBezierCurve.updateDispath,
-      yoyoCubicBezierCurve.divedeDispath,
-      yoyoCubicBezierCurve.option?.fixedEdge == "end" ||
-      yoyoCubicBezierCurve.option?.fixedEdge == "both"
-        ? { fixedEdge: "end" }
-        : {}
-    ),
-  ];
 }
