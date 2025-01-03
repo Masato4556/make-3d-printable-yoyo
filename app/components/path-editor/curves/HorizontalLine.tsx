@@ -1,4 +1,4 @@
-import { Line } from "@react-three/drei";
+import { Line } from "react-konva";
 import { YoyoHorizontalLine } from "~/contexts/curves/Curve/YoyoHorizontalLine";
 import { PATH_COLOR } from "~/styles/const";
 
@@ -10,6 +10,11 @@ export function HorizontalLine(props: Props) {
   const { curve } = props;
 
   return (
-    <Line points={[curve.v0, curve.v1]} color={PATH_COLOR} lineWidth={3} />
+    <Line
+      stroke={PATH_COLOR}
+      strokeWidth={0.8}
+      lineCap="round"
+      points={[curve.v0.x, curve.v0.y, curve.v1.x, curve.v1.y]}
+    />
   );
 }

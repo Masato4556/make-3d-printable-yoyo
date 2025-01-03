@@ -1,7 +1,6 @@
-import { Line } from "@react-three/drei";
+import { Circle, Line } from "react-konva";
 import { YoyoVerticalLine } from "~/contexts/curves/Curve/YoyoVerticalLine";
 import { PATH_COLOR } from "~/styles/const";
-import { DraggablePoint } from "./draggable-point";
 
 type Props = {
   curve: YoyoVerticalLine;
@@ -9,33 +8,30 @@ type Props = {
 
 export function VerticalLine(props: Props) {
   const { curve } = props;
-  console.log("aaaaa");
 
+  // TODO: カーブを素早く操作中、ハンドルとラインがズレる問題を解消
   return (
     <>
-      <Line points={[curve.v0, curve.v1]} color={PATH_COLOR} lineWidth={3} />
-      {curve.option?.editablePoint == "start" && (
-        <DraggablePoint
-          position={curve.v0}
-          onDrag={(v) => {
-            curve.v0.x = v.x;
-            curve.v1.x = v.x;
-            curve.updateDispath(curve, curve.index);
-          }}
-        />
-      )}
-      {curve.option?.editablePoint == "end" && (
-        <DraggablePoint
-          position={curve.v1}
-          onDrag={(v) => {
-            curve.v0.x = v.x;
-            curve.v1.x = v.x;
-            console.log(v);
-            curve.updateDispath(curve, curve.index);
-          }}
-          dragLimits={[undefined, [0, 0], [0, 0]]}
-        />
-      )}
+      <Line
+        stroke={PATH_COLOR}
+        strokeWidth={0.8}
+        lineCap="round"
+        points={[curve.v0.x, curve.v0.y, curve.v1.x, curve.v1.y]}
+      />
+      <Circle
+        x={curve.v1.x}
+        y={curve.v1.y}
+        radius={1}
+        stroke={PATH_COLOR}
+        draggable
+        onDragMove={(e) => {
+          curve.v0.setX(e.target.x());
+          curve.v1.setX(e.target.x());
+          e.target.y(curve.v1.y);
+
+          curve.updateDispath(curve, curve.index);
+        }}
+      />
     </>
   );
 }

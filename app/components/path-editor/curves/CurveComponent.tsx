@@ -1,9 +1,9 @@
 import { YoyoCurve } from "~/contexts/curves/Curve/YoyoCurve";
-import { CubicBezierCurve } from "./CubicBezierCurve";
 import { YoyoCubicBezierCurve } from "~/contexts/curves/Curve/YoyoCubicBezierCurve";
-import { HorizontalLine } from "./HorizontalLine";
 import { YoyoHorizontalLine } from "~/contexts/curves/Curve/YoyoHorizontalLine";
 import { YoyoVerticalLine } from "~/contexts/curves/Curve/YoyoVerticalLine";
+import { CubicBezierCurve } from "./CubicBezierCurve";
+import { HorizontalLine } from "./HorizontalLine";
 import { VerticalLine } from "./VerticalLine";
 
 type Props = {

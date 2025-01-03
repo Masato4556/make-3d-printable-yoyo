@@ -1,9 +1,7 @@
-import { Line } from "@react-three/drei";
+import { KonvaEventObject } from "konva/lib/Node";
+import { Circle, Line, Rect, Shape } from "react-konva";
 import { YoyoCubicBezierCurve } from "~/contexts/curves/Curve/YoyoCubicBezierCurve";
-import { PATH_COLOR, WIRE_COLOR } from "~/styles/const";
-import { DraggablePoint } from "./draggable-point";
-import { pointMaterial } from "~/utils/material";
-import { Vector2 } from "three";
+import { PATH_COLOR } from "~/styles/const";
 
 type Props = {
   curve: YoyoCubicBezierCurve;
@@ -12,132 +10,115 @@ type Props = {
 const POINT_NUM = 64;
 
 export function CubicBezierCurve(props: Props) {
+  console.log("render CubicBezierCurve");
   const { curve } = props;
 
   return (
     <>
-      {/* 両端 */}
-      <DraggablePoint
-        position={curve.curve.v0}
-        onDrag={(v) => {
-          curve.curve.v0 = new Vector2(v.x, v.y);
-          curve.updateDispath(curve, curve.index);
+      <Shape
+        stroke={PATH_COLOR}
+        strokeWidth={0.8}
+        lineCap="round"
+        sceneFunc={(ctx, shape) => {
+          ctx.beginPath();
+          ctx.moveTo(curve.curve.v0.x, curve.curve.v0.y);
+          ctx.bezierCurveTo(
+            curve.curve.v1.x,
+            curve.curve.v1.y,
+            curve.curve.v2.x,
+            curve.curve.v2.y,
+            curve.curve.v3.x,
+            curve.curve.v3.y
+          );
+          ctx.fillStrokeShape(shape);
         }}
-        // onPointerEnter={() => {
-        //   setOnPointerEdge(true);
-        // }}
-        // onPointerLeave={() => {
-        //   setOnPointerEdge(false);
-        // }}
-        material={pointMaterial}
-        fixed={
-          curve.option?.fixedEdge == "start" ||
-          curve.option?.fixedEdge == "both"
-        }
       />
-      <DraggablePoint
-        position={curve.curve.v3}
-        onDrag={(v) => {
-          curve.curve.v3 = new Vector2(v.x, v.y);
-          curve.updateDispath(curve, curve.index);
+      <BezierCurvePoint
+        point={{
+          x: curve.curve.v0.x,
+          y: curve.curve.v0.y,
+          onDragMove: () => {},
         }}
-        // onPointerEnter={() => {
-        //   setOnPointerEdge(true);
-        // }}
-        // onPointerLeave={() => {
-        //   setOnPointerEdge(false);
-        // }}
-        material={pointMaterial}
-        fixed={
-          curve.option?.fixedEdge == "end" || curve.option?.fixedEdge == "both"
-        }
-      />
-      <Line
-        points={curve.curve.getPoints(POINT_NUM)}
-        color={PATH_COLOR}
-        lineWidth={3}
-        onClick={(e) => {
-          // カーブを分割
-          const { faceIndex = POINT_NUM / 2 } = e;
-          const t = faceIndex / POINT_NUM;
-          if (t < 0.1 || 0.9 < t) {
-            // TODO: 両端をクリックした際にも分割が発生する問題を簡易的に修正。要リファクタリング
-            return;
-          }
+        handle={{
+          x: curve.curve.v1.x,
+          y: curve.curve.v1.y,
+          onDragMove: (e) => {
+            curve.curve.v1.setX(e.target.x());
+            curve.curve.v1.setY(e.target.y());
 
-          curve.divedeDispath(divide(curve, t), curve.index);
+            curve.updateDispath(curve, curve.index);
+          },
         }}
       />
 
-      {/* 編集点 */}
-      <DraggablePoint
-        position={curve.curve.v1}
-        material={pointMaterial}
-        shape="rectangle"
-        onDrag={(v) => {
-          curve.curve.v1 = new Vector2(v.x, v.y);
-          curve.updateDispath(curve, curve.index);
+      <BezierCurvePoint
+        point={{
+          x: curve.curve.v3.x,
+          y: curve.curve.v3.y,
+          draggable: true,
+          onDragMove: (e) => {
+            const moveX = e.target.x() - curve.curve.v3.x;
+            const moveY = e.target.y() - curve.curve.v3.y;
+            curve.curve.v3.setX(e.target.x());
+            curve.curve.v3.setY(e.target.y());
+            curve.curve.v2.add({ x: moveX, y: moveY });
+
+            curve.updateDispath(curve, curve.index);
+          },
         }}
-      />
-      <DraggablePoint
-        position={curve.curve.v2}
-        material={pointMaterial}
-        shape="rectangle"
-        onDrag={(v) => {
-          curve.curve.v2 = new Vector2(v.x, v.y);
-          curve.updateDispath(curve, curve.index);
+        handle={{
+          x: curve.curve.v2.x,
+          y: curve.curve.v2.y,
+          onDragMove: (e) => {
+            curve.curve.v2.setX(e.target.x());
+            curve.curve.v2.setY(e.target.y());
+
+            curve.updateDispath(curve, curve.index);
+          },
         }}
-      />
-      <Line
-        points={[curve.curve.v0, curve.curve.v1]}
-        color={WIRE_COLOR}
-        lineWidth={2}
-      />
-      <Line
-        points={[curve.curve.v2, curve.curve.v3]}
-        color={WIRE_COLOR}
-        lineWidth={2}
       />
     </>
   );
 }
 
-function divide(
-  yoyoCubicBezierCurve: YoyoCubicBezierCurve,
-  t: number
-): YoyoCubicBezierCurve[] {
-  const { v0: p0, v1: p1, v2: p2, v3: p3 } = yoyoCubicBezierCurve.curve;
-  const q0 = p0.clone().lerp(p1, t);
-  const q1 = p1.clone().lerp(p2, t);
-  const q2 = p2.clone().lerp(p3, t);
-  const r0 = q0.clone().lerp(q1, t);
-  const r1 = q1.clone().lerp(q2, t);
-  const s = r0.clone().lerp(r1, t);
-
-  return [
-    new YoyoCubicBezierCurve(
-      p0,
-      q0,
-      r0,
-      s,
-      yoyoCubicBezierCurve.updateDispath,
-      yoyoCubicBezierCurve.divedeDispath,
-      yoyoCubicBezierCurve.option?.fixedEdge == "start" ||
-      yoyoCubicBezierCurve.option?.fixedEdge == "both"
-        ? { fixedEdge: "start" }
-        : {}
-    ),
-    new YoyoCubicBezierCurve(
-      s,
-      r1,
-      q2,
-      p3,
-      yoyoCubicBezierCurve.updateDispath,
-      yoyoCubicBezierCurve.divedeDispath,
-      yoyoCubicBezierCurve.option?.fixedEdge == "end" ||
-      yoyoCubicBezierCurve.option?.fixedEdge == "both"
-        ? { fixedEdge: "end" }
-        : {}
-    ),
-  ];
+type BezierCurvePointProps = {
+  point: {
+    x: number;
+    y: number;
+    onDragMove: (e: KonvaEventObject<DragEvent>) => void;
+    draggable?: boolean;
+  };
+  handle: {
+    x: number;
+    y: number;
+    onDragMove: (e: KonvaEventObject<DragEvent>) => void;
+  };
+};
+function BezierCurvePoint({ point, handle }: BezierCurvePointProps) {
+  return (
+    <>
+      <Circle
+        x={point.x}
+        y={point.y}
+        radius={1}
+        stroke={PATH_COLOR}
+        draggable={point.draggable}
+        onDragMove={point.onDragMove}
+      />
+      <Rect
+        x={handle.x}
+        y={handle.y}
+        width={0.5}
+        height={0.5}
+        stroke={PATH_COLOR}
+        draggable
+        onDragMove={handle.onDragMove}
+      />
+      <Line
+        points={[point.x, point.y, handle.x, handle.y]}
+        stroke={PATH_COLOR}
+        strokeWidth={0.4}
+      />
+    </>
+  );
 }

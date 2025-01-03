@@ -5,16 +5,17 @@ import {
   Dispatch,
   ReactNode,
   useMemo,
+  useEffect,
 } from "react";
 import { Vector2 } from "three";
 import { YoyoCurve } from "./curves/Curve/YoyoCurve";
+import { YoyoCubicBezierCurve } from "./curves/Curve/YoyoCubicBezierCurve";
+import { YoyoVerticalLine } from "./curves/Curve/YoyoVerticalLine";
+import { YoyoHorizontalLine } from "./curves/Curve/YoyoHorizontalLine";
 
 interface YoyoCurveState {
   curves: YoyoCurve[];
 }
-
-// TODO: YoyoCurve[]だとステートの更新が検知されない実装を生み出しやすいので、YoyoCurveの配列のラッパークラスを作成し、そのクラスをステートとして持つようにする
-// そのクラスで変更処理を行う際は、必ず新たなインスタンスを生成して返すようにすることで、再レンダリングを検知させる
 
 export type YoyoCurveAction =
   | { type: "SET_CURVES"; curves: YoyoCurve[] }
@@ -91,6 +92,43 @@ interface YoyoCurveProviderProps {
 
 const YoyoCurveProvider = ({ children }: YoyoCurveProviderProps) => {
   const [state, dispatch] = useReducer(yoyoCurveReducer, initialState);
+
+  useEffect(() => {
+    dispatch({
+      type: "SET_CURVES",
+      curves: [
+        new YoyoCubicBezierCurve(
+          new Vector2(0, 10.75),
+          new Vector2(5.25, 10.75),
+          new Vector2(15.75, 27.5),
+          new Vector2(21, 27.5),
+          (curve, index) => {
+            dispatch({ type: "UPDATE_CURVE", index, curve });
+          },
+          (curves, index) => {
+            dispatch({ type: "DIVIDE_CURVE", index, curves: curves });
+          },
+          { fixedEdge: "start" }
+        ),
+
+        new YoyoHorizontalLine(
+          new Vector2(21, 27.5),
+          new Vector2(28, 27.5),
+          (curve, index) => {
+            dispatch({ type: "UPDATE_CURVE", index, curve });
+          }
+        ),
+        new YoyoVerticalLine(
+          new Vector2(28, 27.5),
+          new Vector2(28, 0),
+          (curve, index) => {
+            dispatch({ type: "UPDATE_CURVE", index, curve });
+          },
+          { editablePoint: "end" }
+        ),
+      ],
+    });
+  }, []);
 
   return (
     <YoyoCurveStateContext.Provider value={state}>
