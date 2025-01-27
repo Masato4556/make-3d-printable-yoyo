@@ -1,3 +1,6 @@
+/**
+ * ヨーヨーのパスエディターのトップレベルコンポーネント
+ */
 import { Inspector } from "./inspector/inspector";
 import { CurveEditor } from "./curves/CurveEditor";
 

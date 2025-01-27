@@ -1,3 +1,7 @@
+/**
+ * 画面切り替えボタンのコンポーネント
+ */
+
 import { Mode } from "~/routes/_index";
 import classes from "./style.module.scss";
 

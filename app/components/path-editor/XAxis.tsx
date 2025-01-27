@@ -1,3 +1,7 @@
+/**
+ * ヨーヨーの軸となるX軸を描画するコンポーネント
+ * TODO: konva移行がまだできていないので、要対応
+ */
 import { useMemo } from "react";
 import { LineCurve3, MeshBasicMaterial, TubeGeometry, Vector3 } from "three";
 

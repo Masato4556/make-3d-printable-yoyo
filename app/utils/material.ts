@@ -1,3 +1,8 @@
+/**
+ * パスエディターで使用するマテリアル
+ * MEMO: パスエディターのkonva移行が完了したら、不要になる予定
+ */
+
 import { MeshBasicMaterial, LineBasicMaterial } from "three";
 import { PATH_COLOR } from "~/styles/const";
 

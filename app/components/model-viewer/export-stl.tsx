@@ -1,4 +1,9 @@
-// ExportStl.tsx
+/**
+ * 3DモデルをSTL形式で出力するための処理を行うコンポーネント
+ *
+ * 3DモデルをSTL形式で出力するために、three.jsのSTLExporterを使用している。
+ * 3Dモデルはcoreとwingの2つのパーツに分かれており、meshのnameプロパティで取得するメッシュデータを判別している。
+ */
 import { useThree } from "@react-three/fiber";
 import { useCallback, useEffect } from "react";
 import { STLExporter } from "three/examples/jsm/Addons.js";

@@ -1,3 +1,7 @@
+/**
+ * コンテキストで管理するカーブクラスのインターフェース
+ */
+
 import { Vector2 } from "three";
 
 export interface YoyoCurve {

@@ -1,3 +1,7 @@
+/**
+ * ダウンロードするモデルデータを管理するコンテキスト
+ */
+
 import {
   createContext,
   useReducer,
@@ -6,46 +10,33 @@ import {
   ReactNode,
 } from "react";
 
-type File = {
-  blob: string;
-  type: string;
-};
 interface ModelState {
-  core: File;
-  wing: File;
+  core: Blob | undefined;
+  wing: Blob | undefined;
 }
 
 type Action =
   | { type: "SET_CORE"; payload: string }
   | { type: "SET_WING"; payload: string };
 
-const initialState: ModelState = {
-  core: {
-    blob: "",
-    type: "application/stl",
-  },
-  wing: {
-    blob: "",
-    type: "application/stl",
-  },
-};
+const initialState: ModelState = { core: undefined, wing: undefined };
 
 const ModelStateContext = createContext<ModelState>(initialState);
 const ModelDispatchContext = createContext<Dispatch<Action> | undefined>(
   undefined
 );
 
-const modelReducer = (state: ModelState, action: Action) => {
+const modelReducer = (state: ModelState, action: Action): ModelState => {
   switch (action.type) {
     case "SET_CORE":
       return {
         ...state,
-        core: { blob: action.payload, type: "application/stl" },
+        core: new Blob([action.payload], { type: "application/stl" }),
       };
     case "SET_WING":
       return {
         ...state,
-        wing: { blob: action.payload, type: "application/stl" },
+        wing: new Blob([action.payload], { type: "application/stl" }),
       };
     default:
       throw new Error(`Unknown action`);

@@ -1,3 +1,8 @@
+/**
+ * コア（ベアリングと噛み合わせるパーツ。よりわかりやすい命名を検討中）に関するデータ
+ * 対応するベアリングの種類を増やす場合、ここを変更する
+ */
+
 import { CubicBezierCurve, Vector2 } from "three";
 import { BearingType } from "./bearing";
 

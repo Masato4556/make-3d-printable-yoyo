@@ -1,3 +1,7 @@
+/**
+ * ヨーヨーの接地面にあたる水平線を描画するコンポーネント
+ */
+
 import { Line } from "react-konva";
 import { YoyoHorizontalLine } from "~/contexts/curves/Curve/YoyoHorizontalLine";
 import { PATH_COLOR } from "~/styles/const";

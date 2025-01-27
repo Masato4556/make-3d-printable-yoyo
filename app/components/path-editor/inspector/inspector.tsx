@@ -1,3 +1,7 @@
+/**
+ * ヨーヨーの詳細データを表示するコンポーネント
+ */
+
 import { useInfo } from "./use-info";
 import classes from "./style.module.scss";
 import { useState } from "react";

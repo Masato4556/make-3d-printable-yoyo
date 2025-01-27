@@ -1,3 +1,7 @@
+/**
+ * BuyMeACoffeeへのリンクを表示するコンポーネント
+ */
+
 import classes from "./style.module.scss";
 
 export function BuyMeACoffee() {

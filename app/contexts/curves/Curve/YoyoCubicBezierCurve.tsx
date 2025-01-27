@@ -1,3 +1,7 @@
+/**
+ * コンテキストで管理する2次ベジェ曲線のクラス
+ */
+
 import { CubicBezierCurve, Vector2 } from "three";
 import { YoyoCurve } from "./YoyoCurve";
 

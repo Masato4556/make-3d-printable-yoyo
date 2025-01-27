@@ -1,3 +1,8 @@
+/**
+ * ヨーヨーのキャップを表す縦線を描画するコンポーネント
+ * TODO: ただの縦線を描画するコンポーネントのような命名になっているので、適切な名前に変更する
+ */
+
 import { Circle, Line } from "react-konva";
 import { YoyoVerticalLine } from "~/contexts/curves/Curve/YoyoVerticalLine";
 import { PATH_COLOR } from "~/styles/const";
@@ -9,7 +14,6 @@ type Props = {
 export function VerticalLine(props: Props) {
   const { curve } = props;
 
-  // TODO: カーブを素早く操作中、ハンドルとラインがズレる問題を解消
   return (
     <>
       <Line

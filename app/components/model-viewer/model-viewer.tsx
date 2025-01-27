@@ -1,3 +1,7 @@
+/**
+ * 作成したヨーヨーの3Dモデルを表示するコンポーネント
+ */
+
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { ExportStl } from "~/components/model-viewer/export-stl";

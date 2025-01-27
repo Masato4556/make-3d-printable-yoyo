@@ -1,3 +1,7 @@
+/**
+ * ヨーヨーのカーブを管理するコンテキスト
+ */
+
 import {
   createContext,
   useReducer,
@@ -51,10 +55,18 @@ const yoyoCurveReducer = (state: YoyoCurveState, action: YoyoCurveAction) => {
 
       // 全てのカーブの始点・終点を更新
       for (let i = action.index; i - 1 >= 0; i -= 1) {
-        state.curves[i - 1].updateLastPoint(state.curves[i].getFirstPoint());
+        const current = state.curves[i];
+        if (current === undefined) {
+          break;
+        }
+        state.curves[i - 1]?.updateLastPoint(current.getFirstPoint());
       }
       for (let i = action.index; i + 1 < state.curves.length; i += 1) {
-        state.curves[i + 1].updateFirstPoint(state.curves[i].getLastPoint());
+        const current = state.curves[i];
+        if (current === undefined) {
+          break;
+        }
+        state.curves[i + 1]?.updateFirstPoint(current.getLastPoint());
       }
 
       return {

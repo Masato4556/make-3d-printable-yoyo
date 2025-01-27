@@ -1,8 +1,12 @@
+/**
+ * ヨーヨーの3Dモデルを作成するコンポーネント
+ */
+
 import { MeshPhysicalMaterial, Vector3 } from "three";
 import { BEARING_SIZE } from "~/const/bearing";
 import { CORE_PARAMS } from "~/const/core";
-import { useMirroredGeometry } from "~/hooks/use-mirrored-geometry";
-import { useYoyoGeometry } from "~/hooks/use-yoyo-geometry";
+import { useMirroredGeometry } from "./hooks/use-mirrored-geometry";
+import { useYoyoGeometry } from "./hooks/use-yoyo-geometry";
 
 export function YoyoModel() {
   const { coreGeometry, wingGeometry } = useYoyoGeometry();

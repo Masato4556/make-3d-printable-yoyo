@@ -1,3 +1,7 @@
+/**
+ * ヨーヨーのデータをダウンロードするためのボタンコンポーネント
+ */
+
 import { useCallback } from "react";
 import { useModelState } from "~/contexts/ModelContext";
 import classes from "./style.module.scss";
@@ -7,25 +11,13 @@ export function DownoadButton() {
   const { core, wing } = useModelState();
 
   const downloadCore = useCallback(() => {
-    if (!core.blob || !core.type) return;
-    const element = document.createElement("a");
-    const file = new Blob([core.blob], { type: core.type });
-    element.href = URL.createObjectURL(file);
-    element.download = "yoyo.stl";
-    document.body.appendChild(element);
-    element.click();
-    element.remove();
+    if (core === undefined) return;
+    downloadBlob(core, "core.stl");
   }, [core]);
 
   const downloadWing = useCallback(() => {
-    if (!wing.blob || !wing.type) return;
-    const element = document.createElement("a");
-    const file = new Blob([wing.blob], { type: wing.type });
-    element.href = URL.createObjectURL(file);
-    element.download = "yoyo.stl";
-    document.body.appendChild(element);
-    element.click();
-    element.remove();
+    if (wing === undefined) return;
+    downloadBlob(wing, "wing.stl");
   }, [wing]);
 
   return (
@@ -46,4 +38,13 @@ export function DownoadButton() {
       <BuyMeACoffee />
     </div>
   );
+}
+
+function downloadBlob(blob: Blob, filename: string) {
+  const element = document.createElement("a");
+  element.href = URL.createObjectURL(blob);
+  element.download = filename;
+  document.body.appendChild(element);
+  element.click();
+  element.remove();
 }

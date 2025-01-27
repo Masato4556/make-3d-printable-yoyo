@@ -1,3 +1,7 @@
+/**
+ * YoyoCurveの種類に応じて適切なCurveComponentを返すコンポーネント
+ */
+
 import { YoyoCurve } from "~/contexts/curves/Curve/YoyoCurve";
 import { YoyoCubicBezierCurve } from "~/contexts/curves/Curve/YoyoCubicBezierCurve";
 import { YoyoHorizontalLine } from "~/contexts/curves/Curve/YoyoHorizontalLine";
@@ -26,5 +30,13 @@ export function CurveComponent({ curve }: Props) {
         return <VerticalLine curve={curve} />;
       }
       break;
+    default:
+      throw new UnknownCurveTypeError(curve.type);
+  }
+}
+
+class UnknownCurveTypeError extends Error {
+  constructor(type: string) {
+    super(`Unknown curve type: ${type}`);
   }
 }

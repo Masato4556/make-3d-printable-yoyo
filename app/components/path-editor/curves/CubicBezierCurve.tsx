@@ -1,3 +1,7 @@
+/**
+ * 2次ベジェ曲線を描画するコンポーネント
+ */
+
 import { KonvaEventObject } from "konva/lib/Node";
 import { Circle, Line, Rect, Shape } from "react-konva";
 import { YoyoCubicBezierCurve } from "~/contexts/curves/Curve/YoyoCubicBezierCurve";
@@ -6,8 +10,6 @@ import { PATH_COLOR } from "~/styles/const";
 type Props = {
   curve: YoyoCubicBezierCurve;
 };
-
-const POINT_NUM = 64;
 
 export function CubicBezierCurve(props: Props) {
   console.log("render CubicBezierCurve");

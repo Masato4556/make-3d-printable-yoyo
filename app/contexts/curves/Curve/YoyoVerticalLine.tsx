@@ -1,3 +1,7 @@
+/**
+ * コンテキストで管理する縦線のクラス
+ */
+
 import { Vector2 } from "three";
 import { YoyoCurve } from "./YoyoCurve";
 

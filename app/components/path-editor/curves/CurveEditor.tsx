@@ -1,3 +1,7 @@
+/**
+ * ユーザーが操作できるヨーヨーのパスを表示するコンポーネント
+ */
+
 import { Stage, Layer, Circle, Line } from "react-konva";
 import { CurveComponent } from "./CurveComponent";
 import { useYoyoCurveState } from "~/contexts/YoyoCurveContext";

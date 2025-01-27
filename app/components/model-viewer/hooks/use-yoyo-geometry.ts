@@ -1,3 +1,8 @@
+/**
+ * ヨーヨーの形状を生成するためのフック
+ * TODO: 要リファクタ(マジックナンバーの除去、パスの生成方法の見直し、パスの向きの統一)
+ */
+
 import { useMemo } from "react";
 import { Vector2, LatheGeometry, Mesh, BufferGeometry } from "three";
 import { CSG } from "three-csg-ts";

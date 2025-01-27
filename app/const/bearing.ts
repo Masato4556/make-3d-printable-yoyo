@@ -1,3 +1,7 @@
+/**
+ * ベアリングに関するデータ
+ * 対応するベアリングの種類を増やす場合、ここを変更する
+ */
 export const BEARING_SIZE: Record<
   BearingType,
   { width: number; innerDiameter: number; outerDiameter: number }
@@ -7,6 +11,6 @@ export const BEARING_SIZE: Record<
 
 export type BearingType = "sizeC";
 
-export const BEARING_TYPES: Record<string, BearingType> = {
+export const BEARING_TYPES = {
   sizeC: "sizeC",
 } as const;
