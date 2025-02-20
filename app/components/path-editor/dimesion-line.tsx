@@ -1,6 +1,6 @@
 /**
  * ヨーヨーパスの寸法を表示するコンポーネント
- *　TODO: konva移行がまだできていないので、要対応
+ * TODO: konva移行がまだできていないので、要対応
  */
 
 import { Line, Text3D } from "@react-three/drei";

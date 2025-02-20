@@ -2,7 +2,7 @@
  * コンテキストで管理するカーブクラスのインターフェース
  */
 
-import { Vector2 } from "three";
+import { Vector2 } from "~/contexts/Vector2";
 
 export interface YoyoCurve {
   id: string;

@@ -2,7 +2,8 @@
  * コンテキストで管理する2次ベジェ曲線のクラス
  */
 
-import { CubicBezierCurve, Vector2 } from "three";
+import { Vector2 } from "~/contexts/Vector2";
+import { getCubicBezierCurve } from "./getCubicBezierCurve";
 import { YoyoCurve } from "./YoyoCurve";
 
 type Option = {
@@ -12,7 +13,12 @@ type Option = {
 export class YoyoCubicBezierCurve implements YoyoCurve {
   index: number = 0;
   type: string = "CubicBezierCurve";
-  curve: CubicBezierCurve;
+  handles: {
+    v0: Vector2;
+    v1: Vector2;
+    v2: Vector2;
+    v3: Vector2;
+  };
   updateDispath: (curve: YoyoCurve, index: number) => void;
   divedeDispath: (curve: YoyoCurve[], index: number) => void;
   option?: Option;
@@ -26,7 +32,7 @@ export class YoyoCubicBezierCurve implements YoyoCurve {
     divedeDispath: (curve: YoyoCurve[], index: number) => void,
     option?: Option
   ) {
-    this.curve = new CubicBezierCurve(v0, v1, v2, v3);
+    this.handles = { v0, v1, v2, v3 };
     this.updateDispath = updateDispath;
     this.divedeDispath = divedeDispath;
     this.option = option;
@@ -35,19 +41,26 @@ export class YoyoCubicBezierCurve implements YoyoCurve {
     }_${v2.x}_${v2.y}_${v3.x}_${v3.y}`;
   }
   getPath(): Vector2[] {
-    return this.curve.getPoints(64);
+    // 2次ベジェ曲線のパスを返す
+    return getCubicBezierCurve(
+      this.handles.v0,
+      this.handles.v1,
+      this.handles.v2,
+      this.handles.v3,
+      64
+    );
   }
   getFirstPoint(): Vector2 {
-    return this.curve.v0;
+    return this.handles.v0;
   }
   getLastPoint(): Vector2 {
-    return this.curve.v3;
+    return this.handles.v3;
   }
   updateFirstPoint(v: Vector2): void {
-    this.curve.v0 = v;
+    this.handles.v0 = v;
   }
   updateLastPoint(v: Vector2): void {
-    this.curve.v3 = v;
+    this.handles.v3 = v;
   }
   setIndex(index: number): void {
     this.index = index;

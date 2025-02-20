@@ -4,7 +4,7 @@
  */
 
 import { Circle, Line } from "react-konva";
-import { YoyoVerticalLine } from "~/contexts/curves/Curve/YoyoVerticalLine";
+import { YoyoVerticalLine } from "~/contexts/curves/YoyoVerticalLine";
 import { PATH_COLOR } from "~/styles/const";
 
 type Props = {
@@ -29,8 +29,8 @@ export function VerticalLine(props: Props) {
         stroke={PATH_COLOR}
         draggable
         onDragMove={(e) => {
-          curve.v0.setX(e.target.x());
-          curve.v1.setX(e.target.x());
+          curve.v0 = curve.v0.withX(e.target.x());
+          curve.v1 = curve.v1.withX(e.target.x());
           e.target.y(curve.v1.y);
 
           curve.updateDispath(curve, curve.index);

@@ -11,11 +11,12 @@ import {
   useMemo,
   useEffect,
 } from "react";
-import { Vector2 } from "three";
-import { YoyoCurve } from "./curves/Curve/YoyoCurve";
-import { YoyoCubicBezierCurve } from "./curves/Curve/YoyoCubicBezierCurve";
-import { YoyoVerticalLine } from "./curves/Curve/YoyoVerticalLine";
-import { YoyoHorizontalLine } from "./curves/Curve/YoyoHorizontalLine";
+
+import { YoyoCurve } from "./curves/YoyoCurve";
+import { YoyoCubicBezierCurve } from "./curves/YoyoCubicBezierCurve";
+import { YoyoVerticalLine } from "./curves/YoyoVerticalLine";
+import { YoyoHorizontalLine } from "./curves/YoyoHorizontalLine";
+import { Vector2 } from "~/contexts/Vector2";
 
 interface YoyoCurveState {
   curves: YoyoCurve[];

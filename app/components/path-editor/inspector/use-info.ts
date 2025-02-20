@@ -3,8 +3,8 @@
  */
 
 import { useMemo } from "react";
-import { Vector2 } from "three";
 import { useYoyoPath } from "~/contexts/YoyoCurveContext";
+import { Vector2 } from "~/contexts/Vector2";
 
 export function useInfo() {
   const { yoyoPath } = useYoyoPath();

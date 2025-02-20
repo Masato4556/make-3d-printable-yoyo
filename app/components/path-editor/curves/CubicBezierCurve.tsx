@@ -4,15 +4,15 @@
 
 import { KonvaEventObject } from "konva/lib/Node";
 import { Circle, Line, Rect, Shape } from "react-konva";
-import { YoyoCubicBezierCurve } from "~/contexts/curves/Curve/YoyoCubicBezierCurve";
+import { YoyoCubicBezierCurve } from "~/contexts/curves/YoyoCubicBezierCurve";
 import { PATH_COLOR } from "~/styles/const";
+import { Vector2 } from "~/contexts/Vector2";
 
 type Props = {
   curve: YoyoCubicBezierCurve;
 };
 
 export function CubicBezierCurve(props: Props) {
-  console.log("render CubicBezierCurve");
   const { curve } = props;
 
   return (
@@ -23,30 +23,29 @@ export function CubicBezierCurve(props: Props) {
         lineCap="round"
         sceneFunc={(ctx, shape) => {
           ctx.beginPath();
-          ctx.moveTo(curve.curve.v0.x, curve.curve.v0.y);
+          ctx.moveTo(curve.handles.v0.x, curve.handles.v0.y);
           ctx.bezierCurveTo(
-            curve.curve.v1.x,
-            curve.curve.v1.y,
-            curve.curve.v2.x,
-            curve.curve.v2.y,
-            curve.curve.v3.x,
-            curve.curve.v3.y
+            curve.handles.v1.x,
+            curve.handles.v1.y,
+            curve.handles.v2.x,
+            curve.handles.v2.y,
+            curve.handles.v3.x,
+            curve.handles.v3.y
           );
           ctx.fillStrokeShape(shape);
         }}
       />
       <BezierCurvePoint
         point={{
-          x: curve.curve.v0.x,
-          y: curve.curve.v0.y,
+          x: curve.handles.v0.x,
+          y: curve.handles.v0.y,
           onDragMove: () => {},
         }}
         handle={{
-          x: curve.curve.v1.x,
-          y: curve.curve.v1.y,
+          x: curve.handles.v1.x,
+          y: curve.handles.v1.y,
           onDragMove: (e) => {
-            curve.curve.v1.setX(e.target.x());
-            curve.curve.v1.setY(e.target.y());
+            curve.handles.v1 = new Vector2(e.target.x(), e.target.y());
 
             curve.updateDispath(curve, curve.index);
           },
@@ -55,25 +54,23 @@ export function CubicBezierCurve(props: Props) {
 
       <BezierCurvePoint
         point={{
-          x: curve.curve.v3.x,
-          y: curve.curve.v3.y,
+          x: curve.handles.v3.x,
+          y: curve.handles.v3.y,
           draggable: true,
           onDragMove: (e) => {
-            const moveX = e.target.x() - curve.curve.v3.x;
-            const moveY = e.target.y() - curve.curve.v3.y;
-            curve.curve.v3.setX(e.target.x());
-            curve.curve.v3.setY(e.target.y());
-            curve.curve.v2.add({ x: moveX, y: moveY });
+            const currentV3 = new Vector2(e.target.x(), e.target.y());
+            const moveVector = currentV3.sub(curve.handles.v3);
 
+            curve.handles.v3 = currentV3;
+            curve.handles.v2 = curve.handles.v2.add(moveVector);
             curve.updateDispath(curve, curve.index);
           },
         }}
         handle={{
-          x: curve.curve.v2.x,
-          y: curve.curve.v2.y,
+          x: curve.handles.v2.x,
+          y: curve.handles.v2.y,
           onDragMove: (e) => {
-            curve.curve.v2.setX(e.target.x());
-            curve.curve.v2.setY(e.target.y());
+            curve.handles.v2 = new Vector2(e.target.x(), e.target.y());
 
             curve.updateDispath(curve, curve.index);
           },

@@ -6,8 +6,8 @@ import { Stage, Layer, Circle, Line } from "react-konva";
 import { CurveComponent } from "./CurveComponent";
 import { useYoyoCurveState } from "~/contexts/YoyoCurveContext";
 import { useMemo } from "react";
-import { Vector2 } from "three";
 import { BACKGROUND_COLOR, PATH_COLOR } from "~/styles/const";
+import { Vector2 } from "~/contexts/Vector2";
 
 export function CurveEditor() {
   const { curves } = useYoyoCurveState();
