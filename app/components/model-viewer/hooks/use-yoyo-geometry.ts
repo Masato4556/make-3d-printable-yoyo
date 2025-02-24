@@ -11,8 +11,11 @@ export const useYoyoGeometry = function () {
 
   return useMemo(() => {
     const geometryFactory = new GeometryFactory(bearingType, yoyoPath);
+    const bearingSeat = geometryFactory.getBearingSeat();
     return {
-      bearingSeatGeometry: geometryFactory.getBearingSeatGeometry(),
+      bearing: geometryFactory.getBearing(),
+      bearingSeatGeometry: bearingSeat.getGeometry(),
+      bearingSeatHeight: bearingSeat.getHeight(),
       wingGeometry: geometryFactory.getWingGeometry(),
     };
   }, [bearingType, yoyoPath]);

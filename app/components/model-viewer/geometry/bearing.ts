@@ -23,7 +23,7 @@ const bearingSizes: BearingSizes = {
 
 export type BearingSizeType = keyof typeof bearingSizes;
 
-export class BearingGeometry {
+export class Bearing {
   public width: number;
   public innerDiameter: number;
   public outerDiameter: number;
@@ -36,10 +36,6 @@ export class BearingGeometry {
 
   public static fromSize(type: BearingSizeType) {
     const size = bearingSizes[type];
-    return new BearingGeometry(
-      size.width,
-      size.innerDiameter,
-      size.outerDiameter
-    );
+    return new Bearing(size.width, size.innerDiameter, size.outerDiameter);
   }
 }

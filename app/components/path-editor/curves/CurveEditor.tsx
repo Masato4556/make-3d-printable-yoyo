@@ -2,11 +2,11 @@
  * ユーザーが操作できるヨーヨーのパスを表示するコンポーネント
  */
 
-import { Stage, Layer, Circle, Line } from "react-konva";
+import { Circle, Line, Group } from "react-konva";
 import { CurveComponent } from "./CurveComponent";
 import { useYoyoCurveState } from "~/contexts/YoyoCurveContext";
 import { useMemo } from "react";
-import { BACKGROUND_COLOR, PATH_COLOR } from "~/styles/const";
+import { PATH_COLOR } from "~/styles/const";
 import { Vector2 } from "~/contexts/Vector2";
 
 export function CurveEditor() {
@@ -21,31 +21,20 @@ export function CurveEditor() {
   );
 
   return (
-    <Stage
-      width={window.innerWidth}
-      height={window.innerHeight}
-      style={{ background: BACKGROUND_COLOR }}
-      offset={{
-        x: -window.innerWidth / 2,
-        y: -window.innerHeight / 2,
-      }}
-    >
-      <Layer scale={{ x: 5, y: -5 }}>
-        {curves.map((curve) => {
-          return <CurveComponent key={curve.id} curve={curve} />;
-        })}
-
-        <Circle x={200} y={200} stroke="black" radius={50} />
-        <Line
-          stroke={PATH_COLOR}
-          strokeWidth={0.8}
-          points={mirreredPath.reduce<number[]>((acc, cur) => {
-            acc.push(cur.x);
-            acc.push(cur.y);
-            return acc;
-          }, [])}
-        />
-      </Layer>
-    </Stage>
+    <Group scale={{ x: 5, y: -5 }}>
+      <Circle x={200} y={200} stroke="black" radius={50} />
+      <Line
+        stroke={PATH_COLOR}
+        strokeWidth={0.8}
+        points={mirreredPath.reduce<number[]>((acc, cur) => {
+          acc.push(cur.x);
+          acc.push(cur.y);
+          return acc;
+        }, [])}
+      />
+      {curves.map((curve) => {
+        return <CurveComponent key={curve.id} curve={curve} />;
+      })}
+    </Group>
   );
 }

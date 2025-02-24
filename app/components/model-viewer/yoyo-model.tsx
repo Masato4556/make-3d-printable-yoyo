@@ -3,13 +3,12 @@
  */
 
 import { MeshPhysicalMaterial, Vector3 } from "three";
-import { BearingGeometry } from "~/const/bearing";
-import { BEARING_SEAT_PARAMS } from "~/const/bearingSeat";
 import { useMirroredGeometry } from "./hooks/use-mirrored-geometry";
 import { useYoyoGeometry } from "./hooks/use-yoyo-geometry";
 
 export function YoyoModel() {
-  const { bearingSeatGeometry, wingGeometry } = useYoyoGeometry();
+  const { bearing, bearingSeatGeometry, bearingSeatHeight, wingGeometry } =
+    useYoyoGeometry();
   const mirroredBearingSeatGeometry = useMirroredGeometry(bearingSeatGeometry);
   const mirroredWingGeometry = useMirroredGeometry(wingGeometry);
 
@@ -23,16 +22,14 @@ export function YoyoModel() {
     specularColor: 0x000000,
   });
 
-  const bearingWidth = BearingGeometry.fromSize("sizeC").width;
-
   return (
     <group visible={!!bearingSeatGeometry}>
-      <group position={new Vector3(-bearingWidth / 2, 0, 0)}>
+      <group position={new Vector3(-bearing.width / 2, 0, 0)}>
         <mesh
           name="core"
           geometry={bearingSeatGeometry}
           material={material}
-          position={new Vector3(-BEARING_SEAT_PARAMS.sizeC.height, 0, 0)}
+          position={new Vector3(-bearingSeatHeight, 0, 0)}
         />
         <mesh
           name="wing"
@@ -41,11 +38,11 @@ export function YoyoModel() {
           position={new Vector3(0, 0, 0)}
         />
       </group>
-      <group position={new Vector3(bearingWidth / 2, 0, 0)}>
+      <group position={new Vector3(bearing.width / 2, 0, 0)}>
         <mesh
           geometry={mirroredBearingSeatGeometry}
           material={material}
-          position={new Vector3(BEARING_SEAT_PARAMS.sizeC.height, 0, 0)}
+          position={new Vector3(bearingSeatHeight, 0, 0)}
         />
         <mesh
           geometry={mirroredWingGeometry}

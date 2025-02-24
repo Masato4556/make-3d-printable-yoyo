@@ -3,11 +3,13 @@
  * TODO: konva移行がまだできていないので、要対応
  */
 
-import { Line, Text3D } from "@react-three/drei";
+import { Text3D } from "@react-three/drei";
 import { useMemo } from "react";
-import { Vector2, Vector3 } from "three";
-import { WIRE_COLOR } from "~/styles/const";
-import { curveMaterial } from "~/utils/material";
+import { Line } from "react-konva";
+import { MeshBasicMaterial, Vector2, Vector3 } from "three";
+import { PATH_COLOR, WIRE_COLOR } from "~/styles/const";
+
+const curveMaterial = new MeshBasicMaterial({ color: PATH_COLOR });
 
 type DimesionLineProps = {
   curveFirstPoint: Vector2;
@@ -20,76 +22,76 @@ export function DimesionLine(props: DimesionLineProps) {
     return {
       // Width Line
       leftEdgeLine: {
-        points: [
-          new Vector2(curveFirstPoint.x, curveFirstPoint.y),
-          new Vector2(curveFirstPoint.x, curveLastPoint.y + 13),
-        ],
+        points: {
+          v0: new Vector2(curveFirstPoint.x, curveFirstPoint.y),
+          v1: new Vector2(curveFirstPoint.x, curveLastPoint.y + 13),
+        },
         color: WIRE_COLOR,
         lineWidth: 1,
       },
       rightEdgeLine: {
-        points: [
-          new Vector2(rimOutsidePosition.x, curveLastPoint.y),
-          new Vector2(rimOutsidePosition.x, curveLastPoint.y + 13),
-        ],
+        points: {
+          v0: new Vector2(rimOutsidePosition.x, curveLastPoint.y),
+          v1: new Vector2(rimOutsidePosition.x, curveLastPoint.y + 13),
+        },
         color: WIRE_COLOR,
         lineWidth: 1,
       },
       widhtLineGeometry: {
-        points: [
-          new Vector2(curveFirstPoint.x, curveLastPoint.y + 10),
-          new Vector2(rimOutsidePosition.x, curveLastPoint.y + 10),
-        ],
+        points: {
+          v0: new Vector2(curveFirstPoint.x, curveLastPoint.y + 10),
+          v1: new Vector2(rimOutsidePosition.x, curveLastPoint.y + 10),
+        },
         color: WIRE_COLOR,
         lineWidth: 1,
       },
       // Diameter Line
       upperEdgeLine: {
-        points: [
-          new Vector2(rimOutsidePosition.x, curveLastPoint.y),
-          new Vector2(rimOutsidePosition.x + 15, curveLastPoint.y),
-        ],
+        points: {
+          v0: new Vector2(rimOutsidePosition.x, curveLastPoint.y),
+          v1: new Vector2(rimOutsidePosition.x + 15, curveLastPoint.y),
+        },
         color: WIRE_COLOR,
         lineWidth: 1,
       },
       bottomEdgeLine: {
-        points: [
-          new Vector2(rimOutsidePosition.x, -curveLastPoint.y),
-          new Vector2(rimOutsidePosition.x + 15, -curveLastPoint.y),
-        ],
+        points: {
+          v0: new Vector2(rimOutsidePosition.x, -curveLastPoint.y),
+          v1: new Vector2(rimOutsidePosition.x + 15, -curveLastPoint.y),
+        },
         color: WIRE_COLOR,
         lineWidth: 1,
       },
       heightLineGeometry: {
-        points: [
-          new Vector2(rimOutsidePosition.x + 10, curveLastPoint.y),
-          new Vector2(rimOutsidePosition.x + 10, -curveLastPoint.y),
-        ],
+        points: {
+          v0: new Vector2(rimOutsidePosition.x + 10, curveLastPoint.y),
+          v1: new Vector2(rimOutsidePosition.x + 10, -curveLastPoint.y),
+        },
         color: WIRE_COLOR,
         lineWidth: 1,
       },
       // Flat Width Line
       flatLeftEdgeLine: {
-        points: [
-          new Vector2(curveLastPoint.x, -curveLastPoint.y),
-          new Vector2(curveLastPoint.x, -curveLastPoint.y - 15),
-        ],
+        points: {
+          v0: new Vector2(curveLastPoint.x, -curveLastPoint.y),
+          v1: new Vector2(curveLastPoint.x, -curveLastPoint.y - 15),
+        },
         color: WIRE_COLOR,
         lineWidth: 1,
       },
       flatRightEdgeLine: {
-        points: [
-          new Vector2(rimOutsidePosition.x, -curveLastPoint.y),
-          new Vector2(rimOutsidePosition.x, -curveLastPoint.y - 15),
-        ],
+        points: {
+          v0: new Vector2(rimOutsidePosition.x, -curveLastPoint.y),
+          v1: new Vector2(rimOutsidePosition.x, -curveLastPoint.y - 15),
+        },
         color: WIRE_COLOR,
         lineWidth: 1,
       },
       flatWidthLine: {
-        points: [
-          new Vector2(curveLastPoint.x, -curveLastPoint.y - 10),
-          new Vector2(rimOutsidePosition.x, -curveLastPoint.y - 10),
-        ],
+        points: {
+          v0: new Vector2(curveLastPoint.x, -curveLastPoint.y - 10),
+          v1: new Vector2(rimOutsidePosition.x, -curveLastPoint.y - 10),
+        },
         color: WIRE_COLOR,
         lineWidth: 1,
       },
@@ -106,7 +108,14 @@ export function DimesionLine(props: DimesionLineProps) {
     <>
       {Object.entries(lineProps).map(([key, { points, color, lineWidth }]) => {
         return (
-          <Line key={key} points={points} color={color} lineWidth={lineWidth} />
+          // <Line key={key} points={points} color={color} lineWidth={lineWidth} />
+          <Line
+            key={key}
+            stroke={color}
+            strokeWidth={lineWidth}
+            lineCap="round"
+            points={[points.v0.x, points.v0.y, points.v1.x, points.v1.y]}
+          />
         );
       })}
       <Text3D

@@ -1,13 +1,11 @@
+import { BufferGeometry, LatheGeometry, Vector2 as ThreeVector2 } from "three";
 import {
-  BufferGeometry,
-  LatheGeometry,
-  Mesh,
-  Vector2 as ThreeVector2,
-} from "three";
-import { BEARING_SEAT_HEIGHT, BEARING_SEAT_PARAMS } from "~/const/bearingSeat";
-import { CSG } from "three-csg-ts";
-import { BearingSizeType } from "~/const/bearing";
+  BEARING_SEAT_PARAMS,
+  BearingSeat,
+} from "~/components/model-viewer/geometry/bearingSeat";
+
 import { Vector2 } from "~/contexts/Vector2";
+import { Bearing, BearingSizeType } from "./bearing";
 
 /**
  * ヨーヨーの形状を生成するためのフック
@@ -16,64 +14,26 @@ import { Vector2 } from "~/contexts/Vector2";
 
 const GAP = 0.2; // coreとウィングの間の隙間
 
-const unionGeometry = function (
-  geometry1: BufferGeometry,
-  geometry2: BufferGeometry
-) {
-  const mesh1 = new Mesh(geometry1);
-  const mesh2 = new Mesh(geometry2);
-
-  // CSG操作
-  const csg1 = CSG.fromMesh(mesh1);
-  const csg2 = CSG.fromMesh(mesh2);
-  const resultCSG = csg2.union(csg1);
-  const resultMesh = CSG.toMesh(resultCSG, mesh2.matrix);
-  resultMesh.updateMatrix();
-  const unionedGeometry = resultMesh.geometry;
-  unionedGeometry.computeVertexNormals();
-  return unionedGeometry;
-};
-
 export class GeometryFactory {
-  private bearingSeatGeometry: BufferGeometry;
+  private bearing: Bearing;
+  private bearingSeat: BearingSeat;
   private wingGeometry: BufferGeometry;
   constructor(bearingSizeType: BearingSizeType, wingPath: Vector2[]) {
-    this.bearingSeatGeometry = this.createBearingSeatGeometry(bearingSizeType);
+    this.bearing = Bearing.fromSize(bearingSizeType);
+    this.bearingSeat = new BearingSeat(bearingSizeType);
     this.wingGeometry = this.createWingGeometry(wingPath);
   }
 
-  public getBearingSeatGeometry() {
-    return this.bearingSeatGeometry;
+  public getBearing() {
+    return this.bearing;
+  }
+
+  public getBearingSeat() {
+    return this.bearingSeat;
   }
 
   public getWingGeometry() {
     return this.wingGeometry;
-  }
-
-  private createBearingSeatGeometry(bearingSizeType: BearingSizeType) {
-    if (!BEARING_SEAT_PARAMS[bearingSizeType].path) {
-      throw new Error(`Invalid bearing type: ${bearingSizeType}`);
-    }
-
-    const corePath = BEARING_SEAT_PARAMS[bearingSizeType].path;
-    const core = new LatheGeometry(corePath, 100);
-    const napGap = new LatheGeometry(
-      [new ThreeVector2()].concat(
-        new ThreeVector2(0, 0),
-        new ThreeVector2(4.5, 0),
-        new ThreeVector2(4.5, -BEARING_SEAT_HEIGHT),
-        new ThreeVector2(0, -BEARING_SEAT_HEIGHT)
-      ),
-      6 // 六角形にすることで圧入しやすくしている
-    ).scale(-1, 1, 1);
-
-    const coreGeometry = unionGeometry(core, napGap);
-    // 法線の反転
-    coreGeometry.scale(1, -1, 1);
-    coreGeometry.translate(0, -BEARING_SEAT_HEIGHT, 0);
-    coreGeometry.rotateZ(Math.PI / 2);
-
-    return coreGeometry;
   }
 
   private createWingGeometry(wingPath: Vector2[]) {

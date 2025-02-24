@@ -96,6 +96,11 @@ type BezierCurvePointProps = {
 function BezierCurvePoint({ point, handle }: BezierCurvePointProps) {
   return (
     <>
+      <Line
+        points={[point.x, point.y, handle.x, handle.y]}
+        stroke={PATH_COLOR}
+        strokeWidth={0.4}
+      />
       <Circle
         x={point.x}
         y={point.y}
@@ -112,11 +117,6 @@ function BezierCurvePoint({ point, handle }: BezierCurvePointProps) {
         stroke={PATH_COLOR}
         draggable
         onDragMove={handle.onDragMove}
-      />
-      <Line
-        points={[point.x, point.y, handle.x, handle.y]}
-        stroke={PATH_COLOR}
-        strokeWidth={0.4}
       />
     </>
   );
