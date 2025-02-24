@@ -8,7 +8,8 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "report:dep": "depcruise app --include-only \"^app\" --output-type dot | dot -T svg > dependency-graph.svg"
   },
   "dependencies": {
     "@react-three/drei": "^9.105.6",
