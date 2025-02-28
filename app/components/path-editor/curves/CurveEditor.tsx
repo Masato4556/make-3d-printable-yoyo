@@ -7,7 +7,7 @@ import { CurveComponent } from "./CurveComponent";
 import { useYoyoCurveState } from "~/yoyo/YoyoCurveContext";
 import { useMemo } from "react";
 import { PATH_COLOR } from "~/components/path-editor/style";
-import { Vector2 } from "~/yoyo/Vector2";
+import { Vector2 } from "~/math/Vector2";
 
 export function CurveEditor() {
   const { curves } = useYoyoCurveState();
