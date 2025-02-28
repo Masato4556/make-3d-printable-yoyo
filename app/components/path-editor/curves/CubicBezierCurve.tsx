@@ -4,9 +4,9 @@
 
 import { KonvaEventObject } from "konva/lib/Node";
 import { Circle, Line, Rect, Shape } from "react-konva";
-import { YoyoCubicBezierCurve } from "~/contexts/curves/YoyoCubicBezierCurve";
+import { YoyoCubicBezierCurve } from "~/yoyo/curves/YoyoCubicBezierCurve";
 import { PATH_COLOR } from "~/components/path-editor/style";
-import { Vector2 } from "~/contexts/Vector2";
+import { Vector2 } from "~/yoyo/Vector2";
 
 type Props = {
   curve: YoyoCubicBezierCurve;

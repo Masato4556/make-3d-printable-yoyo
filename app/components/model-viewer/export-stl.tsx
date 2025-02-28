@@ -7,7 +7,7 @@
 import { useThree } from "@react-three/fiber";
 import { useCallback, useEffect } from "react";
 import { STLExporter } from "three/examples/jsm/Addons.js";
-import { useModelDispatch } from "~/contexts/ModelContext";
+import { useModelDispatch } from "~/yoyo/ModelContext";
 
 export function ExportStl() {
   // const { setCore, setWing } = props;

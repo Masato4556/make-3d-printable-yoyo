@@ -15,7 +15,7 @@ import { YoyoCurve } from "./curves/YoyoCurve";
 import { YoyoCubicBezierCurve } from "./curves/YoyoCubicBezierCurve";
 import { YoyoVerticalLine } from "./curves/YoyoVerticalLine";
 import { YoyoHorizontalLine } from "./curves/YoyoHorizontalLine";
-import { Vector2 } from "~/contexts/Vector2";
+import { Vector2 } from "~/yoyo/Vector2";
 
 interface YoyoCurveState {
   curves: YoyoCurve[];

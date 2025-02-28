@@ -4,10 +4,10 @@
 
 import { Circle, Line, Group } from "react-konva";
 import { CurveComponent } from "./CurveComponent";
-import { useYoyoCurveState } from "~/contexts/YoyoCurveContext";
+import { useYoyoCurveState } from "~/yoyo/YoyoCurveContext";
 import { useMemo } from "react";
 import { PATH_COLOR } from "~/components/path-editor/style";
-import { Vector2 } from "~/contexts/Vector2";
+import { Vector2 } from "~/yoyo/Vector2";
 
 export function CurveEditor() {
   const { curves } = useYoyoCurveState();

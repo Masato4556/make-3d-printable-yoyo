@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useYoyoPath } from "~/contexts/YoyoCurveContext";
+import { useYoyoPath } from "~/yoyo/YoyoCurveContext";
 import { GeometryFactory } from "../geometry/GeometryFactory";
 
 // TODO: どのベアリングを選択したかなどのmodel-viewerとpath-viewerで共に用いるデータをproviderから取得できるようにする

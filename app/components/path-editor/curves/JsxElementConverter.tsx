@@ -1,4 +1,4 @@
-import { YoyoCurve } from "~/contexts/curves/YoyoCurve";
+import { YoyoCurve } from "~/yoyo/curves/YoyoCurve";
 
 export class JsxElementConverter {
   private registeredConverters: {

@@ -2,7 +2,7 @@
  * コンテキストで管理する横線のクラス
  */
 
-import { Vector2 } from "~/contexts/Vector2";
+import { Vector2 } from "~/yoyo/Vector2";
 import { YoyoCurve } from "./YoyoCurve";
 
 export class YoyoHorizontalLine implements YoyoCurve {

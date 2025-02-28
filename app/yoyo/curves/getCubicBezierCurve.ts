@@ -1,4 +1,4 @@
-import { Vector2 } from "~/contexts/Vector2";
+import { Vector2 } from "~/yoyo/Vector2";
 
 export function getCubicBezierCurve(
   p0: Vector2,

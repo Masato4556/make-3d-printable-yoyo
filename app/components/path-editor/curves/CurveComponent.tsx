@@ -2,10 +2,10 @@
  * YoyoCurveの種類に応じて適切なCurveComponentを返すコンポーネント
  */
 
-import { YoyoCurve } from "~/contexts/curves/YoyoCurve";
-import { YoyoCubicBezierCurve } from "~/contexts/curves/YoyoCubicBezierCurve";
-import { YoyoHorizontalLine } from "~/contexts/curves/YoyoHorizontalLine";
-import { YoyoVerticalLine } from "~/contexts/curves/YoyoVerticalLine";
+import { YoyoCurve } from "~/yoyo/curves/YoyoCurve";
+import { YoyoCubicBezierCurve } from "~/yoyo/curves/YoyoCubicBezierCurve";
+import { YoyoHorizontalLine } from "~/yoyo/curves/YoyoHorizontalLine";
+import { YoyoVerticalLine } from "~/yoyo/curves/YoyoVerticalLine";
 import { CubicBezierCurve } from "./CubicBezierCurve";
 import { HorizontalLine } from "./HorizontalLine";
 import { VerticalLine } from "./VerticalLine";
