@@ -6,7 +6,6 @@ import {
   createContext,
   useReducer,
   useContext,
-  Dispatch,
   ReactNode,
   useMemo,
   useEffect,
@@ -22,7 +21,7 @@ interface YoyoCurveState {
   curves: YoyoCurve[];
 }
 
-export type YoyoCurveAction =
+type YoyoCurveAction =
   | { type: "SET_CURVES"; curves: YoyoCurve[] }
   | { type: "APPEND_CURVE"; curve: YoyoCurve }
   | { type: "UPDATE_CURVE"; curve: YoyoCurve; index: number }
@@ -33,9 +32,6 @@ const initialState: YoyoCurveState = {
 };
 
 const YoyoCurveStateContext = createContext<YoyoCurveState>(initialState);
-const YoyoCurveDispatchContext = createContext<
-  Dispatch<YoyoCurveAction> | undefined
->(undefined);
 
 const yoyoCurveReducer = (state: YoyoCurveState, action: YoyoCurveAction) => {
   switch (action.type) {
@@ -103,7 +99,7 @@ interface YoyoCurveProviderProps {
   children: ReactNode;
 }
 
-const YoyoCurveProvider = ({ children }: YoyoCurveProviderProps) => {
+export const YoyoCurveProvider = ({ children }: YoyoCurveProviderProps) => {
   const [state, dispatch] = useReducer(yoyoCurveReducer, initialState);
 
   useEffect(() => {
@@ -145,14 +141,12 @@ const YoyoCurveProvider = ({ children }: YoyoCurveProviderProps) => {
 
   return (
     <YoyoCurveStateContext.Provider value={state}>
-      <YoyoCurveDispatchContext.Provider value={dispatch}>
-        {children}
-      </YoyoCurveDispatchContext.Provider>
+      {children}
     </YoyoCurveStateContext.Provider>
   );
 };
 
-const useYoyoCurveState = () => {
+export const useYoyoCurveState = () => {
   const context = useContext(YoyoCurveStateContext);
   if (context === undefined) {
     throw new Error(
@@ -162,17 +156,7 @@ const useYoyoCurveState = () => {
   return context;
 };
 
-const useYoyoCurveDispatch = () => {
-  const context = useContext(YoyoCurveDispatchContext);
-  if (context === undefined) {
-    throw new Error(
-      "useYoyoCurveDispatch must be used within a YoyoCurveProvider"
-    );
-  }
-  return context;
-};
-
-const useYoyoPath = () => {
+export const useYoyoPath = () => {
   const { curves } = useYoyoCurveState();
 
   const yoyoPath = useMemo(() => {
@@ -182,11 +166,4 @@ const useYoyoPath = () => {
   }, [curves]);
 
   return { yoyoPath };
-};
-
-export {
-  YoyoCurveProvider,
-  useYoyoCurveState,
-  useYoyoCurveDispatch,
-  useYoyoPath,
 };
