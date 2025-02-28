@@ -7,7 +7,7 @@ import { Text3D } from "@react-three/drei";
 import { useMemo } from "react";
 import { Line } from "react-konva";
 import { MeshBasicMaterial, Vector2, Vector3 } from "three";
-import { PATH_COLOR, WIRE_COLOR } from "~/styles/const";
+import { PATH_COLOR, WIRE_COLOR } from "~/components/path-editor/style";
 
 const curveMaterial = new MeshBasicMaterial({ color: PATH_COLOR });
 

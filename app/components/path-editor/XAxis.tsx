@@ -3,7 +3,7 @@
  * TODO: konva移行がまだできていないので、要対応
  */
 import { Line } from "react-konva";
-import { PATH_COLOR } from "~/styles/const";
+import { PATH_COLOR } from "~/components/path-editor/style";
 
 export function XAxis() {
   return (

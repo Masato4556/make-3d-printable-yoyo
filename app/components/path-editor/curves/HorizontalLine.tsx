@@ -4,7 +4,7 @@
 
 import { Line } from "react-konva";
 import { YoyoHorizontalLine } from "~/contexts/curves/YoyoHorizontalLine";
-import { PATH_COLOR } from "~/styles/const";
+import { PATH_COLOR } from "~/components/path-editor/style";
 
 type Props = {
   curve: YoyoHorizontalLine;

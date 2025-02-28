@@ -6,7 +6,6 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { ExportStl } from "~/components/model-viewer/export-stl";
 import { DownoadButton } from "./download-button/download-button";
-import { BACKGROUND_COLOR } from "~/styles/const";
 import { YoyoModel } from "./yoyo-model";
 
 type Props = {
@@ -28,7 +27,7 @@ export function ModelViewer(props: Props) {
           position: [0, 0, 100],
           type: "OrthographicCamera",
         }}
-        style={{ background: BACKGROUND_COLOR }}
+        className="background"
       >
         <Environment
           preset={"night"}

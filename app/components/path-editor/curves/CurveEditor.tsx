@@ -6,7 +6,7 @@ import { Circle, Line, Group } from "react-konva";
 import { CurveComponent } from "./CurveComponent";
 import { useYoyoCurveState } from "~/contexts/YoyoCurveContext";
 import { useMemo } from "react";
-import { PATH_COLOR } from "~/styles/const";
+import { PATH_COLOR } from "~/components/path-editor/style";
 import { Vector2 } from "~/contexts/Vector2";
 
 export function CurveEditor() {
