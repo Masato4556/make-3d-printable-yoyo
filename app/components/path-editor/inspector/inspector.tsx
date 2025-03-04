@@ -44,5 +44,3 @@ export function Inspector() {
     </div>
   );
 }
-
-// TODO: コンポーネント分割 + デザインの検討

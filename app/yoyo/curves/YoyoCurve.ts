@@ -14,5 +14,5 @@ export interface YoyoCurve {
   getLastPoint(): Vector2;
   updateFirstPoint(v: Vector2): void;
   updateLastPoint(v: Vector2): void;
-  setIndex(index: number): void; // TODO YoyoCurveがindexを持たなくても良い設計に変更する
+  setIndex(index: number): void;
 }

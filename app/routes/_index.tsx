@@ -27,11 +27,9 @@ export const links: LinksFunction = () => {
   ];
 };
 
-// TODO: モード切り替えのロジックのリファクタリング
 export type Mode = "path" | "model";
 
 export default function Index() {
-  // TODO: MODEの状態管理のリファクタ
   const [mode, setMode] = useState<Mode>("path");
   return (
     <YoyoCurveProvider>

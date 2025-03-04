@@ -9,7 +9,6 @@ import { Bearing, BearingSizeType } from "./bearing";
 
 /**
  * ヨーヨーの形状を生成するためのフック
- * TODO: 要リファクタ(マジックナンバーの除去、パスの生成方法の見直し、パスの向きの統一)
  */
 
 const GAP = 0.2; // coreとウィングの間の隙間
