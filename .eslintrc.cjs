@@ -30,6 +30,7 @@ module.exports = {
     "default-case-last": "error",
     eqeqeq: ["error", "always"],
     "func-style": ["error", "declaration", { allowArrowFunctions: true }], // 最終的にはfunction宣言かアロー関数のどちらかに統一する
+    "max-classes-per-file": ["error", 1],
     "max-lines": [
       "error",
       { max: 1000, skipComments: true, skipBlankLines: true },

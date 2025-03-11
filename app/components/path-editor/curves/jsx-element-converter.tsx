@@ -1,4 +1,5 @@
 import { YoyoCurve } from "~/yoyo/curves/yoyo-curve";
+import { UnknownCurveTypeError } from "./errors/unknown-curve-type-error";
 
 export class JsxElementConverter {
   private registeredConverters: {
@@ -17,11 +18,5 @@ export class JsxElementConverter {
       throw new UnknownCurveTypeError(curve.type);
     }
     return converter(curve);
-  }
-}
-
-class UnknownCurveTypeError extends Error {
-  constructor(type: string) {
-    super(`Unknown curve type: ${type}`);
   }
 }
