@@ -18,8 +18,8 @@ type DimesionLineProps = {
 };
 export function DimesionLine(props: DimesionLineProps) {
   const { curveFirstPoint, curveLastPoint, rimOutsidePosition } = props;
-  const lineProps = useMemo(() => {
-    return {
+  const lineProps = useMemo(
+    () => ({
       // Width Line
       leftEdgeLine: {
         points: {
@@ -95,19 +95,19 @@ export function DimesionLine(props: DimesionLineProps) {
         color: WIRE_COLOR,
         lineWidth: 1,
       },
-    };
-  }, [
-    curveFirstPoint.x,
-    curveFirstPoint.y,
-    curveLastPoint.x,
-    curveLastPoint.y,
-    rimOutsidePosition.x,
-  ]);
+    }),
+    [
+      curveFirstPoint.x,
+      curveFirstPoint.y,
+      curveLastPoint.x,
+      curveLastPoint.y,
+      rimOutsidePosition.x,
+    ]
+  );
 
   return (
     <>
-      {Object.entries(lineProps).map(([key, { points, color, lineWidth }]) => {
-        return (
+      {Object.entries(lineProps).map(([key, { points, color, lineWidth }]) => (
           // <Line key={key} points={points} color={color} lineWidth={lineWidth} />
           <Line
             key={key}
@@ -116,8 +116,7 @@ export function DimesionLine(props: DimesionLineProps) {
             lineCap="round"
             points={[points.v0.x, points.v0.y, points.v1.x, points.v1.y]}
           />
-        );
-      })}
+        ))}
       <Text3D
         font={"/font/Roboto_Regular.json"}
         height={0.0001}

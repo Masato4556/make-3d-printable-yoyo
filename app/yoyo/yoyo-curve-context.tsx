@@ -24,8 +24,14 @@ interface YoyoCurveState {
 type YoyoCurveAction =
   | { type: "SET_CURVES"; curves: YoyoCurve[] }
   | { type: "APPEND_CURVE"; curve: YoyoCurve }
-  | { type: "UPDATE_CURVE"; curve: YoyoCurve; index: number }
+  | UpdateCurveAccction
   | { type: "DIVIDE_CURVE"; curves: YoyoCurve[]; index: number };
+
+type UpdateCurveAccction = {
+  type: "UPDATE_CURVE";
+  curve: YoyoCurve;
+  index: number;
+};
 
 const initialState: YoyoCurveState = {
   curves: [],
@@ -48,27 +54,7 @@ const yoyoCurveReducer = (state: YoyoCurveState, action: YoyoCurveAction) => {
         curves: [...state.curves, action.curve],
       };
     case "UPDATE_CURVE":
-      state.curves[action.index] = action.curve;
-
-      // 全てのカーブの始点・終点を更新
-      for (let i = action.index; i - 1 >= 0; i -= 1) {
-        const current = state.curves[i];
-        if (current === undefined) {
-          break;
-        }
-        state.curves[i - 1]?.updateLastPoint(current.getFirstPoint());
-      }
-      for (let i = action.index; i + 1 < state.curves.length; i += 1) {
-        const current = state.curves[i];
-        if (current === undefined) {
-          break;
-        }
-        state.curves[i + 1]?.updateFirstPoint(current.getLastPoint());
-      }
-
-      return {
-        curves: [...state.curves],
-      };
+      return updateCurve(state, action);
     case "DIVIDE_CURVE":
       return {
         curves: replaceDividedCurve(state.curves, action.index, action.curves),
@@ -76,6 +62,30 @@ const yoyoCurveReducer = (state: YoyoCurveState, action: YoyoCurveAction) => {
     default:
       throw new Error(`Unknown action`);
   }
+};
+
+const updateCurve = (state: YoyoCurveState, action: UpdateCurveAccction) => {
+  state.curves[action.index] = action.curve;
+
+  // 全てのカーブの始点・終点を更新
+  for (let i = action.index; i - 1 >= 0; i -= 1) {
+    const current = state.curves[i];
+    if (current === undefined) {
+      break;
+    }
+    state.curves[i - 1]?.updateLastPoint(current.getFirstPoint());
+  }
+  for (let i = action.index; i + 1 < state.curves.length; i += 1) {
+    const current = state.curves[i];
+    if (current === undefined) {
+      break;
+    }
+    state.curves[i + 1]?.updateFirstPoint(current.getLastPoint());
+  }
+
+  return {
+    curves: [...state.curves],
+  };
 };
 
 const replaceDividedCurve = (
@@ -159,11 +169,11 @@ export const useYoyoCurveState = () => {
 export const useYoyoPath = () => {
   const { curves } = useYoyoCurveState();
 
-  const yoyoPath = useMemo(() => {
-    return curves.reduce<Vector2[]>((acc, cur) => {
-      return [...acc, ...cur.getPath()];
-    }, []);
-  }, [curves]);
+  const yoyoPath = useMemo(
+    () =>
+      curves.reduce<Vector2[]>((acc, cur) => [...acc, ...cur.getPath()], []),
+    [curves]
+  );
 
   return { yoyoPath };
 };

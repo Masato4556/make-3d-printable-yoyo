@@ -32,9 +32,9 @@ export function CurveEditor() {
           return acc;
         }, [])}
       />
-      {curves.map((curve) => {
-        return <CurveComponent key={curve.id} curve={curve} />;
-      })}
+      {curves.map((curve) => (
+        <CurveComponent key={curve.id} curve={curve} />
+      ))}
     </Group>
   );
 }
