@@ -33,7 +33,11 @@ module.exports = {
     "max-classes-per-file": ["error", 1],
     "max-lines": [
       "error",
-      { max: 300, skipComments: false, skipBlankLines: false },
+      { max: 200, skipComments: false, skipBlankLines: false },
+    ],
+    "max-lines-per-function": [
+      "error",
+      { max: 70, skipComments: false, skipBlankLines: false },
     ],
   },
   env: {
