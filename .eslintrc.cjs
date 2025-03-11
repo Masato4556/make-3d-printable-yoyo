@@ -40,6 +40,7 @@ module.exports = {
       { max: 70, skipComments: false, skipBlankLines: false },
     ],
     "max-params": ["error", 4],
+    "no-alert": "error",
   },
   env: {
     browser: true,
