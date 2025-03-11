@@ -1,8 +1,3 @@
-import { type RouteConfig } from "@react-router/dev/routes";
-import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
+import { index, type RouteConfig } from "@react-router/dev/routes";
 
-export default remixRoutesOptionAdapter((defineRoutes) =>
-  defineRoutes((route) => {
-    route("/", "routes/_index.tsx", { index: true });
-  })
-) satisfies RouteConfig;
+export default [index("routes/home.tsx")] satisfies RouteConfig;

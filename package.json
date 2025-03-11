@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@react-router/node": "^7.3.0",
-    "@react-router/remix-routes-option-adapter": "^7.3.0",
     "@react-router/serve": "^7.3.0",
     "@react-three/drei": "^10.0.4",
     "@react-three/fiber": "^9.1.0",
