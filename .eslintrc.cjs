@@ -41,6 +41,7 @@ module.exports = {
     ],
     "max-params": ["error", 4],
     "no-alert": "error",
+    "no-else-return": ["error", { allowElseIf: false }],
   },
   env: {
     browser: true,
