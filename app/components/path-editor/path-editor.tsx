@@ -5,6 +5,7 @@ import { Inspector } from "./inspector/inspector";
 import { CurveEditor } from "./curves/curve-editor";
 import { XAxis } from "./x-axis";
 import { Layer, Stage } from "react-konva";
+import { useWindowSize } from "~/hooks/use-window-size";
 
 type Props = {
   hidden: boolean;
@@ -13,15 +14,17 @@ type Props = {
 export function PathEditor(props: Props) {
   const { hidden } = props;
 
+  const { width, height } = useWindowSize();
+
   return (
     <>
       <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width={width}
+        height={height}
         className="background"
         offset={{
-          x: -window.innerWidth / 2,
-          y: -window.innerHeight / 2,
+          x: -width / 2,
+          y: -height / 2,
         }}
       >
         <Layer zIndex={10}>

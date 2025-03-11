@@ -1,4 +1,4 @@
-import type { MetaFunction, LinksFunction } from "@remix-run/node";
+import type { MetaFunction, LinksFunction } from "react-router";
 import styles from "~/styles/index.scss?url";
 import { ModelViewer } from "~/components/model-viewer/model-viewer";
 import { ModelProvider } from "~/yoyo/model-context";
