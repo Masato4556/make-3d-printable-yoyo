@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { useYoyoPath } from "~/yoyo/YoyoCurveContext";
-import { GeometryFactory } from "../geometry/GeometryFactory";
+import { useYoyoPath } from "~/yoyo/yoyo-curve-context";
+import { GeometryFactory } from "../geometry/geometry-factory";
 
 export const useYoyoGeometry = function () {
   const bearingType = "sizeC"; // TODO: ベアリングの種類を選択できるようにする

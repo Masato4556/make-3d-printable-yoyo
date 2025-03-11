@@ -3,11 +3,11 @@
  */
 
 import { Circle, Line, Group } from "react-konva";
-import { CurveComponent } from "./CurveComponent";
-import { useYoyoCurveState } from "~/yoyo/YoyoCurveContext";
+import { CurveComponent } from "./curve-component";
+import { useYoyoCurveState } from "~/yoyo/yoyo-curve-context";
 import { useMemo } from "react";
 import { PATH_COLOR } from "~/components/path-editor/style";
-import { Vector2 } from "~/math/Vector2";
+import { Vector2 } from "~/math/vector2";
 
 export function CurveEditor() {
   const { curves } = useYoyoCurveState();

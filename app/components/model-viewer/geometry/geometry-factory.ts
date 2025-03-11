@@ -4,7 +4,7 @@ import {
   BearingSeat,
 } from "~/components/model-viewer/geometry/bearingSeat";
 
-import { Vector2 } from "~/math/Vector2";
+import { Vector2 } from "~/math/vector2";
 import { Bearing, BearingSizeType } from "./bearing";
 
 /**

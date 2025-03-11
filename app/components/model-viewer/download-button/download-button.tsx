@@ -3,7 +3,7 @@
  */
 
 import { useCallback } from "react";
-import { useModelState } from "~/yoyo/ModelContext";
+import { useModelState } from "~/yoyo/model-context";
 import classes from "./style.module.scss";
 import { BuyMeACoffee } from "./buy-me-a-coffee/buy-me-a-coffee";
 

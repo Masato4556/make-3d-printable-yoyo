@@ -2,8 +2,8 @@
  * ヨーヨーのパスエディターのトップレベルコンポーネント
  */
 import { Inspector } from "./inspector/inspector";
-import { CurveEditor } from "./curves/CurveEditor";
-import { XAxis } from "./XAxis";
+import { CurveEditor } from "./curves/curve-editor";
+import { XAxis } from "./x-axis";
 import { Layer, Stage } from "react-konva";
 
 type Props = {

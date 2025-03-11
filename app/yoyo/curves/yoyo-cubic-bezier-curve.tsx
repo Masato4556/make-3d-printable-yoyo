@@ -2,9 +2,9 @@
  * コンテキストで管理する2次ベジェ曲線のクラス
  */
 
-import { Vector2 } from "~/math/Vector2";
-import { getCubicBezierCurve } from "./getCubicBezierCurve";
-import { YoyoCurve } from "./YoyoCurve";
+import { Vector2 } from "~/math/vector2";
+import { getCubicBezierCurve } from "./get-cubic-bezier-curve";
+import { YoyoCurve } from "./yoyo-curve";
 
 type Option = {
   fixedEdge?: "start" | "end" | "both";

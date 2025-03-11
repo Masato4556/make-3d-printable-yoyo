@@ -3,7 +3,7 @@
  */
 
 import { Circle, Line } from "react-konva";
-import { YoyoVerticalLine } from "~/yoyo/curves/YoyoVerticalLine";
+import { YoyoVerticalLine } from "~/yoyo/curves/yoyo-verticalline";
 import { PATH_COLOR } from "~/components/path-editor/style";
 
 type Props = {

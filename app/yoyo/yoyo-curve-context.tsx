@@ -11,11 +11,11 @@ import {
   useEffect,
 } from "react";
 
-import { YoyoCurve } from "./curves/YoyoCurve";
-import { YoyoCubicBezierCurve } from "./curves/YoyoCubicBezierCurve";
-import { YoyoVerticalLine } from "./curves/YoyoVerticalLine";
-import { YoyoHorizontalLine } from "./curves/YoyoHorizontalLine";
-import { Vector2 } from "~/math/Vector2";
+import { YoyoCurve } from "./curves/yoyo-curve";
+import { YoyoCubicBezierCurve } from "./curves/yoyo-cubic-bezier-curve";
+import { YoyoVerticalLine } from "./curves/yoyo-verticalline";
+import { YoyoHorizontalLine } from "./curves/yoyo-horizontal-line";
+import { Vector2 } from "~/math/vector2";
 
 interface YoyoCurveState {
   curves: YoyoCurve[];

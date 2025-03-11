@@ -7,7 +7,7 @@
 import { useThree } from "@react-three/fiber";
 import { useCallback, useEffect } from "react";
 import { STLExporter } from "three/examples/jsm/Addons.js";
-import { useModelDispatch } from "~/yoyo/ModelContext";
+import { useModelDispatch } from "~/yoyo/model-context";
 
 export const MODEL_NAME = {
   BEARING_SEAT: "bearing_seat",
