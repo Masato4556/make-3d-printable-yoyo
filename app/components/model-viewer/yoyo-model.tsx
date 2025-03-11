@@ -26,7 +26,7 @@ export function YoyoModel() {
     <group visible={!!bearingSeatGeometry}>
       <group position={new Vector3(-bearing.width / 2, 0, 0)}>
         <mesh
-          name="core"
+          name="bearing_seat"
           geometry={bearingSeatGeometry}
           material={material}
           position={new Vector3(-bearingSeatHeight, 0, 0)}

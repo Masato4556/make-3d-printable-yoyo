@@ -100,8 +100,8 @@ export class BearingSeat {
       throw new Error(`Invalid bearing type: ${bearingSizeType}`);
     }
 
-    const corePath = BEARING_SEAT_PARAMS[bearingSizeType].path;
-    const core = new LatheGeometry(corePath, 100);
+    const bearingSeatPath = BEARING_SEAT_PARAMS[bearingSizeType].path;
+    const bearingSeat = new LatheGeometry(bearingSeatPath, 100);
     const napGap = new LatheGeometry(
       [new ThreeVector2()].concat(
         new ThreeVector2(0, 0),
@@ -112,7 +112,7 @@ export class BearingSeat {
       6 // 六角形にすることで圧入しやすくしている
     ).scale(-1, 1, 1);
 
-    const geometry = unionGeometry(core, napGap);
+    const geometry = unionGeometry(bearingSeat, napGap);
     // 法線の反転
     geometry.scale(1, -1, 1);
     geometry.translate(0, -BEARING_SEAT_HEIGHT, 0);

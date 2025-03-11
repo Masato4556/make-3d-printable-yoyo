@@ -8,12 +8,12 @@ import classes from "./style.module.scss";
 import { BuyMeACoffee } from "./buy-me-a-coffee/buy-me-a-coffee";
 
 export function DownoadButton() {
-  const { core, wing } = useModelState();
+  const { bearingSeat, wing } = useModelState();
 
-  const downloadCore = useCallback(() => {
-    if (core === undefined) return;
-    downloadBlob(core, "core.stl");
-  }, [core]);
+  const downloadBearingSeat = useCallback(() => {
+    if (bearingSeat === undefined) return;
+    downloadBlob(bearingSeat, "bearing_seat.stl");
+  }, [bearingSeat]);
 
   const downloadWing = useCallback(() => {
     if (wing === undefined) return;
@@ -25,8 +25,11 @@ export function DownoadButton() {
       <div>
         <div className={classes["download-label"]}>DOWNLOAD</div>
         <div className={classes["download-button-container"]}>
-          <span>CORE</span>
-          <button className={classes["download-button"]} onClick={downloadCore}>
+          <span>BEARING SEAT</span>
+          <button
+            className={classes["download-button"]}
+            onClick={downloadBearingSeat}
+          >
             <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
           </button>
           <span>WING</span>

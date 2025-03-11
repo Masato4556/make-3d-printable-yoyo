@@ -11,7 +11,7 @@ import { Bearing, BearingSizeType } from "./bearing";
  * ヨーヨーの形状を生成するためのフック
  */
 
-const GAP = 0.2; // coreとウィングの間の隙間
+const GAP = 0.2; // bearingSeatとウィングの間の隙間
 
 export class GeometryFactory {
   private bearing: Bearing;
@@ -41,7 +41,7 @@ export class GeometryFactory {
     // wingのパスを作成
     const path: ThreeVector2[] = [new ThreeVector2()]
       .concat(
-        // coreを覆う部分
+        // bearingSeatを覆う部分
         new ThreeVector2(0, BEARING_SEAT_PARAMS[bearingType].height),
         new ThreeVector2(10.55 + GAP, BEARING_SEAT_PARAMS[bearingType].height),
         new ThreeVector2(10.55 + GAP, 0)

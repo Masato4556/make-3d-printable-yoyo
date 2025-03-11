@@ -11,15 +11,15 @@ import {
 } from "react";
 
 interface ModelState {
-  core: Blob | undefined;
+  bearingSeat: Blob | undefined;
   wing: Blob | undefined;
 }
 
 type Action =
-  | { type: "SET_CORE"; payload: string }
+  | { type: "SET_BEARING_SEAT"; payload: string }
   | { type: "SET_WING"; payload: string };
 
-const initialState: ModelState = { core: undefined, wing: undefined };
+const initialState: ModelState = { bearingSeat: undefined, wing: undefined };
 
 const ModelStateContext = createContext<ModelState>(initialState);
 const ModelDispatchContext = createContext<Dispatch<Action> | undefined>(
@@ -28,10 +28,10 @@ const ModelDispatchContext = createContext<Dispatch<Action> | undefined>(
 
 const modelReducer = (state: ModelState, action: Action): ModelState => {
   switch (action.type) {
-    case "SET_CORE":
+    case "SET_BEARING_SEAT":
       return {
         ...state,
-        core: new Blob([action.payload], { type: "application/stl" }),
+        bearingSeat: new Blob([action.payload], { type: "application/stl" }),
       };
     case "SET_WING":
       return {
