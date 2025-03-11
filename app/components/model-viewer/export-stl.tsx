@@ -9,6 +9,11 @@ import { useCallback, useEffect } from "react";
 import { STLExporter } from "three/examples/jsm/Addons.js";
 import { useModelDispatch } from "~/yoyo/ModelContext";
 
+export const MODEL_NAME = {
+  BEARING_SEAT: "bearing_seat",
+  WING: "wing",
+} as const;
+
 export function ExportStl() {
   const { scene } = useThree();
 
@@ -31,8 +36,8 @@ export function ExportStl() {
   useEffect(() => {
     // 左右対称にモデルを配置しているが出力したいのは片側だけなので、”yoyo”とnameがついたオブジェクトだけを取得
     // MEMO: 今後複数パーツに分割して出力したい場合、個別にnameでパーツを取得しstl変換を行う
-    const bearingSeatModel = scene.getObjectByName("bearing_seat");
-    const wingModel = scene.getObjectByName("wing");
+    const bearingSeatModel = scene.getObjectByName(MODEL_NAME.BEARING_SEAT);
+    const wingModel = scene.getObjectByName(MODEL_NAME.WING);
     if (bearingSeatModel !== undefined)
       setBearingSeat(new STLExporter().parse(bearingSeatModel));
     if (wingModel !== undefined) setWing(new STLExporter().parse(wingModel));
