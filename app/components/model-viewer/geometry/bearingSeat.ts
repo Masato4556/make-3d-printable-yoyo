@@ -122,10 +122,7 @@ export class BearingSeat {
   }
 }
 
-const unionGeometry = function (
-  geometry1: BufferGeometry,
-  geometry2: BufferGeometry
-) {
+function unionGeometry(geometry1: BufferGeometry, geometry2: BufferGeometry) {
   const mesh1 = new Mesh(geometry1);
   const mesh2 = new Mesh(geometry2);
 
@@ -138,4 +135,4 @@ const unionGeometry = function (
   const unionedGeometry = resultMesh.geometry;
   unionedGeometry.computeVertexNormals();
   return unionedGeometry;
-};
+}

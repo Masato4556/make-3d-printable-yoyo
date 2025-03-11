@@ -8,20 +8,20 @@ import { ModeSwitch } from "~/components/mode-switch/mode-swtich";
 import { YoyoCurveProvider } from "~/yoyo/yoyo-curve-context";
 
 export const meta: MetaFunction = () => [
-    { title: "PrintYoYo" },
-    {
-      name: "description",
-      content: "PrintYoYo is 3d printable yoyo generator",
-    },
-  ];
+  { title: "PrintYoYo" },
+  {
+    name: "description",
+    content: "PrintYoYo is 3d printable yoyo generator",
+  },
+];
 
 export const links: LinksFunction = () => [
-    { rel: "stylesheet", href: styles },
-    {
-      rel: "stylesheet",
-      href: "https://raw.githubusercontent.com/Andy-set-studio/modern-css-reset/master/dist/reset.min.css",
-    },
-  ];
+  { rel: "stylesheet", href: styles },
+  {
+    rel: "stylesheet",
+    href: "https://raw.githubusercontent.com/Andy-set-studio/modern-css-reset/master/dist/reset.min.css",
+  },
+];
 
 export type Mode = "path" | "model";
 

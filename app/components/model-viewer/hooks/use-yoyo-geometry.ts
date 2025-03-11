@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useYoyoPath } from "~/yoyo/yoyo-curve-context";
 import { GeometryFactory } from "../geometry/geometry-factory";
 
-export const useYoyoGeometry = function () {
+export function useYoyoGeometry() {
   const bearingType = "sizeC"; // TODO: ベアリングの種類を選択できるようにする
 
   const { yoyoPath } = useYoyoPath();
@@ -17,4 +17,4 @@ export const useYoyoGeometry = function () {
       wingGeometry: geometryFactory.getWingGeometry(),
     };
   }, [bearingType, yoyoPath]);
-};
+}
