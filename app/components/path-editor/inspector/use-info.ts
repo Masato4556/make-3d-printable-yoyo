@@ -35,7 +35,7 @@ function calculateYoyoVolume(yoyoPath: Vector2[]): number {
     const a = (y2 - y1) / (x2 - x1);
     const b = y1 - a * x1;
 
-    acc += calculateVolume(a, b, x1, x2, 1000);
+    acc += calculateVolume(a, b, { start: x1, end: x2 }, 1000);
 
     return acc;
   }, 0);
@@ -51,8 +51,7 @@ function calculateYoyoVolume(yoyoPath: Vector2[]): number {
 function calculateVolume(
   a: number, // 傾き
   b: number, // 切片
-  p: number, // 積分区間の下限
-  q: number, // 積分区間の上限
+  { start, end }: ClosedInterval, // 積分区間(閉区間)
   n: number = 1000 // 区間の分割数
 ): number {
   const pi = Math.PI;
@@ -63,16 +62,21 @@ function calculateVolume(
   }
 
   // シンプソン法の適用
-  const h = (q - p) / n; // 区間の幅
-  let sum = f(p) + f(q); // 最初と最後の値
+  const h = (end - start) / n; // 区間の幅
+  let sum = f(start) + f(end); // 最初と最後の値
 
   for (let i = 1; i < n; i += 2) {
-    sum += 4 * f(p + i * h); // 奇数番目の点
+    sum += 4 * f(start + i * h); // 奇数番目の点
   }
   for (let i = 2; i < n - 1; i += 2) {
-    sum += 2 * f(p + i * h); // 偶数番目の点
+    sum += 2 * f(start + i * h); // 偶数番目の点
   }
 
-  // 体積 = π * ∫[p, q] f(x) dx
+  // 体積 = π * ∫[start, end] f(x) dx
   return ((pi * h) / 3) * sum;
+}
+
+interface ClosedInterval {
+  start: number;
+  end: number;
 }

@@ -117,10 +117,12 @@ export const YoyoCurveProvider = ({ children }: YoyoCurveProviderProps) => {
       type: "SET_CURVES",
       curves: [
         new YoyoCubicBezierCurve(
-          new Vector2(0, 10.75),
-          new Vector2(5.25, 10.75),
-          new Vector2(15.75, 27.5),
-          new Vector2(21, 27.5),
+          {
+            v0: new Vector2(0, 10.75),
+            v1: new Vector2(5.25, 10.75),
+            v2: new Vector2(15.75, 27.5),
+            v3: new Vector2(21, 27.5),
+          },
           (curve, index) => {
             dispatch({ type: "UPDATE_CURVE", index, curve });
           },

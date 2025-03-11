@@ -39,6 +39,7 @@ module.exports = {
       "error",
       { max: 70, skipComments: false, skipBlankLines: false },
     ],
+    "max-params": ["error", 4],
   },
   env: {
     browser: true,

@@ -24,10 +24,7 @@ export class YoyoCubicBezierCurve implements YoyoCurve {
   option?: Option;
   id: string;
   constructor(
-    v0: Vector2,
-    v1: Vector2,
-    v2: Vector2,
-    v3: Vector2,
+    { v0, v1, v2, v3 }: CubicBezierCurveHandle,
     updateDispath: (curve: YoyoCurve, index: number) => void,
     divedeDispath: (curve: YoyoCurve[], index: number) => void,
     option?: Option
@@ -42,13 +39,8 @@ export class YoyoCubicBezierCurve implements YoyoCurve {
   }
   getPath(): Vector2[] {
     // 2次ベジェ曲線のパスを返す
-    return getCubicBezierCurve(
-      this.handles.v0,
-      this.handles.v1,
-      this.handles.v2,
-      this.handles.v3,
-      64
-    );
+    const { v0, v1, v2, v3 } = this.handles;
+    return getCubicBezierCurve({ v0, v1, v2, v3 }, 64);
   }
   getFirstPoint(): Vector2 {
     return this.handles.v0;
@@ -65,4 +57,11 @@ export class YoyoCubicBezierCurve implements YoyoCurve {
   setIndex(index: number): void {
     this.index = index;
   }
+}
+
+interface CubicBezierCurveHandle {
+  v0: Vector2;
+  v1: Vector2;
+  v2: Vector2;
+  v3: Vector2;
 }
