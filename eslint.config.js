@@ -35,6 +35,11 @@ const cleanCodeRules = {
   "no-eval": "error",
   "no-floating-decimal": "error",
   "no-inline-comments": "error",
+  "no-multi-assign": "error",
+  "no-nested-ternary": "error",
+  "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
+  "no-unneeded-ternary": "error",
+  "object-shorthand": "error",
 };
 
 /** @type {import('eslint').Linter.Config[]} */

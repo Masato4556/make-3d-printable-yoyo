@@ -127,7 +127,7 @@ export const YoyoCurveProvider = ({ children }: YoyoCurveProviderProps) => {
             dispatch({ type: "UPDATE_CURVE", index, curve });
           },
           (curves, index) => {
-            dispatch({ type: "DIVIDE_CURVE", index, curves: curves });
+            dispatch({ type: "DIVIDE_CURVE", index, curves });
           },
           { fixedEdge: "start" }
         ),
