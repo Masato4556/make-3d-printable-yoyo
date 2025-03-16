@@ -2,7 +2,7 @@
  * 画面切り替えボタンのコンポーネント
  */
 
-import { Mode } from "~/routes/_index";
+import { Mode } from "~/routes/home";
 import classes from "./style.module.scss";
 
 type Props = {
