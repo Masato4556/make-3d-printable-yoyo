@@ -39,7 +39,13 @@ const cleanCodeRules = {
   "no-nested-ternary": "error",
   "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
   "no-unneeded-ternary": "error",
+
   "object-shorthand": "error",
+  "prefer-arrow-callback": "error",
+  "prefer-destructuring": "error",
+  "prefer-object-spread": "error",
+  "prefer-template": "error",
+  yoda: "error",
 };
 
 /** @type {import('eslint').Linter.Config[]} */

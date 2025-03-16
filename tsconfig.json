@@ -6,7 +6,7 @@
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
     "**/.client/**/*.tsx"
-  ],
+, "eslint.config.js"  ],
   "exclude": ["**/.react-router/**/*.ts"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],

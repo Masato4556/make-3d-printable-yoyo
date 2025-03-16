@@ -81,11 +81,13 @@ export const BEARING_SEAT_PARAMS: { [k in BearingSizeType]: BearingSeatSize } =
  * ベアリングシートの
  */
 export class BearingSeat {
+  private bearingSizeType: BearingSizeType;
   private geometry: BufferGeometry;
   private height: number;
   constructor(bearingSizeType: BearingSizeType) {
+    this.bearingSizeType = bearingSizeType;
     this.height = BEARING_SEAT_PARAMS[bearingSizeType].height;
-    this.geometry = this.createGeometry(bearingSizeType);
+    this.geometry = this.createGeometry();
   }
 
   public getGeometry() {
@@ -95,12 +97,8 @@ export class BearingSeat {
     return this.height;
   }
 
-  private createGeometry(bearingSizeType: BearingSizeType) {
-    if (!BEARING_SEAT_PARAMS[bearingSizeType].path) {
-      throw new Error(`Invalid bearing type: ${bearingSizeType}`);
-    }
-
-    const bearingSeatPath = BEARING_SEAT_PARAMS[bearingSizeType].path;
+  private createGeometry() {
+    const bearingSeatPath = BEARING_SEAT_PARAMS[this.bearingSizeType].path;
     const bearingSeat = new LatheGeometry(bearingSeatPath, 100);
 
     // 六角形にすることで圧入しやすくしている
