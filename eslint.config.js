@@ -46,6 +46,10 @@ const cleanCodeRules = {
   "prefer-object-spread": "error",
   "prefer-template": "error",
   yoda: "error",
+
+  // 貧血オブジェクト対策
+  "class-methods-use-this": "warn",
+  "no-empty-function": "warn",
 };
 
 /** @type {import('eslint').Linter.Config[]} */
