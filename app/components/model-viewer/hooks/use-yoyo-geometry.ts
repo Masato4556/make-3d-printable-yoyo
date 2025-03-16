@@ -3,7 +3,7 @@ import { useYoyoPath } from "~/yoyo/yoyo-curve-context";
 import { GeometryFactory } from "../geometry/geometry-factory";
 
 export function useYoyoGeometry() {
-  const bearingType = "sizeC"; // TODO: ベアリングの種類を選択できるようにする
+  const bearingType = "sizeC";
 
   const { yoyoPath } = useYoyoPath();
 

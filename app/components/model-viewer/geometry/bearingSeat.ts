@@ -19,13 +19,13 @@ type BearingSeatSize = {
   path: ThreeVector2[];
 };
 
-const BEARING_SEAT_HEIGHT = 4; // コアの中心部分の高さ
+const BEARING_SEAT_HEIGHT = 4;
 
 export const BEARING_SEAT_PARAMS: { [k in BearingSizeType]: BearingSeatSize } =
   {
     sizeC: {
-      height: 2.085 + BEARING_SEAT_HEIGHT, // コアの側面の高さ
-      radius: 10.55, //  コアの半径
+      height: 2.085 + BEARING_SEAT_HEIGHT,
+      radius: 10.55,
       path: [new ThreeVector2()]
         .concat(
           new ThreeVector2(2, 0),
@@ -102,6 +102,8 @@ export class BearingSeat {
 
     const bearingSeatPath = BEARING_SEAT_PARAMS[bearingSizeType].path;
     const bearingSeat = new LatheGeometry(bearingSeatPath, 100);
+
+    // 六角形にすることで圧入しやすくしている
     const napGap = new LatheGeometry(
       [new ThreeVector2()].concat(
         new ThreeVector2(0, 0),
@@ -109,7 +111,7 @@ export class BearingSeat {
         new ThreeVector2(4.5, -BEARING_SEAT_HEIGHT),
         new ThreeVector2(0, -BEARING_SEAT_HEIGHT)
       ),
-      6 // 六角形にすることで圧入しやすくしている
+      6
     ).scale(-1, 1, 1);
 
     const geometry = unionGeometry(bearingSeat, napGap);

@@ -8,7 +8,8 @@ import { BufferGeometry } from "three";
 export function useMirroredGeometry(geometry: BufferGeometry) {
   const mirroredGeometry = useMemo(() => {
     const mirroredGeometry = geometry.clone();
-    mirroredGeometry.scale(-1, -1, 1); // 法線が反転するため、X軸だけでなくY軸も反転させる
+    // 法線が反転するため、X軸だけでなくY軸も反転させる
+    mirroredGeometry.scale(-1, -1, 1);
 
     return mirroredGeometry;
   }, [geometry]);

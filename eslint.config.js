@@ -18,7 +18,8 @@ const cleanCodeRules = {
   "default-case": "error",
   "default-case-last": "error",
   eqeqeq: ["error", "always"],
-  "func-style": ["error", "declaration", { allowArrowFunctions: true }], // 最終的にはfunction宣言かアロー関数のどちらかに統一する
+  // 最終的にはfunction宣言かアロー関数のどちらかに統一する
+  "func-style": ["error", "declaration", { allowArrowFunctions: true }],
   "max-classes-per-file": ["error", 1],
   "max-lines": [
     "error",
@@ -33,6 +34,7 @@ const cleanCodeRules = {
   "no-else-return": ["error", { allowElseIf: false }],
   "no-eval": "error",
   "no-floating-decimal": "error",
+  "no-inline-comments": "error",
 };
 
 /** @type {import('eslint').Linter.Config[]} */

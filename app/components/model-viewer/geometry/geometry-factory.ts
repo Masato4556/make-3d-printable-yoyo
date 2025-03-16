@@ -11,7 +11,7 @@ import { Bearing, BearingSizeType } from "./bearing";
  * ヨーヨーの形状を生成するためのフック
  */
 
-const GAP = 0.2; // bearingSeatとウィングの間の隙間
+const GAP = 0.2;
 
 export class GeometryFactory {
   private bearing: Bearing;
@@ -36,16 +36,17 @@ export class GeometryFactory {
   }
 
   private createWingGeometry(wingPath: Vector2[]) {
-    const bearingType = "sizeC"; // TODO: ベアリングの種類を選択できるようにする
+    // TODO: ベアリングの種類を選択できるようにする
+    const bearingType = "sizeC";
 
-    // wingのパスを作成
+    const bearingCoverPath = [
+      new ThreeVector2(0, BEARING_SEAT_PARAMS[bearingType].height),
+      new ThreeVector2(10.55 + GAP, BEARING_SEAT_PARAMS[bearingType].height),
+      new ThreeVector2(10.55 + GAP, 0),
+    ];
+
     const path: ThreeVector2[] = [new ThreeVector2()]
-      .concat(
-        // bearingSeatを覆う部分
-        new ThreeVector2(0, BEARING_SEAT_PARAMS[bearingType].height),
-        new ThreeVector2(10.55 + GAP, BEARING_SEAT_PARAMS[bearingType].height),
-        new ThreeVector2(10.55 + GAP, 0)
-      )
+      .concat(...bearingCoverPath)
       // TODO: ウィングのパスとコアのパスで軸の向きが違うのをここで調整している。この調整せずに済むようにする
       .concat(...wingPath.map((v) => new ThreeVector2(v.y, v.x)));
 
