@@ -1,7 +1,6 @@
 import type { MetaFunction, LinksFunction } from "react-router";
 import styles from "~/styles/index.scss?url";
 import { ModelViewer } from "~/components/model-viewer/model-viewer";
-import { ModelProvider } from "~/yoyo/model-context";
 import { PathEditor } from "~/components/path-editor/path-editor";
 import { useState } from "react";
 import { ModeSwitch } from "~/components/mode-switch/mode-swtich";
@@ -29,13 +28,11 @@ export default function Index() {
   const [mode, setMode] = useState<Mode>("path");
   return (
     <YoyoCurveProvider>
-      <ModelProvider>
-        <div id="canvas-container">
-          <ModeSwitch setMode={setMode} />
-          <ModelViewer hidden={mode !== "model"} />
-          <PathEditor hidden={mode !== "path"} />
-        </div>
-      </ModelProvider>
+      <div id="canvas-container">
+        <ModeSwitch setMode={setMode} />
+        <ModelViewer hidden={mode !== "model"} />
+        <PathEditor hidden={mode !== "path"} />
+      </div>
     </YoyoCurveProvider>
   );
 }

@@ -5,9 +5,9 @@
  * 3Dモデルはbearing_seatとwingの2つのパーツに分かれており、meshのnameプロパティで取得するメッシュデータを判別している。
  */
 import { useThree } from "@react-three/fiber";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { STLExporter } from "three/examples/jsm/Addons.js";
-import { useModelDispatch } from "~/yoyo/model-context";
+import { useModelStore } from "~/yoyo/model-store";
 
 export const MODEL_NAME = {
   BEARING_SEAT: "bearing_seat",
@@ -16,22 +16,7 @@ export const MODEL_NAME = {
 
 export function ExportStl() {
   const { scene } = useThree();
-
-  const dispatch = useModelDispatch();
-
-  const setBearingSeat = useCallback(
-    (s: string) => {
-      dispatch({ type: "SET_BEARING_SEAT", payload: s });
-    },
-    [dispatch]
-  );
-
-  const setWing = useCallback(
-    (s: string) => {
-      dispatch({ type: "SET_WING", payload: s });
-    },
-    [dispatch]
-  );
+  const { setBearingSeat, setWing } = useModelStore();
 
   useEffect(() => {
     // 左右対称にモデルを配置しているが出力したいのは片側だけなので、”yoyo”とnameがついたオブジェクトだけを取得
@@ -39,8 +24,17 @@ export function ExportStl() {
     const bearingSeatModel = scene.getObjectByName(MODEL_NAME.BEARING_SEAT);
     const wingModel = scene.getObjectByName(MODEL_NAME.WING);
     if (bearingSeatModel !== undefined)
-      setBearingSeat(new STLExporter().parse(bearingSeatModel));
-    if (wingModel !== undefined) setWing(new STLExporter().parse(wingModel));
+      setBearingSeat(
+        new Blob([new STLExporter().parse(bearingSeatModel)], {
+          type: "application/stl",
+        })
+      );
+    if (wingModel !== undefined)
+      setWing(
+        new Blob([new STLExporter().parse(wingModel)], {
+          type: "application/stl",
+        })
+      );
   }, [scene, setBearingSeat, setWing]);
   return null;
 }

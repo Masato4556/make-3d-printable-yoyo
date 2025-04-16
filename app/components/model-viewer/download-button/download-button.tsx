@@ -3,12 +3,12 @@
  */
 
 import { useCallback } from "react";
-import { useModelState } from "~/yoyo/model-context";
 import classes from "./style.module.scss";
 import { BuyMeACoffee } from "./buy-me-a-coffee/buy-me-a-coffee";
+import { useModelStore } from "~/yoyo/model-store";
 
 export function DownoadButton() {
-  const { bearingSeat, wing } = useModelState();
+  const { bearingSeat, wing } = useModelStore();
 
   const downloadBearingSeat = useCallback(() => {
     if (bearingSeat === undefined) return;
