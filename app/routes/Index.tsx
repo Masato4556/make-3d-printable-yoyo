@@ -5,6 +5,7 @@ import { PathEditor } from "~/components/path-editor/path-editor";
 import { useState } from "react";
 import { ModeSwitch } from "~/components/mode-switch/mode-swtich";
 import { YoyoCurveProvider } from "~/yoyo/yoyo-curve-context";
+import { Mode } from "~/types/mode";
 
 export const meta: MetaFunction = () => [
   { title: "PrintYoYo" },
@@ -21,8 +22,6 @@ export const links: LinksFunction = () => [
     href: "https://raw.githubusercontent.com/Andy-set-studio/modern-css-reset/master/dist/reset.min.css",
   },
 ];
-
-export type Mode = "path" | "model";
 
 export default function Index() {
   const [mode, setMode] = useState<Mode>("path");
