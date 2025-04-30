@@ -1,0 +1,4 @@
+ls:
+  app:
+    .tsx: PascalCase
+    .ts: PascalCase | camelCase

@@ -8,6 +8,7 @@
     "dev": "react-router dev",
     "lint": "eslint --ignore-pattern .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "lint-fix": "eslint --fix --ignore-pattern .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "file:lint": "ls-lint",
     "lint:config": "eslint --print-config src/index.ts > .eslintprint.json",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
@@ -17,6 +18,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@ls-lint/ls-lint": "^2.3.0",
     "@react-router/node": "^7.3.0",
     "@react-router/serve": "^7.3.0",
     "@react-three/drei": "^10.0.4",
