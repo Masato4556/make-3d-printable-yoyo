@@ -1,4 +1,4 @@
 ls:
   app:
-    .tsx: PascalCase
+    .tsx: PascalCase | regex:^root$
     .ts: PascalCase | camelCase
