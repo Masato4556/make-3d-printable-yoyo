@@ -1,0 +1,4 @@
+ls:
+  app:
+    .tsx: PascalCase | regex:^root$
+    .ts: PascalCase | camelCase

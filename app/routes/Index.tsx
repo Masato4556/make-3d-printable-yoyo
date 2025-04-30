@@ -1,11 +1,12 @@
 import type { MetaFunction, LinksFunction } from "react-router";
-import styles from "~/styles/index.scss?url";
-import { ModelViewer } from "~/components/model-viewer/model-viewer";
-import { PathEditor } from "~/components/path-editor/path-editor";
+import styles from "../styles/index.scss?url";
+
 import { useState } from "react";
-import { ModeSwitch } from "~/components/mode-switch/mode-swtich";
-import { YoyoCurveProvider } from "~/yoyo/yoyo-curve-context";
-import { Mode } from "~/types/mode";
+import { YoyoCurveProvider } from "../yoyo/YoyoCurveContext";
+import { ModeSwitch } from "../components/ModeSwitch/ModeSwitch";
+import { ModelViewer } from "../components/ModelViewer/ModelViewer";
+import { PathEditor } from "../components/PathEditor/PathEditor";
+import { Mode } from "../types/mode";
 
 export const meta: MetaFunction = () => [
   { title: "PrintYoYo" },
