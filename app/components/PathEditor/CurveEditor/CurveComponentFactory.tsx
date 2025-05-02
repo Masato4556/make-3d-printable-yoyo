@@ -2,9 +2,9 @@
  * YoyoCurveの種類に応じて適切なCurveComponentを返すコンポーネント
  */
 
-import { CubicBezierCurve } from "./CubicBezierCurve";
-import { HorizontalLine } from "./HorizontalLine";
-import { VerticalLine } from "./VerticalLine";
+import { CubicBezierCurve } from "./CurveComponent/CubicBezierCurve";
+import { HorizontalLine } from "./CurveComponent/HorizontalLine";
+import { VerticalLine } from "./CurveComponent/VerticalLine";
 import { JsxElementConverter } from "./JsxElementConverter";
 import { YoyoCurve } from "../../../yoyo/curves/YoyoCurve";
 import { YoyoCubicBezierCurve } from "../../../yoyo/curves/YoyoCubicBezierCurve";
@@ -12,31 +12,35 @@ import { JSX } from "react";
 import { YoyoHorizontalLine } from "../../../yoyo/curves/YoyoHorizontalLine";
 import { YoyoVerticalLine } from "../../../yoyo/curves/YoyoVerticalLine";
 
+export type UpdateCurve = (curve: YoyoCurve) => void;
+
 type Props = {
   curve: YoyoCurve;
+  update: UpdateCurve;
 };
-export function CurveComponent({ curve }: Props) {
-  return new JsxElementConverter(registeredConverters).convert(curve);
+
+export function CurveComponentFactory({ curve, update }: Props) {
+  return new JsxElementConverter(registeredConverters).convert(curve, update);
 }
 
 const registeredConverters: {
-  [type: string]: (curve: YoyoCurve) => JSX.Element;
+  [type: string]: (curve: YoyoCurve, update: UpdateCurve) => JSX.Element;
 } = {
-  CubicBezierCurve: (curve) => {
+  CubicBezierCurve: (curve, update) => {
     if (curve instanceof YoyoCubicBezierCurve) {
-      return <CubicBezierCurve curve={curve} />;
+      return <CubicBezierCurve curve={curve} update={update} />;
     }
     throw new Error("Invalid curve type");
   },
-  HorizontalLine: (curve) => {
+  HorizontalLine: (curve, update) => {
     if (curve instanceof YoyoHorizontalLine) {
-      return <HorizontalLine curve={curve} />;
+      return <HorizontalLine curve={curve} update={update} />;
     }
     throw new Error("Invalid curve type");
   },
-  VerticalLine: (curve) => {
+  VerticalLine: (curve, update) => {
     if (curve instanceof YoyoVerticalLine) {
-      return <VerticalLine curve={curve} />;
+      return <VerticalLine curve={curve} update={update} />;
     }
     throw new Error("Invalid curve type");
   },

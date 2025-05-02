@@ -3,15 +3,15 @@
  */
 
 import { useMemo } from "react";
-import { useYoyoPath } from "../../../yoyo/YoyoCurveContext";
 import { Vector2 } from "../../../math/vector2";
+import { useCurveVectors } from "../../../yoyo/YoyoCurveContext";
 
 export function useInfo() {
-  const { yoyoPath } = useYoyoPath();
+  const curveVectors = useCurveVectors();
   return useMemo(() => {
-    const volumeMm3 = calculateYoyoVolume(yoyoPath);
+    const volumeMm3 = calculateYoyoVolume(curveVectors);
     return { volumeCm3: volumeMm3 / 1000 };
-  }, [yoyoPath]);
+  }, [curveVectors]);
 }
 
 function calculateYoyoVolume(yoyoPath: Vector2[]): number {

@@ -3,16 +3,16 @@
  */
 
 import { Circle, Line } from "react-konva";
-import { YoyoVerticalLine } from "../../../yoyo/curves/YoyoVerticalLine";
-import { PATH_COLOR } from "../style";
+import { YoyoVerticalLine } from "../../../../yoyo/curves/YoyoVerticalLine";
+import { PATH_COLOR } from "../../style";
+import { UpdateCurve } from "../CurveComponentFactory";
 
 type Props = {
   curve: YoyoVerticalLine;
+  update: UpdateCurve;
 };
 
-export function VerticalLine(props: Props) {
-  const { curve } = props;
-
+export function VerticalLine({ curve, update }: Props) {
   return (
     <>
       <Line
@@ -32,7 +32,7 @@ export function VerticalLine(props: Props) {
           curve.v1 = curve.v1.withX(e.target.x());
           e.target.y(curve.v1.y);
 
-          curve.updateDispath(curve, curve.index);
+          update(curve);
         }}
       />
     </>

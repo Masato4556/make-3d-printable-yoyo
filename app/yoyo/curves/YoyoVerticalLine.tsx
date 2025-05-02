@@ -15,17 +15,10 @@ export class YoyoVerticalLine implements YoyoCurve {
   index: number = 0;
   v0: Vector2;
   v1: Vector2;
-  updateDispath: (curve: YoyoCurve, index: number) => void;
   option?: Option;
-  constructor(
-    v0: Vector2,
-    v1: Vector2,
-    updateDispath: (curve: YoyoCurve, index: number) => void,
-    option?: Option
-  ) {
+  constructor(v0: Vector2, v1: Vector2, option?: Option) {
     this.v0 = v0;
     this.v1 = v1;
-    this.updateDispath = updateDispath;
     this.option = option;
     this.id = `YoyoVerticalLine_${Date.now()}_${v0.x}_${v0.y}_${v1.x}_${v1.y}`;
   }

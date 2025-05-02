@@ -3,11 +3,13 @@
  */
 
 import { Line } from "react-konva";
-import { YoyoHorizontalLine } from "../../../yoyo/curves/YoyoHorizontalLine";
-import { PATH_COLOR } from "../style";
+import { YoyoHorizontalLine } from "../../../../yoyo/curves/YoyoHorizontalLine";
+import { PATH_COLOR } from "../../style";
+import { UpdateCurve } from "../CurveComponentFactory";
 
 type Props = {
   curve: YoyoHorizontalLine;
+  update: UpdateCurve;
 };
 
 export function HorizontalLine(props: Props) {

@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 import { GeometryFactory } from "../geometry/GeometryFactory";
-import { useYoyoPath } from "../../../yoyo/YoyoCurveContext";
+import { useCurveVectors } from "../../../yoyo/YoyoCurveContext";
 
 export function useYoyoGeometry() {
   const bearingType = "sizeC";
 
-  const { yoyoPath } = useYoyoPath();
+  const curveVectors = useCurveVectors();
 
   return useMemo(() => {
-    const geometryFactory = new GeometryFactory(bearingType, yoyoPath);
+    const geometryFactory = new GeometryFactory(bearingType, curveVectors);
     const bearingSeat = geometryFactory.getBearingSeat();
     return {
       bearing: geometryFactory.getBearing(),
@@ -16,5 +16,5 @@ export function useYoyoGeometry() {
       bearingSeatHeight: bearingSeat.getHeight(),
       wingGeometry: geometryFactory.getWingGeometry(),
     };
-  }, [bearingType, yoyoPath]);
+  }, [bearingType, curveVectors]);
 }
