@@ -5,11 +5,11 @@
 import { Circle, Line } from "react-konva";
 import { YoyoVerticalLine } from "../../../../yoyo/curves/YoyoVerticalLine";
 import { PATH_COLOR } from "../../style";
-import { YoyoCurve } from "../../../../yoyo/curves/YoyoCurve";
+import { UpdateCurve } from "../CurveComponentFactory";
 
 type Props = {
   curve: YoyoVerticalLine;
-  update: (curve: YoyoCurve) => void;
+  update: UpdateCurve;
 };
 
 export function VerticalLine({ curve, update }: Props) {

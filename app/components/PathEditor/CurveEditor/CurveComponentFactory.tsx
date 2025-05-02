@@ -12,19 +12,19 @@ import { JSX } from "react";
 import { YoyoHorizontalLine } from "../../../yoyo/curves/YoyoHorizontalLine";
 import { YoyoVerticalLine } from "../../../yoyo/curves/YoyoVerticalLine";
 
+export type UpdateCurve = (curve: YoyoCurve) => void;
+
 type Props = {
   curve: YoyoCurve;
-  update: (curve: YoyoCurve) => void;
+  update: UpdateCurve;
 };
+
 export function CurveComponentFactory({ curve, update }: Props) {
   return new JsxElementConverter(registeredConverters).convert(curve, update);
 }
 
 const registeredConverters: {
-  [type: string]: (
-    curve: YoyoCurve,
-    update: (curve: YoyoCurve) => void
-  ) => JSX.Element;
+  [type: string]: (curve: YoyoCurve, update: UpdateCurve) => JSX.Element;
 } = {
   CubicBezierCurve: (curve, update) => {
     if (curve instanceof YoyoCubicBezierCurve) {
