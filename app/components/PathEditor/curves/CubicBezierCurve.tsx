@@ -7,14 +7,14 @@ import { Circle, Line, Rect, Shape } from "react-konva";
 import { YoyoCubicBezierCurve } from "../../../yoyo/curves/YoyoCubicBezierCurve";
 import { PATH_COLOR } from "../style";
 import { Vector2 } from "../../../math/vector2";
+import { YoyoCurve } from "../../../yoyo/curves/YoyoCurve";
 
 type Props = {
   curve: YoyoCubicBezierCurve;
+  update: (curve: YoyoCurve) => void;
 };
 
-export function CubicBezierCurve(props: Props) {
-  const { curve } = props;
-
+export function CubicBezierCurve({ curve, update }: Props) {
   return (
     <>
       <Shape
@@ -47,7 +47,7 @@ export function CubicBezierCurve(props: Props) {
           onDragMove: (e) => {
             curve.handles.v1 = new Vector2(e.target.x(), e.target.y());
 
-            curve.updateDispath(curve, curve.index);
+            update(curve);
           },
         }}
       />
@@ -63,7 +63,7 @@ export function CubicBezierCurve(props: Props) {
 
             curve.handles.v3 = currentV3;
             curve.handles.v2 = curve.handles.v2.add(moveVector);
-            curve.updateDispath(curve, curve.index);
+            update(curve);
           },
         }}
         handle={{
@@ -72,7 +72,7 @@ export function CubicBezierCurve(props: Props) {
           onDragMove: (e) => {
             curve.handles.v2 = new Vector2(e.target.x(), e.target.y());
 
-            curve.updateDispath(curve, curve.index);
+            update(curve);
           },
         }}
       />

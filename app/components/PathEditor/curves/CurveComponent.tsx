@@ -14,29 +14,33 @@ import { YoyoVerticalLine } from "../../../yoyo/curves/YoyoVerticalLine";
 
 type Props = {
   curve: YoyoCurve;
+  update: (curve: YoyoCurve) => void;
 };
-export function CurveComponent({ curve }: Props) {
-  return new JsxElementConverter(registeredConverters).convert(curve);
+export function CurveComponent({ curve, update }: Props) {
+  return new JsxElementConverter(registeredConverters).convert(curve, update);
 }
 
 const registeredConverters: {
-  [type: string]: (curve: YoyoCurve) => JSX.Element;
+  [type: string]: (
+    curve: YoyoCurve,
+    update: (curve: YoyoCurve) => void
+  ) => JSX.Element;
 } = {
-  CubicBezierCurve: (curve) => {
+  CubicBezierCurve: (curve, update) => {
     if (curve instanceof YoyoCubicBezierCurve) {
-      return <CubicBezierCurve curve={curve} />;
+      return <CubicBezierCurve curve={curve} update={update} />;
     }
     throw new Error("Invalid curve type");
   },
-  HorizontalLine: (curve) => {
+  HorizontalLine: (curve, update) => {
     if (curve instanceof YoyoHorizontalLine) {
-      return <HorizontalLine curve={curve} />;
+      return <HorizontalLine curve={curve} update={update} />;
     }
     throw new Error("Invalid curve type");
   },
-  VerticalLine: (curve) => {
+  VerticalLine: (curve, update) => {
     if (curve instanceof YoyoVerticalLine) {
-      return <VerticalLine curve={curve} />;
+      return <VerticalLine curve={curve} update={update} />;
     }
     throw new Error("Invalid curve type");
   },

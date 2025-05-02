@@ -2,7 +2,7 @@
  * 画面切り替えボタンのコンポーネント
  */
 
-import { Mode } from "../../types/mode";
+import { Mode } from "../../stores/useModeStore";
 import classes from "./style.module.scss";
 
 type Props = {
@@ -16,7 +16,7 @@ export function ModeSwitch(props: Props) {
       <button
         className={`${classes["mode-button"]} ${classes["mode-button"]}`}
         onClick={() => {
-          setMode("path");
+          setMode("PATH");
         }}
       >
         SHAPE
@@ -25,7 +25,7 @@ export function ModeSwitch(props: Props) {
       <button
         className={`${classes["mode-button"]} ${classes["mode-button"]}`}
         onClick={() => {
-          setMode("model");
+          setMode("MODEL");
         }}
       >
         DOWNLOAD

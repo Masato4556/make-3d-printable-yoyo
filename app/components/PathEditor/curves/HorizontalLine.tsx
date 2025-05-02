@@ -5,9 +5,11 @@
 import { Line } from "react-konva";
 import { YoyoHorizontalLine } from "../../../yoyo/curves/YoyoHorizontalLine";
 import { PATH_COLOR } from "../style";
+import { YoyoCurve } from "../../../yoyo/curves/YoyoCurve";
 
 type Props = {
   curve: YoyoHorizontalLine;
+  update: (curve: YoyoCurve) => void;
 };
 
 export function HorizontalLine(props: Props) {

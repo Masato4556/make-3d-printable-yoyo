@@ -8,7 +8,6 @@ export interface YoyoCurve {
   id: string;
   index: number;
   type: string;
-  updateDispath: (curve: YoyoCurve, index: number) => void;
   getPath(): Vector2[];
   getFirstPoint(): Vector2;
   getLastPoint(): Vector2;

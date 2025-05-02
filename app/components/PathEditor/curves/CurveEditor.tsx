@@ -5,12 +5,14 @@
 import { Circle, Line, Group } from "react-konva";
 import { CurveComponent } from "./CurveComponent";
 import { useMemo } from "react";
-import { useYoyoCurveState } from "../../../yoyo/YoyoCurveContext";
 import { Vector2 } from "../../../math/vector2";
 import { PATH_COLOR } from "../style";
+import { useCurves } from "./hooks/useCurves";
+import { useUpdateCurvesStore } from "./hooks/useUpdateCurvesStore";
 
 export function CurveEditor() {
-  const { curves } = useYoyoCurveState();
+  const { curves, updateCurve } = useCurves();
+  useUpdateCurvesStore(curves);
 
   const mirreredPath = useMemo(
     () =>
@@ -32,8 +34,14 @@ export function CurveEditor() {
           return acc;
         }, [])}
       />
-      {curves.map((curve) => (
-        <CurveComponent key={curve.id} curve={curve} />
+      {curves.map((curve, index) => (
+        <CurveComponent
+          key={curve.id}
+          curve={curve}
+          update={(curve) => {
+            updateCurve(curve, index);
+          }}
+        />
       ))}
     </Group>
   );

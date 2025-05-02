@@ -1,12 +1,10 @@
 import type { MetaFunction, LinksFunction } from "react-router";
 import styles from "../styles/index.scss?url";
 
-import { useState } from "react";
-import { YoyoCurveProvider } from "../yoyo/YoyoCurveContext";
 import { ModeSwitch } from "../components/ModeSwitch/ModeSwitch";
 import { ModelViewer } from "../components/ModelViewer/ModelViewer";
 import { PathEditor } from "../components/PathEditor/PathEditor";
-import { Mode } from "../types/mode";
+import { useModeStore } from "../stores/useModeStore";
 
 export const meta: MetaFunction = () => [
   { title: "PrintYoYo" },
@@ -25,14 +23,12 @@ export const links: LinksFunction = () => [
 ];
 
 export default function Index() {
-  const [mode, setMode] = useState<Mode>("path");
+  const { mode, change } = useModeStore();
   return (
-    <YoyoCurveProvider>
-      <div id="canvas-container">
-        <ModeSwitch setMode={setMode} />
-        <ModelViewer hidden={mode !== "model"} />
-        <PathEditor hidden={mode !== "path"} />
-      </div>
-    </YoyoCurveProvider>
+    <div id="canvas-container">
+      <ModeSwitch setMode={change} />
+      <ModelViewer hidden={mode !== "MODEL"} />
+      <PathEditor hidden={mode !== "PATH"} />
+    </div>
   );
 }
