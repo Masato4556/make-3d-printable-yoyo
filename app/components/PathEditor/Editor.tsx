@@ -2,7 +2,7 @@
  * ヨーヨーのパスエディターのトップレベルコンポーネント
  */
 import { Inspector } from "./inspector/Inspector";
-import { CurveEditor } from "./curves/CurveEditor";
+import { CurveEditor } from "./CurveEditor/CurveEditor";
 import { Xaxis } from "./Xaxis";
 import { Layer, Stage } from "react-konva";
 import { useWindowSize } from "../../hooks/useWindowSize";
@@ -11,7 +11,7 @@ type Props = {
   hidden: boolean;
 };
 
-export function PathEditor(props: Props) {
+export function Editor(props: Props) {
   const { hidden } = props;
 
   const { width, height } = useWindowSize();

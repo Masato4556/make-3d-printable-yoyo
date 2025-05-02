@@ -3,9 +3,9 @@
  */
 
 import { Circle, Line } from "react-konva";
-import { YoyoVerticalLine } from "../../../yoyo/curves/YoyoVerticalLine";
-import { PATH_COLOR } from "../style";
-import { YoyoCurve } from "../../../yoyo/curves/YoyoCurve";
+import { YoyoVerticalLine } from "../../../../yoyo/curves/YoyoVerticalLine";
+import { PATH_COLOR } from "../../style";
+import { YoyoCurve } from "../../../../yoyo/curves/YoyoCurve";
 
 type Props = {
   curve: YoyoVerticalLine;

@@ -3,7 +3,7 @@ import styles from "../styles/index.scss?url";
 
 import { ModeSwitch } from "../components/ModeSwitch/ModeSwitch";
 import { ModelViewer } from "../components/ModelViewer/ModelViewer";
-import { PathEditor } from "../components/PathEditor/PathEditor";
+import { Editor } from "../components/PathEditor/Editor";
 import { useModeStore } from "../stores/useModeStore";
 
 export const meta: MetaFunction = () => [
@@ -28,7 +28,7 @@ export default function Index() {
     <div id="canvas-container">
       <ModeSwitch setMode={change} />
       <ModelViewer hidden={mode !== "MODEL"} />
-      <PathEditor hidden={mode !== "PATH"} />
+      <Editor hidden={mode !== "PATH"} />
     </div>
   );
 }

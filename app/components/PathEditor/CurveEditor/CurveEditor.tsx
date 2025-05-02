@@ -3,7 +3,7 @@
  */
 
 import { Circle, Line, Group } from "react-konva";
-import { CurveComponent } from "./CurveComponent";
+import { CurveComponentFactory } from "./CurveComponentFactory";
 import { useMemo } from "react";
 import { Vector2 } from "../../../math/vector2";
 import { PATH_COLOR } from "../style";
@@ -35,7 +35,7 @@ export function CurveEditor() {
         }, [])}
       />
       {curves.map((curve, index) => (
-        <CurveComponent
+        <CurveComponentFactory
           key={curve.id}
           curve={curve}
           update={(curve) => {

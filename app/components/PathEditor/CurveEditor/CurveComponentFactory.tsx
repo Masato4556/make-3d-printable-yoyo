@@ -2,9 +2,9 @@
  * YoyoCurveの種類に応じて適切なCurveComponentを返すコンポーネント
  */
 
-import { CubicBezierCurve } from "./CubicBezierCurve";
-import { HorizontalLine } from "./HorizontalLine";
-import { VerticalLine } from "./VerticalLine";
+import { CubicBezierCurve } from "./CurveComponent/CubicBezierCurve";
+import { HorizontalLine } from "./CurveComponent/HorizontalLine";
+import { VerticalLine } from "./CurveComponent/VerticalLine";
 import { JsxElementConverter } from "./JsxElementConverter";
 import { YoyoCurve } from "../../../yoyo/curves/YoyoCurve";
 import { YoyoCubicBezierCurve } from "../../../yoyo/curves/YoyoCubicBezierCurve";
@@ -16,7 +16,7 @@ type Props = {
   curve: YoyoCurve;
   update: (curve: YoyoCurve) => void;
 };
-export function CurveComponent({ curve, update }: Props) {
+export function CurveComponentFactory({ curve, update }: Props) {
   return new JsxElementConverter(registeredConverters).convert(curve, update);
 }
 
