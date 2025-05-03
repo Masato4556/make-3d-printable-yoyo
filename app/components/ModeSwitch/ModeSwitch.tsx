@@ -17,14 +17,14 @@ export function ModeSwitch(props: Props) {
       <ModeSwitchButton
         label={"SHAPE"}
         onClick={() => {
-          setMode("PATH");
+          setMode(Mode.PATH);
         }}
       />
       <div>{" > "}</div>
       <ModeSwitchButton
         label={"DOWNLOAD"}
         onClick={() => {
-          setMode("MODEL");
+          setMode(Mode.MODEL);
         }}
       />
     </div>

@@ -1,6 +1,9 @@
 import { create } from "zustand";
 
-export type Mode = "PATH" | "MODEL";
+export enum Mode {
+  PATH = "PATH",
+  MODEL = "MODEL",
+}
 
 type ModeStore = {
   mode: Mode;
@@ -8,6 +11,6 @@ type ModeStore = {
 };
 
 export const useModeStore = create<ModeStore>((set) => ({
-  mode: "PATH",
+  mode: Mode.PATH,
   change: (mode: Mode) => set({ mode }),
 }));

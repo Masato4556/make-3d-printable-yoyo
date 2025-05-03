@@ -26,21 +26,31 @@ export const useCurves = () => {
     (curve: YoyoCurve, index: number) => {
       curves[index] = curve;
 
-      // 全てのカーブの始点・終点を更新
-      for (let i = index; i - 1 >= 0; i -= 1) {
-        const current = curves[i];
-        if (current === undefined) {
-          break;
+      // Update the start and end points of all curves
+      const updatePreviousCurves = (startIndex: number) => {
+        for (let i = startIndex; i - 1 >= 0; i -= 1) {
+          const current = curves[i];
+          const previous = curves[i - 1];
+          if (!current || !previous) {
+            break;
+          }
+          previous.updateLastPoint(current.getFirstPoint());
         }
-        curves[i - 1]?.updateLastPoint(current.getFirstPoint());
-      }
-      for (let i = index; i + 1 < curves.length; i += 1) {
-        const current = curves[i];
-        if (current === undefined) {
-          break;
+      };
+
+      const updateNextCurves = (startIndex: number) => {
+        for (let i = startIndex; i + 1 < curves.length; i += 1) {
+          const current = curves[i];
+          const next = curves[i + 1];
+          if (!current || !next) {
+            break;
+          }
+          next.updateFirstPoint(current.getLastPoint());
         }
-        curves[i + 1]?.updateFirstPoint(current.getLastPoint());
-      }
+      };
+
+      updatePreviousCurves(index);
+      updateNextCurves(index);
 
       setCurves([...curves]);
     },
