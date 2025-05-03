@@ -3,6 +3,7 @@
  */
 
 import { Mode } from "../../stores/useModeStore";
+import { ModeSwitchButton } from "./ModeSwitchButton";
 import classes from "./style.module.scss";
 
 type Props = {
@@ -13,23 +14,19 @@ export function ModeSwitch(props: Props) {
   const { setMode } = props;
   return (
     <div className={classes["ui-header"]}>
-      <button
-        className={`${classes["mode-button"]} ${classes["mode-button"]}`}
+      <ModeSwitchButton
+        label={"SHAPE"}
         onClick={() => {
           setMode("PATH");
         }}
-      >
-        SHAPE
-      </button>
+      />
       <div>{" > "}</div>
-      <button
-        className={`${classes["mode-button"]} ${classes["mode-button"]}`}
+      <ModeSwitchButton
+        label={"DOWNLOAD"}
         onClick={() => {
           setMode("MODEL");
         }}
-      >
-        DOWNLOAD
-      </button>
+      />
     </div>
   );
 }
