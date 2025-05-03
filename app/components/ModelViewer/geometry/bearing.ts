@@ -3,7 +3,7 @@
  * 対応するベアリングの種類を増やす場合、ここを変更する
  */
 
-type BearingType = "sizeC";
+export type BearingType = "sizeC";
 
 type BearingSize = {
   width: number;
