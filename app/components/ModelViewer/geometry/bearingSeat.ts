@@ -5,13 +5,11 @@
 
 import {
   CubicBezierCurve,
-  Mesh,
   Vector2 as ThreeVector2,
   BufferGeometry,
-  LatheGeometry,
 } from "three";
 import { BearingSizeType } from "./bearing";
-import { CSG } from "three-csg-ts";
+import { BearingGeometry } from "./bearings/BearingGeometry";
 
 type BearingSeatSize = {
   height: number;
@@ -81,13 +79,12 @@ export const BEARING_SEAT_PARAMS: { [k in BearingSizeType]: BearingSeatSize } =
  * ベアリングシートの
  */
 export class BearingSeat {
-  private bearingSizeType: BearingSizeType;
   private geometry: BufferGeometry;
   private height: number;
+
   constructor(bearingSizeType: BearingSizeType) {
-    this.bearingSizeType = bearingSizeType;
     this.height = BEARING_SEAT_PARAMS[bearingSizeType].height;
-    this.geometry = this.createGeometry();
+    this.geometry = BearingGeometry[bearingSizeType]();
   }
 
   public getGeometry() {
@@ -96,43 +93,4 @@ export class BearingSeat {
   public getHeight() {
     return this.height;
   }
-
-  private createGeometry() {
-    const bearingSeatPath = BEARING_SEAT_PARAMS[this.bearingSizeType].path;
-    const bearingSeat = new LatheGeometry(bearingSeatPath, 100);
-
-    // 六角形にすることで圧入しやすくしている
-    const napGap = new LatheGeometry(
-      [new ThreeVector2()].concat(
-        new ThreeVector2(0, 0),
-        new ThreeVector2(4.5, 0),
-        new ThreeVector2(4.5, -BEARING_SEAT_HEIGHT),
-        new ThreeVector2(0, -BEARING_SEAT_HEIGHT)
-      ),
-      6
-    ).scale(-1, 1, 1);
-
-    const geometry = unionGeometry(bearingSeat, napGap);
-    // 法線の反転
-    geometry.scale(1, -1, 1);
-    geometry.translate(0, -BEARING_SEAT_HEIGHT, 0);
-    geometry.rotateZ(Math.PI / 2);
-
-    return geometry;
-  }
-}
-
-function unionGeometry(geometry1: BufferGeometry, geometry2: BufferGeometry) {
-  const mesh1 = new Mesh(geometry1);
-  const mesh2 = new Mesh(geometry2);
-
-  // CSG操作
-  const csg1 = CSG.fromMesh(mesh1);
-  const csg2 = CSG.fromMesh(mesh2);
-  const resultCSG = csg2.union(csg1);
-  const resultMesh = CSG.toMesh(resultCSG, mesh2.matrix);
-  resultMesh.updateMatrix();
-  const unionedGeometry = resultMesh.geometry;
-  unionedGeometry.computeVertexNormals();
-  return unionedGeometry;
 }

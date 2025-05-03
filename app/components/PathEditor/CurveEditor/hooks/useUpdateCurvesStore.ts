@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useModeStore } from "../../../../stores/useModeStore";
+import { Mode, useModeStore } from "../../../../stores/useModeStore";
 import { YoyoCurve } from "../../../../yoyo/curves/YoyoCurve";
 import { useCurvesStore } from "../../../../yoyo/YoyoCurveContext";
 
@@ -8,7 +8,7 @@ export const useUpdateCurvesStore = (curves: YoyoCurve[]) => {
   const { setCurves: setCurvesStore } = useCurvesStore();
 
   useEffect(() => {
-    if (mode === "PATH") {
+    if (mode === Mode.PATH) {
       return;
     }
     setCurvesStore(curves);
