@@ -18,7 +18,7 @@ export function HorizontalLine(props: Props) {
   return (
     <Line
       stroke={PATH_COLOR}
-      strokeWidth={0.8}
+      strokeWidth={0.4}
       lineCap="round"
       points={[curve.v0.x, curve.v0.y, curve.v1.x, curve.v1.y]}
     />

@@ -27,7 +27,7 @@ export function CurveEditor() {
       <Circle x={200} y={200} stroke="black" radius={50} />
       <Line
         stroke={PATH_COLOR}
-        strokeWidth={0.8}
+        strokeWidth={0.4}
         points={mirreredPath.reduce<number[]>((acc, cur) => {
           acc.push(cur.x);
           acc.push(cur.y);
