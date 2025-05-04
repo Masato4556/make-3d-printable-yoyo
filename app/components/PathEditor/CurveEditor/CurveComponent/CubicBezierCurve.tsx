@@ -3,11 +3,12 @@
  */
 
 import { KonvaEventObject } from "konva/lib/Node";
-import { Circle, Line, Rect, Shape } from "react-konva";
+import { Line, Shape } from "react-konva";
 import { YoyoCubicBezierCurve } from "../../../../yoyo/curves/YoyoCubicBezierCurve";
-import { PATH_COLOR } from "../../style";
+import { PATH_COLOR, WIRE_COLOR } from "../../style";
 import { Vector2 } from "../../../../math/vector2";
 import { UpdateCurve } from "../CurveComponentFactory";
+import { DraggableCircle } from "./parts/DraggableCircle";
 
 type Props = {
   curve: YoyoCubicBezierCurve;
@@ -19,7 +20,7 @@ export function CubicBezierCurve({ curve, update }: Props) {
     <>
       <Shape
         stroke={PATH_COLOR}
-        strokeWidth={0.8}
+        strokeWidth={0.4}
         lineCap="round"
         sceneFunc={(ctx, shape) => {
           ctx.beginPath();
@@ -98,25 +99,26 @@ function BezierCurvePoint({ point, handle }: BezierCurvePointProps) {
     <>
       <Line
         points={[point.x, point.y, handle.x, handle.y]}
-        stroke={PATH_COLOR}
+        stroke={WIRE_COLOR}
         strokeWidth={0.4}
+        opacity={0.5}
+        lineJoin="round"
       />
-      <Circle
+      <DraggableCircle
         x={point.x}
         y={point.y}
-        radius={1}
-        stroke={PATH_COLOR}
+        radius={2}
         draggable={point.draggable}
         onDragMove={point.onDragMove}
+        color={PATH_COLOR}
       />
-      <Rect
+      <DraggableCircle
         x={handle.x}
         y={handle.y}
-        width={0.5}
-        height={0.5}
-        stroke={PATH_COLOR}
+        radius={1}
         draggable
         onDragMove={handle.onDragMove}
+        color={PATH_COLOR}
       />
     </>
   );
