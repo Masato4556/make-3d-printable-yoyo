@@ -8,9 +8,7 @@ import { useYoyoGeometry } from "./hooks/useYoyoGeometry";
 import { MODEL_NAME } from "./ExportStl";
 
 export function YoyoModel() {
-  const { bearing, bearingSeatGeometry, bearingSeatHeight, wingGeometry } =
-    useYoyoGeometry();
-  const mirroredBearingSeatGeometry = useMirroredGeometry(bearingSeatGeometry);
+  const { bearing, wingGeometry } = useYoyoGeometry();
   const mirroredWingGeometry = useMirroredGeometry(wingGeometry);
 
   const material = new MeshPhysicalMaterial({
@@ -24,14 +22,8 @@ export function YoyoModel() {
   });
 
   return (
-    <group visible={!!bearingSeatGeometry}>
+    <group>
       <group position={new Vector3(-bearing.width / 2, 0, 0)}>
-        <mesh
-          name={MODEL_NAME.BEARING_SEAT}
-          geometry={bearingSeatGeometry}
-          material={material}
-          position={new Vector3(-bearingSeatHeight, 0, 0)}
-        />
         <mesh
           name={MODEL_NAME.WING}
           geometry={wingGeometry}
@@ -40,11 +32,6 @@ export function YoyoModel() {
         />
       </group>
       <group position={new Vector3(bearing.width / 2, 0, 0)}>
-        <mesh
-          geometry={mirroredBearingSeatGeometry}
-          material={material}
-          position={new Vector3(bearingSeatHeight, 0, 0)}
-        />
         <mesh
           geometry={mirroredWingGeometry}
           material={material}
