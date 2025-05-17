@@ -11,6 +11,8 @@ import { YoyoCubicBezierCurve } from "../../../yoyo/curves/YoyoCubicBezierCurve"
 import { JSX } from "react";
 import { YoyoHorizontalLine } from "../../../yoyo/curves/YoyoHorizontalLine";
 import { YoyoVerticalLine } from "../../../yoyo/curves/YoyoVerticalLine";
+import { CSizeBearingSeatCurve } from "../../../yoyo/curves/BearingSeat/CSizeBearingSeatCurve";
+import { CSizeBearingSeat } from "./CurveComponent/CSizeBearingSeat";
 
 export type UpdateCurve = (curve: YoyoCurve) => void;
 
@@ -26,6 +28,12 @@ export function CurveComponentFactory({ curve, update }: Props) {
 const registeredConverters: {
   [type: string]: (curve: YoyoCurve, update: UpdateCurve) => JSX.Element;
 } = {
+  CSizeBearingSeatCurve: (curve, _) => {
+    if (curve instanceof CSizeBearingSeatCurve) {
+      return <CSizeBearingSeat curve={curve} />;
+    }
+    throw new Error("Invalid curve type");
+  },
   CubicBezierCurve: (curve, update) => {
     if (curve instanceof YoyoCubicBezierCurve) {
       return <CubicBezierCurve curve={curve} update={update} />;

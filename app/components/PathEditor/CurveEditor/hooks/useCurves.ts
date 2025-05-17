@@ -1,16 +1,19 @@
 import { useCallback, useState } from "react";
 import { YoyoCurve } from "../../../../yoyo/curves/YoyoCurve";
-import { YoyoCubicBezierCurve } from "../../../../yoyo/curves/YoyoCubicBezierCurve";
 import { Vector2 } from "../../../../math/vector2";
+import { CSizeBearingSeatCurve } from "../../../../yoyo/curves/BearingSeat/CSizeBearingSeatCurve";
+import { YoyoCubicBezierCurve } from "../../../../yoyo/curves/YoyoCubicBezierCurve";
 import { YoyoHorizontalLine } from "../../../../yoyo/curves/YoyoHorizontalLine";
 import { YoyoVerticalLine } from "../../../../yoyo/curves/YoyoVerticalLine";
 
 export const useCurves = () => {
+  // TODO: 各カーブの始点と終点が一致する仕組みを用意する。
   const [curves, setCurves] = useState<YoyoCurve[]>([
+    new CSizeBearingSeatCurve(),
     new YoyoCubicBezierCurve(
       {
-        v0: new Vector2(0, 10.75),
-        v1: new Vector2(5.25, 10.75),
+        v0: new Vector2(0, 10.55),
+        v1: new Vector2(5.25, 10.55),
         v2: new Vector2(15.75, 27.5),
         v3: new Vector2(21, 27.5),
       },
