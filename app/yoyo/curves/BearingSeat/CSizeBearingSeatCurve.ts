@@ -3,9 +3,9 @@ import { CubicBezierCurve, Vector2 as ThreeVector2 } from "three";
 import { YoyoCurve } from "../YoyoCurve";
 import { Vector2 } from "../../../math/vector2";
 
-export const CSzieBearingSeatPath = [new ThreeVector2()]
+export const CSzieBearingSeatPath = [new ThreeVector2(0, -6)]
   .concat(
-    new ThreeVector2(2, 0),
+    new ThreeVector2(2, -6),
     new ThreeVector2(2, 4),
     new CubicBezierCurve(
       new ThreeVector2(2.5, 4),
