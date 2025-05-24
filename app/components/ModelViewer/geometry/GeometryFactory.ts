@@ -37,7 +37,7 @@ function createWingGeometry(wingPath: Vector2[]) {
     new ThreeVector2(4.5, 50),
     new ThreeVector2(4.5, 0),
     new ThreeVector2(0, 0),
-  ].map((v) => new ThreeVector2(v.x, v.y).add(new ThreeVector2(0, 6)));
+  ].map((v) => new ThreeVector2(v.x, v.y).add(new ThreeVector2(0, 4)));
   const nutSeatGeometry = new LatheGeometry(nutSeatPath, 6).rotateZ(
     Math.PI / 2
   );
