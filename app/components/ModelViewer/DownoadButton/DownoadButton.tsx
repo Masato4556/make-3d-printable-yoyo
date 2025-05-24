@@ -8,12 +8,7 @@ import { BuyMeACoffee } from "./BuyMeACoffee/BuyMeACoffee";
 import { useModelStore } from "../../../yoyo/useModelStore";
 
 export function DownoadButton() {
-  const { bearingSeat, wing } = useModelStore();
-
-  const downloadBearingSeat = useCallback(() => {
-    if (bearingSeat === undefined) return;
-    downloadBlob(bearingSeat, "bearing_seat.stl");
-  }, [bearingSeat]);
+  const { wing } = useModelStore();
 
   const downloadWing = useCallback(() => {
     if (wing === undefined) return;
@@ -22,21 +17,11 @@ export function DownoadButton() {
 
   return (
     <div className={classes["overlay-form-box"]}>
-      <div>
+      <div className={classes["download-button-container"]}>
         <div className={classes["download-label"]}>DOWNLOAD</div>
-        <div className={classes["download-button-container"]}>
-          <span>BEARING SEAT</span>
-          <button
-            className={classes["download-button"]}
-            onClick={downloadBearingSeat}
-          >
-            <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
-          </button>
-          <span>WING</span>
-          <button className={classes["download-button"]} onClick={downloadWing}>
-            <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
-          </button>
-        </div>
+        <button className={classes["download-button"]} onClick={downloadWing}>
+          <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
+        </button>
       </div>
       <BuyMeACoffee />
     </div>

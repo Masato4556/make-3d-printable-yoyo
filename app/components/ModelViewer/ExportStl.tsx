@@ -8,6 +8,7 @@ import { useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import { STLExporter } from "three/examples/jsm/Addons.js";
 import { useModelStore } from "../../yoyo/useModelStore";
+import { useModeStore } from "../../stores/useModeStore";
 
 export const MODEL_NAME = {
   BEARING_SEAT: "bearing_seat",
@@ -16,25 +17,18 @@ export const MODEL_NAME = {
 
 export function ExportStl() {
   const { scene } = useThree();
-  const { setBearingSeat, setWing } = useModelStore();
+  const { setWing } = useModelStore();
+  const { mode } = useModeStore();
 
   useEffect(() => {
-    // 左右対称にモデルを配置しているが出力したいのは片側だけなので、”yoyo”とnameがついたオブジェクトだけを取得
-    // MEMO: 今後複数パーツに分割して出力したい場合、個別にnameでパーツを取得しstl変換を行う
-    const bearingSeatModel = scene.getObjectByName(MODEL_NAME.BEARING_SEAT);
     const wingModel = scene.getObjectByName(MODEL_NAME.WING);
-    if (bearingSeatModel !== undefined)
-      setBearingSeat(
-        new Blob([new STLExporter().parse(bearingSeatModel)], {
-          type: "application/stl",
-        })
-      );
-    if (wingModel !== undefined)
+    if (wingModel !== undefined && mode === "MODEL") {
       setWing(
         new Blob([new STLExporter().parse(wingModel)], {
           type: "application/stl",
         })
       );
-  }, [scene, setBearingSeat, setWing]);
+    }
+  }, [scene, setWing, mode]);
   return null;
 }
