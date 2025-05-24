@@ -1,5 +1,5 @@
 /**
- * ヨーヨーの軸となるX軸を描画するコンポーネンss
+ * ヨーヨーの軸となるX軸を描画するコンポーネント
  */
 import { Line } from "react-konva";
 import { PATH_COLOR } from "./style";

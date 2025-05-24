@@ -42,7 +42,13 @@ const cleanCodeRules = {
 
   "object-shorthand": "error",
   "prefer-arrow-callback": "error",
-  "prefer-destructuring": "error",
+  "prefer-destructuring": [
+    "error",
+    {
+      array: false,
+      object: true,
+    },
+  ],
   "prefer-object-spread": "error",
   "prefer-template": "error",
   yoda: "error",
