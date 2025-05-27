@@ -44,7 +44,7 @@ const CSzieBearingSeatPath = [new ThreeVector2(0, -4)]
     ).getPoints(8),
     new ThreeVector2(10.55, 2.085)
   )
-  .map((point) => new Vector2(-point.y + 2.085, point.x));
+  .map((point) => new Vector2(-point.y + 2.085 + 4.76 / 2, point.x));
 
 export class CSizeBearingSeatCurve implements YoyoCurve {
   index: number = 0;

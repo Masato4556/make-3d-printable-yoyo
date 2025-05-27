@@ -7,6 +7,8 @@ import { Xaxis } from "./Xaxis";
 import { Layer, Stage } from "react-konva";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { GridLayer } from "./GridLayer";
+import { BearingPathLayer } from "./BearingPathLayer";
+import { Bearing } from "../../yoyo/bearing";
 
 type Props = {
   hidden: boolean;
@@ -16,6 +18,8 @@ export function Editor(props: Props) {
   const { hidden } = props;
 
   const { width, height } = useWindowSize();
+
+  const bearing = Bearing.fromSize("sizeC");
 
   return (
     <>
@@ -29,8 +33,9 @@ export function Editor(props: Props) {
         }}
       >
         <Layer zIndex={10}>
-          <CurveEditor />
+          <CurveEditor bearing={bearing} />
         </Layer>
+        <BearingPathLayer bearing={bearing} zIndex={5} scale={5} />
         <Layer zIndex={0}>
           <Xaxis />
         </Layer>
