@@ -13,9 +13,10 @@ import { Bearing } from "../../../yoyo/bearing";
 
 type Props = {
   bearing: Bearing;
+  scale: number;
 };
 
-export function CurveEditor({ bearing }: Props) {
+export function CurveEditor({ bearing, scale }: Props) {
   const { curves, updateCurve } = useCurves(bearing);
   useUpdateCurvesStore(curves);
 
@@ -33,7 +34,7 @@ export function CurveEditor({ bearing }: Props) {
   }, [curves]);
 
   return (
-    <Group scale={{ x: 5, y: -5 }}>
+    <Group scale={{ x: scale, y: -scale }}>
       <Circle x={200} y={200} stroke="black" radius={50} />
       {Object.entries(mirreredPathes).map(([key, path]) => (
         <Line

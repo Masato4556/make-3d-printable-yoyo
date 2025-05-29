@@ -19,6 +19,7 @@ export function Editor(props: Props) {
   const { width, height } = useWindowSize();
 
   const bearing = Bearing.fromSize("sizeC");
+  const scale = 5;
 
   return (
     <>
@@ -32,10 +33,10 @@ export function Editor(props: Props) {
         }}
       >
         <Layer zIndex={10}>
-          <CurveEditor bearing={bearing} />
+          <CurveEditor bearing={bearing} scale={scale} />
         </Layer>
-        <BearingPathLayer bearing={bearing} zIndex={5} scale={5} />
-        <GridLayer width={width} height={height} zIndex={-10} scale={5} />
+        <BearingPathLayer bearing={bearing} zIndex={5} scale={scale} />
+        <GridLayer width={width} height={height} zIndex={-10} scale={scale} />
       </Stage>
       {!hidden && <Inspector />}
     </>
