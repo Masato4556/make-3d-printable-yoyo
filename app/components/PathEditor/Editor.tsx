@@ -3,7 +3,6 @@
  */
 import { Inspector } from "./inspector/Inspector";
 import { CurveEditor } from "./CurveEditor/CurveEditor";
-import { Xaxis } from "./Xaxis";
 import { Layer, Stage } from "react-konva";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { GridLayer } from "./GridLayer";
@@ -36,9 +35,6 @@ export function Editor(props: Props) {
           <CurveEditor bearing={bearing} />
         </Layer>
         <BearingPathLayer bearing={bearing} zIndex={5} scale={5} />
-        <Layer zIndex={0}>
-          <Xaxis />
-        </Layer>
         <GridLayer width={width} height={height} zIndex={-10} scale={5} />
       </Stage>
       {!hidden && <Inspector />}
