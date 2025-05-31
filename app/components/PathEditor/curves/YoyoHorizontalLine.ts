@@ -1,26 +1,23 @@
 /**
- * コンテキストで管理する縦線のクラス
+ * コンテキストで管理する横線のクラス
  */
 
-import { Vector2 } from "../../math/vector2";
+import { Vector2 } from "../../../math/vector2";
 import { YoyoCurve } from "./YoyoCurve";
 
-type Option = {
-  editablePoint?: "start" | "end";
-};
-
-export class YoyoVerticalLine implements YoyoCurve {
+export class YoyoHorizontalLine implements YoyoCurve {
   id: string;
-  type: string = "VerticalLine";
+  type: string = "HorizontalLine";
   index: number = 0;
   v0: Vector2;
   v1: Vector2;
-  option?: Option;
-  constructor(v0: Vector2, v1: Vector2, option?: Option) {
+  constructor(v0: Vector2, v1: Vector2) {
     this.v0 = v0;
     this.v1 = v1;
-    this.option = option;
-    this.id = `YoyoVerticalLine_${Date.now()}_${v0.x}_${v0.y}_${v1.x}_${v1.y}`;
+
+    this.id = `YoyoHorizontalLine_${Date.now()}_${v0.x}_${v0.y}_${v1.x}_${
+      v1.y
+    }`;
   }
   getPath(): Vector2[] {
     return [this.v0, this.v1];
@@ -33,10 +30,10 @@ export class YoyoVerticalLine implements YoyoCurve {
   }
   updateFirstPoint(v: Vector2): void {
     this.v0 = v;
-    this.v1 = this.v1.withX(v.x);
+    this.v1 = this.v1.withY(v.y);
   }
   updateLastPoint(v: Vector2): void {
-    this.v0 = this.v0.withX(v.x);
+    this.v0 = this.v0.withY(v.y);
     this.v1 = v;
   }
   setIndex(index: number): void {

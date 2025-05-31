@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Mode, useModeStore } from "../../../../stores/useModeStore";
-import { YoyoCurve } from "../../../../yoyo/curves/YoyoCurve";
+import { YoyoCurve } from "../../curves/YoyoCurve";
 import { usePathStore } from "../../../../stores/useCurveStore";
 import { Vector2 } from "../../../../math/vector2";
 

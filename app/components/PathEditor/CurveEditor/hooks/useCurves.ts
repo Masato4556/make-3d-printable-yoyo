@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
-import { YoyoCurve } from "../../../../yoyo/curves/YoyoCurve";
+import { YoyoCurve } from "../../curves/YoyoCurve";
 import { Vector2 } from "../../../../math/vector2";
-import { CSizeBearingSeatCurve } from "../../../../yoyo/curves/BearingSeat/CSizeBearingSeatCurve";
-import { YoyoCubicBezierCurve } from "../../../../yoyo/curves/YoyoCubicBezierCurve";
-import { YoyoHorizontalLine } from "../../../../yoyo/curves/YoyoHorizontalLine";
-import { YoyoVerticalLine } from "../../../../yoyo/curves/YoyoVerticalLine";
+import { CSizeBearingSeatCurve } from "../../curves/BearingSeat/CSizeBearingSeatCurve";
+import { YoyoCubicBezierCurve } from "../../curves/YoyoCubicBezierCurve";
+import { YoyoHorizontalLine } from "../../curves/YoyoHorizontalLine";
+import { YoyoVerticalLine } from "../../curves/YoyoVerticalLine";
 import { Bearing } from "../../../../yoyo/bearing";
 
 export const useCurves = (bearing: Bearing) => {

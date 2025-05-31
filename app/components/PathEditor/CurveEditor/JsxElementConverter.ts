@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { YoyoCurve } from "../../../yoyo/curves/YoyoCurve";
+import { YoyoCurve } from "../curves/YoyoCurve";
 import { UnknownCurveTypeError } from "./errors/UnknownCurveTypeError";
 import { UpdateCurve } from "./CurveComponentFactory";
 

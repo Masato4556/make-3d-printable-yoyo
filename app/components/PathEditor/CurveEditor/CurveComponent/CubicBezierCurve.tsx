@@ -4,7 +4,7 @@
 
 import { KonvaEventObject } from "konva/lib/Node";
 import { Line, Shape } from "react-konva";
-import { YoyoCubicBezierCurve } from "../../../../yoyo/curves/YoyoCubicBezierCurve";
+import { YoyoCubicBezierCurve } from "../../curves/YoyoCubicBezierCurve";
 import { PATH_COLOR, WIRE_COLOR } from "../../style";
 import { Vector2 } from "../../../../math/vector2";
 import { UpdateCurve } from "../CurveComponentFactory";

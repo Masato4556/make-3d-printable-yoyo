@@ -6,12 +6,12 @@ import { CubicBezierCurve } from "./CurveComponent/CubicBezierCurve";
 import { HorizontalLine } from "./CurveComponent/HorizontalLine";
 import { VerticalLine } from "./CurveComponent/VerticalLine";
 import { JsxElementConverter } from "./JsxElementConverter";
-import { YoyoCurve } from "../../../yoyo/curves/YoyoCurve";
-import { YoyoCubicBezierCurve } from "../../../yoyo/curves/YoyoCubicBezierCurve";
+import { YoyoCurve } from "../curves/YoyoCurve";
+import { YoyoCubicBezierCurve } from "../curves/YoyoCubicBezierCurve";
 import { JSX } from "react";
-import { YoyoHorizontalLine } from "../../../yoyo/curves/YoyoHorizontalLine";
-import { YoyoVerticalLine } from "../../../yoyo/curves/YoyoVerticalLine";
-import { CSizeBearingSeatCurve } from "../../../yoyo/curves/BearingSeat/CSizeBearingSeatCurve";
+import { YoyoHorizontalLine } from "../curves/YoyoHorizontalLine";
+import { YoyoVerticalLine } from "../curves/YoyoVerticalLine";
+import { CSizeBearingSeatCurve } from "../curves/BearingSeat/CSizeBearingSeatCurve";
 import { CSizeBearingSeat } from "./CurveComponent/CSizeBearingSeat";
 
 export type UpdateCurve = (curve: YoyoCurve) => void;
