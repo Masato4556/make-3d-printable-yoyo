@@ -5,7 +5,7 @@
 import { useCallback } from "react";
 import classes from "./style.module.scss";
 import { BuyMeACoffee } from "./BuyMeACoffee/BuyMeACoffee";
-import { useModelStore } from "../../../yoyo/useModelStore";
+import { useModelStore } from "../../../stores/useModelStore";
 
 export function DownoadButton() {
   const { wing } = useModelStore();

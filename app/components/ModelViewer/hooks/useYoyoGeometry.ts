@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { GeometryFactory } from "../geometry/GeometryFactory";
-import { useCurveVectors } from "../../../yoyo/YoyoCurveContext";
+import { useCurveVectors } from "../../../stores/useCurveStore";
 
 export function useYoyoGeometry() {
   const bearingType = "sizeC";

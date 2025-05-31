@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Mode, useModeStore } from "../../../../stores/useModeStore";
 import { YoyoCurve } from "../../../../yoyo/curves/YoyoCurve";
-import { useCurvesStore } from "../../../../yoyo/YoyoCurveContext";
+import { useCurvesStore } from "../../../../stores/useCurveStore";
 
 export const useUpdateCurvesStore = (curves: YoyoCurve[]) => {
   const { mode } = useModeStore();

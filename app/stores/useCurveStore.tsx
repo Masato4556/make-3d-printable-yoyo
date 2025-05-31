@@ -3,7 +3,7 @@
  */
 
 import { create } from "zustand";
-import { YoyoCurve } from "./curves/YoyoCurve";
+import { YoyoCurve } from "../yoyo/curves/YoyoCurve";
 import { useMemo } from "react";
 import { Vector2 } from "../math/vector2";
 

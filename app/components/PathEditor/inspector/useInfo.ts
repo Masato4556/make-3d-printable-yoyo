@@ -4,7 +4,7 @@
 
 import { useMemo } from "react";
 import { Vector2 } from "../../../math/vector2";
-import { useCurveVectors } from "../../../yoyo/YoyoCurveContext";
+import { useCurveVectors } from "../../../stores/useCurveStore";
 
 export function useInfo() {
   const curveVectors = useCurveVectors();
