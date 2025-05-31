@@ -1,4 +1,4 @@
-import { Layer, Line, Rect } from "react-konva";
+import { Layer, Line } from "react-konva";
 import { BEARING_COLOR } from "./style";
 import { Bearing } from "../../yoyo/bearing";
 

@@ -1,6 +1,6 @@
 import { Layer, Line } from "react-konva";
 import { GRID_COLOR } from "./style";
-import { ComponentProps, useEffect, useMemo } from "react";
+import { ComponentProps, useMemo } from "react";
 
 type Props = {
   width: number;
