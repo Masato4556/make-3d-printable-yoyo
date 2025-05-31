@@ -4,14 +4,14 @@
 
 import { useMemo } from "react";
 import { Vector2 } from "../../../math/vector2";
-import { useCurveVectors } from "../../../stores/useCurveStore";
+import { usePathStore } from "../../../stores/useCurveStore";
 
 export function useInfo() {
-  const curveVectors = useCurveVectors();
+  const { path } = usePathStore();
   return useMemo(() => {
-    const volumeMm3 = calculateYoyoVolume(curveVectors);
+    const volumeMm3 = calculateYoyoVolume(path);
     return { volumeCm3: volumeMm3 / 1000 };
-  }, [curveVectors]);
+  }, [path]);
 }
 
 function calculateYoyoVolume(yoyoPath: Vector2[]): number {

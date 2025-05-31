@@ -1,17 +1,17 @@
 import { useMemo } from "react";
 import { GeometryFactory } from "../geometry/GeometryFactory";
-import { useCurveVectors } from "../../../stores/useCurveStore";
+import { usePathStore } from "../../../stores/useCurveStore";
 
 export function useYoyoGeometry() {
   const bearingType = "sizeC";
 
-  const curveVectors = useCurveVectors();
+  const { path } = usePathStore();
 
   return useMemo(() => {
-    const geometryFactory = new GeometryFactory(bearingType, curveVectors);
+    const geometryFactory = new GeometryFactory(bearingType, path);
     return {
       bearing: geometryFactory.getBearing(),
       wingGeometry: geometryFactory.getWingGeometry(),
     };
-  }, [bearingType, curveVectors]);
+  }, [path]);
 }

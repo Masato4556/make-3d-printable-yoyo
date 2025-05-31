@@ -3,25 +3,14 @@
  */
 
 import { create } from "zustand";
-import { YoyoCurve } from "../yoyo/curves/YoyoCurve";
-import { useMemo } from "react";
 import { Vector2 } from "../math/vector2";
 
-type CurvesStore = {
-  curves: YoyoCurve[];
-  setCurves: (curves: YoyoCurve[]) => void;
+type PathStore = {
+  path: Vector2[];
+  setPath: (path: Vector2[]) => void;
 };
 
-export const useCurvesStore = create<CurvesStore>((set) => ({
-  curves: [],
-  setCurves: (curves: YoyoCurve[]) => set({ curves }),
+export const usePathStore = create<PathStore>((set) => ({
+  path: [],
+  setPath: (path: Vector2[]) => set({ path }),
 }));
-
-export const useCurveVectors = () => {
-  const { curves } = useCurvesStore();
-  return useMemo(
-    () =>
-      curves.reduce<Vector2[]>((acc, cur) => [...acc, ...cur.getPath()], []),
-    [curves]
-  );
-};
