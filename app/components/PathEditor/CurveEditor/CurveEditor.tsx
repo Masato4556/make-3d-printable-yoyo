@@ -16,8 +16,8 @@ type Props = {
   scale: number;
 };
 
-export function CurveEditor({ bearing, scale }: Props) {
-  const { curves, updateCurve } = useCurves(bearing);
+export function CurveEditor({ scale }: Props) {
+  const { curves, updateCurve } = useCurves();
   useUpdateCurvesStore(curves);
 
   const mirreredPathes = useMemo(() => {
