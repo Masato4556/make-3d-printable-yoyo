@@ -2,7 +2,7 @@
  * コンテキストで管理する2次ベジェ曲線のクラス
  */
 
-import { Vector2 } from "../../math/vector2";
+import { Vector2 } from "../../../math/vector2";
 import { getCubicBezierCurve } from "./getCubicBezierCurve";
 import { YoyoCurve } from "./YoyoCurve";
 

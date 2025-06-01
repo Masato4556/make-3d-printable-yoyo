@@ -7,7 +7,7 @@
 import { useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import { STLExporter } from "three/examples/jsm/Addons.js";
-import { useModelStore } from "../../yoyo/useModelStore";
+import { useModelStore } from "../../stores/useModelStore";
 import { useModeStore } from "../../stores/useModeStore";
 
 export const MODEL_NAME = {

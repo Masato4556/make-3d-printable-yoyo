@@ -1,4 +1,4 @@
-import { Vector2 } from "../../math/vector2";
+import { Vector2 } from "../../../math/vector2";
 
 export function getCubicBezierCurve(
   { v0, v1, v2, v3 }: CubicBezierCurveHandle,

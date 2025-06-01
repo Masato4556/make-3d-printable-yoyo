@@ -3,7 +3,7 @@
  */
 
 import { Line } from "react-konva";
-import { CSizeBearingSeatCurve } from "../../../../yoyo/curves/BearingSeat/CSizeBearingSeatCurve";
+import { CSizeBearingSeatCurve } from "../../curves/BearingSeat/CSizeBearingSeatCurve";
 import { useMemo } from "react";
 import { PATH_COLOR } from "../../style";
 

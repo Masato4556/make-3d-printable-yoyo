@@ -1,31 +1,22 @@
 import { useCallback, useState } from "react";
-import { YoyoCurve } from "../../../../yoyo/curves/YoyoCurve";
+import { YoyoCurve } from "../../curves/YoyoCurve";
 import { Vector2 } from "../../../../math/vector2";
-import { CSizeBearingSeatCurve } from "../../../../yoyo/curves/BearingSeat/CSizeBearingSeatCurve";
-import { YoyoCubicBezierCurve } from "../../../../yoyo/curves/YoyoCubicBezierCurve";
-import { YoyoHorizontalLine } from "../../../../yoyo/curves/YoyoHorizontalLine";
-import { YoyoVerticalLine } from "../../../../yoyo/curves/YoyoVerticalLine";
-import { Bearing } from "../../../../yoyo/bearing";
+import { YoyoCurveBuilder } from "../../curves/YoyoCurveBuilder";
 
-export const useCurves = (bearing: Bearing) => {
-  // TODO: 各カーブの始点と終点が一致する仕組みを用意する。
-  const [curves, setCurves] = useState<YoyoCurve[]>([
-    // TODO: ベアリングの種類に応じて変更する
-    new CSizeBearingSeatCurve(),
-    new YoyoCubicBezierCurve(
-      {
-        v0: new Vector2(bearing.width / 2, 10.55),
-        v1: new Vector2(5.25, 10.55),
-        v2: new Vector2(15.75, 27.5),
-        v3: new Vector2(21, 27.5),
-      },
-      { fixedEdge: "start" }
-    ),
-    new YoyoHorizontalLine(new Vector2(21, 27.5), new Vector2(28, 27.5)),
-    new YoyoVerticalLine(new Vector2(28, 27.5), new Vector2(28, 0), {
-      editablePoint: "end",
-    }),
-  ]);
+export const useCurves = () => {
+  const [curves, setCurves] = useState<YoyoCurve[]>(
+    new YoyoCurveBuilder()
+      .addCubicBezierCurve(
+        new Vector2(21, 27.5),
+        { start: new Vector2(5.25, 10.55), end: new Vector2(15.75, 27.5) },
+        { fixedEdge: "start" }
+      )
+      .addHorizontalLine(new Vector2(28, 27.5))
+      .addVerticalLine(new Vector2(28, 0), {
+        editablePoint: "end",
+      })
+      .build()
+  );
 
   const updateCurve = useCallback(
     (curve: YoyoCurve, index: number) => {

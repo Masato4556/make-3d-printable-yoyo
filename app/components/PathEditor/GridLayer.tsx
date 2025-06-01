@@ -1,6 +1,6 @@
 import { Layer, Line } from "react-konva";
 import { GRID_COLOR } from "./style";
-import { ComponentProps, useEffect, useMemo } from "react";
+import { ComponentProps, useMemo } from "react";
 
 type Props = {
   width: number;
@@ -21,11 +21,11 @@ export function GridLayer({ width, height, zIndex, scale = 1 }: Props) {
     for (let y = 0; y <= adjustedHeight / 2; y += scaledGridSize) {
       horizontalLines.push(
         createGridLine({
-          key: `h-${y}`,
+          key: `h-plus-${y}`,
           points: [-adjustedWidth / 2, y, adjustedWidth / 2, y],
         }),
         createGridLine({
-          key: `h-${y}`,
+          key: `h-minus-${y}`,
           points: [-adjustedWidth / 2, -y, adjustedWidth / 2, -y],
         })
       );
@@ -35,11 +35,11 @@ export function GridLayer({ width, height, zIndex, scale = 1 }: Props) {
     for (let x = 0; x <= adjustedWidth / 2; x += scaledGridSize) {
       verticalLines.push(
         createGridLine({
-          key: `v-${x}`,
+          key: `v-plus-${x}`,
           points: [x, -adjustedHeight / 2, x, adjustedHeight / 2],
         }),
         createGridLine({
-          key: `v-${x}`,
+          key: `v-minus-${x}`,
           points: [-x, -adjustedHeight / 2, -x, adjustedHeight / 2],
         })
       );

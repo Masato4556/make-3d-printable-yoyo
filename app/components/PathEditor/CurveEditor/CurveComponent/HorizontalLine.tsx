@@ -3,7 +3,7 @@
  */
 
 import { Line } from "react-konva";
-import { YoyoHorizontalLine } from "../../../../yoyo/curves/YoyoHorizontalLine";
+import { YoyoHorizontalLine } from "../../curves/YoyoHorizontalLine";
 import { PATH_COLOR } from "../../style";
 import { UpdateCurve } from "../CurveComponentFactory";
 
