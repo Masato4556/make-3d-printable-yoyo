@@ -2,6 +2,7 @@ import { Vector2 } from "../../../math/vector2";
 import { CSizeBearingSeatCurve } from "./BearingSeat/CSizeBearingSeatCurve";
 import { YoyoCubicBezierCurve } from "./YoyoCubicBezierCurve";
 import { YoyoCurve } from "./YoyoCurve";
+import { YoyoDiagonalLine } from "./YoyoDiagonalLine";
 import { YoyoHorizontalLine } from "./YoyoHorizontalLine";
 import { YoyoVerticalLine } from "./YoyoVerticalLine";
 
@@ -68,7 +69,9 @@ export class YoyoCurveBuilder {
 
   public addVerticalLine(
     point: Vector2,
-    options: { editablePoint?: "start" | "end" } = {}
+    options: {
+      editableEndPoint?: boolean;
+    } = {}
   ) {
     if (this.points.length === 0) {
       throw new Error("No points available to create a vertical line.");
@@ -84,6 +87,22 @@ export class YoyoCurveBuilder {
     }
     this.points.push(point);
     this.curves.push(new YoyoVerticalLine(prevPoint, point, options));
+    return this;
+  }
+
+  public addDiagonalLine(
+    endPoint: Vector2,
+    options: { editableLastPoint?: boolean } = {}
+  ) {
+    if (this.points.length === 0) {
+      throw new Error("No points available to create a diagonal line.");
+    }
+    const prevPoint = this.points[this.points.length - 1];
+    if (!prevPoint) {
+      throw new Error("No previous point available to create a diagonal line.");
+    }
+    this.points.push(endPoint);
+    this.curves.push(new YoyoDiagonalLine(prevPoint, endPoint, options));
     return this;
   }
 

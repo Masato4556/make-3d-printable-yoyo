@@ -13,6 +13,8 @@ import { YoyoHorizontalLine } from "../curves/YoyoHorizontalLine";
 import { YoyoVerticalLine } from "../curves/YoyoVerticalLine";
 import { CSizeBearingSeatCurve } from "../curves/BearingSeat/CSizeBearingSeatCurve";
 import { CSizeBearingSeat } from "./CurveComponent/CSizeBearingSeat";
+import { YoyoDiagonalLine } from "../curves/YoyoDiagonalLine";
+import { DiagonalLine } from "./CurveComponent/DiagonalLine";
 
 export type UpdateCurve = (curve: YoyoCurve) => void;
 
@@ -49,6 +51,12 @@ const registeredConverters: {
   VerticalLine: (curve, update) => {
     if (curve instanceof YoyoVerticalLine) {
       return <VerticalLine curve={curve} update={update} />;
+    }
+    throw new Error("Invalid curve type");
+  },
+  DiagonalLine: (curve, update) => {
+    if (curve instanceof YoyoDiagonalLine) {
+      return <DiagonalLine curve={curve} update={update} />;
     }
     throw new Error("Invalid curve type");
   },

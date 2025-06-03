@@ -3,18 +3,18 @@
  */
 
 import { Line } from "react-konva";
-import { YoyoVerticalLine } from "../../curves/YoyoVerticalLine";
 import { PATH_COLOR } from "../../style";
 import { UpdateCurve } from "../CurveComponentFactory";
+import { YoyoDiagonalLine } from "../../curves/YoyoDiagonalLine";
 import { DraggableCircle } from "./parts/DraggableCircle";
 import { Vector2 } from "../../../../math/vector2";
 
 type Props = {
-  curve: YoyoVerticalLine;
+  curve: YoyoDiagonalLine;
   update: UpdateCurve;
 };
 
-export function VerticalLine({ curve, update }: Props) {
+export function DiagonalLine({ curve, update }: Props) {
   return (
     <>
       <Line
@@ -23,7 +23,7 @@ export function VerticalLine({ curve, update }: Props) {
         lineCap="round"
         points={[curve.v0.x, curve.v0.y, curve.v1.x, curve.v1.y]}
       />
-      {curve.option?.editableEndPoint && (
+      {curve.option?.editableLastPoint && (
         <DraggableCircle
           x={curve.v1.x}
           y={curve.v1.y}
@@ -34,9 +34,8 @@ export function VerticalLine({ curve, update }: Props) {
             // 簡易的に作成したドラッグできる範囲を制限するロジック
             // TODO: コンポーネント内にロジックを持たないようにする
             // TODO: マジックナンバーを解消する
-            const nextY = Math.max(Math.min(e.target.y(), curve.v0.y), 2);
-            curve.updateLastPoint(new Vector2(e.target.x(), nextY));
-
+            const nextX = Math.max(Math.min(e.target.x(), curve.v0.x), 8);
+            curve.updateLastPoint(new Vector2(nextX, 2));
             update(curve);
           }}
         />

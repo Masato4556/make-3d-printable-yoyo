@@ -12,9 +12,12 @@ export const useCurves = () => {
         { fixedEdge: "start" }
       )
       .addHorizontalLine(new Vector2(28, 27.5))
-      .addVerticalLine(new Vector2(28, 0), {
-        editablePoint: "end",
+      .addVerticalLine(new Vector2(28, 10), {
+        editableEndPoint: true,
       })
+      .addDiagonalLine(new Vector2(20, 2), { editableLastPoint: true })
+      .addHorizontalLine(new Vector2(8, 2))
+      .addVerticalLine(new Vector2(8, 0))
       .build()
   );
 
