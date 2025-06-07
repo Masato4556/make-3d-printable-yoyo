@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { Mode, useModeStore } from "../../../../stores/useModeStore";
-import { YoyoCurve } from "../../curves/YoyoCurve";
 import { usePathStore } from "../../../../stores/useCurveStore";
 import { Vector2 } from "../../../../math/vector2";
 
-export const useUpdateCurvesStore = (curves: YoyoCurve[]) => {
+export const useUpdateCurvesStore = (path: Vector2[]) => {
   const { mode } = useModeStore();
   const { setPath } = usePathStore();
 
@@ -12,8 +11,6 @@ export const useUpdateCurvesStore = (curves: YoyoCurve[]) => {
     if (mode === Mode.PATH) {
       return;
     }
-    setPath(
-      curves.reduce<Vector2[]>((acc, cur) => [...acc, ...cur.getPath()], [])
-    );
-  }, [curves, mode, setPath]);
+    setPath(path);
+  }, [mode, path, setPath]);
 };

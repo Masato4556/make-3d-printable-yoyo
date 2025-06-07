@@ -2,62 +2,37 @@
  * YoyoCurveの種類に応じて適切なCurveComponentを返すコンポーネント
  */
 
-import { CubicBezierCurve } from "./CurveComponent/CubicBezierCurve";
-import { HorizontalLine } from "./CurveComponent/HorizontalLine";
-import { VerticalLine } from "./CurveComponent/VerticalLine";
-import { JsxElementConverter } from "./JsxElementConverter";
-import { YoyoCurve } from "../curves/YoyoCurve";
-import { YoyoCubicBezierCurve } from "../curves/YoyoCubicBezierCurve";
-import { JSX } from "react";
-import { YoyoHorizontalLine } from "../curves/YoyoHorizontalLine";
-import { YoyoVerticalLine } from "../curves/YoyoVerticalLine";
-import { CSizeBearingSeatCurve } from "../curves/BearingSeat/CSizeBearingSeatCurve";
-import { CSizeBearingSeat } from "./CurveComponent/CSizeBearingSeat";
-import { YoyoDiagonalLine } from "../curves/YoyoDiagonalLine";
-import { DiagonalLine } from "./CurveComponent/DiagonalLine";
-
-export type UpdateCurve = (curve: YoyoCurve) => void;
+import { LineConnectionComponent } from "./CurveComponent/LineConnectionComponent";
+import { CubicBezierConnectionComponent } from "./CurveComponent/CubicBezierConnectionComponent";
+import { Connection } from "../models/Connection/Connection";
 
 type Props = {
-  curve: YoyoCurve;
-  update: UpdateCurve;
+  connection: Connection;
+  getConnectionPoints: (connection: Connection) => {
+    start: { x: number; y: number };
+    end: { x: number; y: number };
+  };
+  refreshConnections: () => void;
 };
 
-export function CurveComponentFactory({ curve, update }: Props) {
-  return new JsxElementConverter(registeredConverters).convert(curve, update);
+export function ConnectionComponentFactory({
+  connection,
+  getConnectionPoints,
+  refreshConnections,
+}: Props) {
+  const { start, end } = getConnectionPoints(connection);
+  switch (connection.__brand) {
+    case "CubicBezierConnection":
+      return (
+        <CubicBezierConnectionComponent
+          connection={connection}
+          getConnectionPoints={getConnectionPoints}
+          refreshConnections={refreshConnections}
+        />
+      );
+    case "LineConnection":
+      return <LineConnectionComponent startPoint={start} endPoint={end} />;
+    default:
+      throw new Error(`Unknown connection type`);
+  }
 }
-
-const registeredConverters: {
-  [type: string]: (curve: YoyoCurve, update: UpdateCurve) => JSX.Element;
-} = {
-  CSizeBearingSeatCurve: (curve, _) => {
-    if (curve instanceof CSizeBearingSeatCurve) {
-      return <CSizeBearingSeat curve={curve} />;
-    }
-    throw new Error("Invalid curve type");
-  },
-  CubicBezierCurve: (curve, update) => {
-    if (curve instanceof YoyoCubicBezierCurve) {
-      return <CubicBezierCurve curve={curve} update={update} />;
-    }
-    throw new Error("Invalid curve type");
-  },
-  HorizontalLine: (curve, update) => {
-    if (curve instanceof YoyoHorizontalLine) {
-      return <HorizontalLine curve={curve} update={update} />;
-    }
-    throw new Error("Invalid curve type");
-  },
-  VerticalLine: (curve, update) => {
-    if (curve instanceof YoyoVerticalLine) {
-      return <VerticalLine curve={curve} update={update} />;
-    }
-    throw new Error("Invalid curve type");
-  },
-  DiagonalLine: (curve, update) => {
-    if (curve instanceof YoyoDiagonalLine) {
-      return <DiagonalLine curve={curve} update={update} />;
-    }
-    throw new Error("Invalid curve type");
-  },
-};
