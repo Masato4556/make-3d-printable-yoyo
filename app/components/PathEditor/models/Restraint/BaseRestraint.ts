@@ -1,9 +1,6 @@
-import { Point } from "../Point/Point";
+import { PointMap } from "../Point/PointMap";
 
 export interface BaseRestraint {
   readonly pointId: string;
-  apply: (
-    points: Map<string, Point>,
-    updatedPoints: Map<string, Point>
-  ) => void;
+  apply: (points: PointMap, updatedPoints: PointMap) => void;
 }

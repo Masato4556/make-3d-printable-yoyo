@@ -1,17 +1,38 @@
+type Option = {
+  editable?: boolean;
+};
+
+type ConstructorProps = {
+  x: number;
+  y: number;
+  id?: string;
+  option?: Option;
+};
+
 export class Point {
   readonly __brand = "Point";
-  readonly id: string = crypto.randomUUID();
+  readonly id: string;
   public x: number;
   public y: number;
-  readonly option?: { editable?: boolean };
+  readonly option?: Option;
 
-  constructor(x: number, y: number, option?: { editable?: boolean }) {
+  private constructor({ x, y, option, id }: ConstructorProps) {
     this.x = x;
     this.y = y;
     this.option = option;
+    this.id = id || crypto.randomUUID();
   }
 
-  withPosition(x: number, y: number): Point {
-    return new Point(x, y, this.option);
+  static fromPosition(x: number, y: number, option?: Option): Point {
+    return new Point({ x, y, option });
+  }
+
+  public clone(): Point {
+    return new Point({
+      x: this.x,
+      y: this.y,
+      option: this.option,
+      id: this.id,
+    });
   }
 }

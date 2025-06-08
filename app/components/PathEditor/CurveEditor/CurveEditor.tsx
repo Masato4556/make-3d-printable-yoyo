@@ -25,17 +25,16 @@ export function CurveEditor({ scale }: Props) {
     getConnectionPoints,
     bearingSeat,
     refreshConnections,
-    getPath,
+    path,
   } = useCurves();
-  useUpdateCurvesStore(getPath());
+  useUpdateCurvesStore(path);
 
   const mirroredPathes = useMemo(() => {
-    const path = getPath();
     const mirroredXPath = path.map((point) => new Vector2(-point.x, point.y));
     const mirroredYPath = path.map((point) => new Vector2(point.x, -point.y));
     const mirroredXYPath = path.map((point) => new Vector2(-point.x, -point.y));
     return [mirroredXPath, mirroredYPath, mirroredXYPath];
-  }, [getPath]);
+  }, [path]);
 
   return (
     <Group scale={{ x: scale, y: -scale }}>

@@ -1,31 +1,33 @@
-import { Point } from "../Point/Point";
+import { getMovementVector } from "../../CurveEditor/function/getMovementVector";
+import { isMoved } from "../../CurveEditor/function/isMoved";
+import { PointMap } from "../Point/PointMap";
 import { BaseRestraint } from "./BaseRestraint";
 
 export class FollowRestraint implements BaseRestraint {
-  constructor(readonly pointId: string, private targetPointId: string) {}
+  constructor(
+    readonly pointId: string,
+    readonly targetPointId: string,
+    readonly options?: { lock: { x: boolean; y: boolean } }
+  ) {}
 
-  public apply(
-    points: Map<string, Point>,
-    updatedPoints: Map<string, Point>
-  ): void {
+  public apply(points: PointMap, updatedPoints: PointMap): void {
     const targetPoint = points.get(this.targetPointId);
     const updatedTargetPoint = updatedPoints.get(this.targetPointId);
-    if (!targetPoint || !updatedTargetPoint) {
-      throw new Error(
-        `Target point with id ${this.targetPointId} does not exist.`
-      );
-    }
-    if (
-      targetPoint.x === updatedTargetPoint.x ||
-      targetPoint.y === updatedTargetPoint.y
-    ) {
+    const targetPointMovementVector = getMovementVector(
+      targetPoint,
+      updatedTargetPoint
+    );
+
+    if (!isMoved(targetPointMovementVector)) {
       return;
     }
-    const point = points.get(this.pointId);
-    if (!point) {
-      throw new Error(`Point with id ${this.pointId} does not exist.`);
+
+    const point = updatedPoints.get(this.pointId);
+    if (!this.options?.lock?.x) {
+      point.x += targetPointMovementVector.x;
     }
-    point.x += updatedTargetPoint.x - targetPoint.x;
-    point.y += updatedTargetPoint.y - targetPoint.y;
+    if (!this.options?.lock?.y) {
+      point.y += targetPointMovementVector.y;
+    }
   }
 }

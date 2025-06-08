@@ -4,23 +4,23 @@ import { Point } from "../../models/Point/Point";
 import { Connection } from "../../models/Connection/Connection";
 import { YoyoCurveBuilder } from "./YoyoCurveBuilder";
 import { getCubicBezierCurve } from "../../models/getCubicBezierCurve";
-import { FollowRestraint } from "../../models/Restraint/FollowRestraint";
+import { Restraint } from "../../models/Restraint/Restraint";
+import { PointMap } from "../../models/Point/PointMap";
 
 export const useCurves = () => {
   const yoyoCurveBuilder = useMemo(() => generateYoyoCurveBuilder(), []);
 
   const [curveData, setCurveData] = useState<{
-    points: Map<string, Point>;
+    points: PointMap;
     connections: Connection[];
   }>({
-    points: yoyoCurveBuilder.getPoints().reduce((acc, point) => {
-      acc.set(point.id, point);
-      return acc;
-    }, new Map<string, Point>()),
+    points: new PointMap(yoyoCurveBuilder.getPoints()),
     connections: yoyoCurveBuilder.getConnections(),
   });
-
-  const [prevCurveData, setPrevCurveData] = useState(curveData);
+  const [prevPoints, setPrevPoints] = useState(curveData.points.clone());
+  const [restraints, setRestraints] = useState<Restraint[]>(
+    yoyoCurveBuilder.getRestraints()
+  );
 
   const getPoint = useCallback(
     (pointId: string): Point | undefined => curveData.points.get(pointId),
@@ -29,12 +29,15 @@ export const useCurves = () => {
 
   // pointの更新をconnectionに伝えて再レンダリングを促す関数
   const refreshConnections = useCallback(() => {
-    setCurveData((prevData) => ({
-      ...prevData,
+    restraints.forEach((restraint) => {
+      restraint.apply(prevPoints, curveData.points);
+    });
+    setCurveData({
+      points: curveData.points.clone(),
       connections: [...curveData.connections],
-    }));
-    setPrevCurveData(curveData);
-  }, [curveData.connections]);
+    });
+    setPrevPoints(curveData.points.clone());
+  }, [curveData, prevPoints, restraints]);
 
   const getConnectionPoints = useCallback(
     (connection: Connection) => {
@@ -48,7 +51,7 @@ export const useCurves = () => {
     [getPoint]
   );
 
-  const getPath = useCallback(
+  const path = useMemo(
     () => [
       ...yoyoCurveBuilder.getBearingSeat().getPath(),
       ...curveData.connections.flatMap((connection) => {
@@ -76,32 +79,31 @@ export const useCurves = () => {
   return {
     points: curveData.points,
     connections: curveData.connections,
-    getPoint,
     getConnectionPoints,
-    setCurveData,
     refreshConnections,
     bearingSeat: yoyoCurveBuilder.getBearingSeat(),
-    getPath,
+    path,
   };
 };
 
 const generateYoyoCurveBuilder = () =>
   new YoyoCurveBuilder()
-    .addCubicBezierCurve(new Point(21, 27.5, { editable: true }), {
+    .addCubicBezierCurve(Point.fromPosition(21, 27.5, { editable: true }), {
       start: new Vector2(5.25, 10.55),
       end: new Vector2(15.75, 27.5),
     })
     // Horizontal line to the right
-    .addLine(new Point(28, 27.5))
+    .addLine(Point.fromPosition(28, 27.5))
     // Vertical line down
     .addLine(
-      new Point(28, 10, {
+      Point.fromPosition(28, 10, {
         editable: true,
-      })
+      }),
+      "Follow"
     )
     // Diagonal line to the left
-    .addLine(new Point(20, 2, { editable: true }))
+    .addLine(Point.fromPosition(20, 2, { editable: true }))
     // Horizontal line to the left
-    .addLine(new Point(8, 2))
+    .addLine(Point.fromPosition(8, 2))
     // Vertical line down
-    .addLine(new Point(8, 0));
+    .addLine(Point.fromPosition(8, 0));

@@ -6,7 +6,11 @@ import { CubicBezierConnection } from "../../models/Connection/CubicBezierConnec
 import { LineConnection } from "../../models/Connection/LineConnection";
 import { Point } from "../../models/Point/Point";
 import { PointList } from "../../models/Point/PointList";
-import { Restraint } from "../../models/Restraint/Restraint";
+import {
+  Restraint,
+  RESTRAINT_MAP,
+  RestraintType,
+} from "../../models/Restraint/Restraint";
 
 export class YoyoCurveBuilder {
   private points: PointList;
@@ -23,8 +27,8 @@ export class YoyoCurveBuilder {
       throw new Error("Invalid bearing seat path.");
     }
     this.points = new PointList([
-      new Point(firstBearingSeatPoint.x, firstBearingSeatPoint.y),
-      new Point(lastBearingSeatPoint.x, lastBearingSeatPoint.y),
+      Point.fromPosition(firstBearingSeatPoint.x, firstBearingSeatPoint.y),
+      Point.fromPosition(lastBearingSeatPoint.x, lastBearingSeatPoint.y),
     ]);
     this.connections = new ConnectionList();
     this.bearingSeat = bearingSeat;
@@ -51,7 +55,7 @@ export class YoyoCurveBuilder {
     return this;
   }
 
-  public addLine(point: Point) {
+  public addLine(point: Point, restraintType?: RestraintType) {
     const prevPoint = this.points.getLast();
     if (!prevPoint) {
       throw new Error(
@@ -62,6 +66,12 @@ export class YoyoCurveBuilder {
     this.connections = this.connections.add(
       new LineConnection(prevPoint.id, point.id)
     );
+
+    if (restraintType) {
+      this.restraints.push(
+        new RESTRAINT_MAP[restraintType](prevPoint.id, point.id)
+      );
+    }
     return this;
   }
 
@@ -73,5 +83,8 @@ export class YoyoCurveBuilder {
   }
   public getConnections() {
     return this.connections.getConnections();
+  }
+  public getRestraints() {
+    return this.restraints;
   }
 }
