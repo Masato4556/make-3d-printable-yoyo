@@ -6,11 +6,8 @@ import { CubicBezierConnection } from "../../models/Connection/CubicBezierConnec
 import { LineConnection } from "../../models/Connection/LineConnection";
 import { Point } from "../../models/Point/Point";
 import { PointList } from "../../models/Point/PointList";
-import {
-  Restraint,
-  RESTRAINT_MAP,
-  RestraintType,
-} from "../../models/Restraint/Restraint";
+import { FollowRestraint } from "../../models/Restraint/FollowRestraint";
+import { Restraint } from "../../models/Restraint/Restraint";
 
 export class YoyoCurveBuilder {
   private points: PointList;
@@ -69,7 +66,7 @@ export class YoyoCurveBuilder {
 
     if (restraintType) {
       this.restraints.push(
-        new RESTRAINT_MAP[restraintType](prevPoint.id, point.id)
+        RESTRAINT_MAP[restraintType](prevPoint.id, point.id)
       );
     }
     return this;
@@ -88,3 +85,17 @@ export class YoyoCurveBuilder {
     return this.restraints;
   }
 }
+
+const RESTRAINT_MAP = {
+  Follow: (prevPointId: string, nextPointId: string) =>
+    new FollowRestraint(prevPointId, nextPointId),
+  FollowX: (prevPointId: string, nextPointId: string) =>
+    new FollowRestraint(prevPointId, nextPointId, {
+      lock: { x: false, y: true },
+    }),
+  FollowY: (prevPointId: string, nextPointId: string) =>
+    new FollowRestraint(prevPointId, nextPointId, {
+      lock: { x: true, y: false },
+    }),
+};
+type RestraintType = keyof typeof RESTRAINT_MAP;
