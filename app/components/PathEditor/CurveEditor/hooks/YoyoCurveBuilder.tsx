@@ -13,7 +13,7 @@ type RestraintType = "Follow" | "FollowX" | "FollowY";
 
 const RESTRAINT_BUILDERS: Record<
   RestraintType,
-  (pointId: string, targetPointId: string) => Restraint
+  (restrainedPointId: string, targetPointId: string) => Restraint
 > = {
   Follow: (restrainedPointId: string, targetPointId: string) =>
     new FollowRestraint(restrainedPointId, targetPointId),
@@ -25,6 +25,13 @@ const RESTRAINT_BUILDERS: Record<
     new FollowRestraint(restrainedPointId, targetPointId, {
       lock: { x: true, y: false },
     }),
+};
+
+type RestraintRelationship = "RestrainedBy" | "TargetedBy";
+
+type RestraintOptions = {
+  type: RestraintType;
+  relationshipWithPrevPoint: RestraintRelationship;
 };
 
 export class YoyoCurveBuilder {
@@ -70,7 +77,7 @@ export class YoyoCurveBuilder {
     return this;
   }
 
-  public addLine(point: Point, restraintType?: RestraintType) {
+  public addLine(point: Point, restraint?: RestraintOptions) {
     const prevPoint = this.points.getLast();
     if (!prevPoint) {
       throw new Error(
@@ -82,9 +89,12 @@ export class YoyoCurveBuilder {
       new LineConnection(prevPoint.id, point.id)
     );
 
-    if (restraintType) {
+    if (restraint !== undefined) {
+      const builder = RESTRAINT_BUILDERS[restraint.type];
       this.restraints.push(
-        RESTRAINT_BUILDERS[restraintType](prevPoint.id, point.id)
+        restraint.relationshipWithPrevPoint === "TargetedBy"
+          ? builder(prevPoint.id, point.id)
+          : builder(point.id, prevPoint.id)
       );
     }
     return this;

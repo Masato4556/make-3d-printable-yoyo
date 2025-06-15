@@ -1,5 +1,6 @@
 type Option = {
   editable?: boolean;
+  fixed?: { x?: boolean; y?: boolean };
 };
 
 type ConstructorProps = {

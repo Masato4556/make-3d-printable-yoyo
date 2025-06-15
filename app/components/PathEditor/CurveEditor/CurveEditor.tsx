@@ -50,6 +50,12 @@ export function CurveEditor({ scale }: Props) {
             radius={2}
             color={PATH_COLOR}
             onDragMove={(e) => {
+              if (point.option?.fixed?.x) {
+                e.target.x(point.x);
+              }
+              if (point.option?.fixed?.y) {
+                e.target.y(point.y);
+              }
               point.x = e.target.x();
               point.y = e.target.y();
               refreshConnections();

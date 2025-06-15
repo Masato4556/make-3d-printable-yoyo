@@ -99,10 +99,10 @@ const generateYoyoCurveBuilder = () =>
       Point.fromPosition(28, 10, {
         editable: true,
       }),
-      "FollowX"
+      { type: "FollowX", relationshipWithPrevPoint: "TargetedBy" }
     )
     // Diagonal line to the left
-    .addLine(Point.fromPosition(20, 2, { editable: true }))
+    .addLine(Point.fromPosition(20, 2, { editable: true, fixed: { y: true } }))
     // Horizontal line to the left
     .addLine(Point.fromPosition(8, 2))
     // Vertical line down
