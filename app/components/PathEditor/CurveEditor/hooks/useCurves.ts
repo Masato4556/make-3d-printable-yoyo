@@ -4,8 +4,8 @@ import { Point } from "../../models/Point/Point";
 import { Connection } from "../../models/Connection/Connection";
 import { YoyoCurveBuilder } from "./YoyoCurveBuilder";
 import { getCubicBezierCurve } from "../../models/getCubicBezierCurve";
-import { Restraint } from "../../models/Restraint/Restraint";
 import { PointMap } from "../../models/Point/PointMap";
+import { Restraint } from "../../models/Restraint/BaseRestraint";
 
 export const useCurves = () => {
   const yoyoCurveBuilder = useMemo(() => generateYoyoCurveBuilder(), []);

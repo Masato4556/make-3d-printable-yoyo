@@ -6,8 +6,26 @@ import { CubicBezierConnection } from "../../models/Connection/CubicBezierConnec
 import { LineConnection } from "../../models/Connection/LineConnection";
 import { Point } from "../../models/Point/Point";
 import { PointList } from "../../models/Point/PointList";
+import { Restraint } from "../../models/Restraint/BaseRestraint";
 import { FollowRestraint } from "../../models/Restraint/FollowRestraint";
-import { Restraint } from "../../models/Restraint/Restraint";
+
+type RestraintType = "Follow" | "FollowX" | "FollowY";
+
+const RESTRAINT_BUILDERS: Record<
+  RestraintType,
+  (pointId: string, targetPointId: string) => Restraint
+> = {
+  Follow: (restrainedPointId: string, targetPointId: string) =>
+    new FollowRestraint(restrainedPointId, targetPointId),
+  FollowX: (restrainedPointId: string, targetPointId: string) =>
+    new FollowRestraint(restrainedPointId, targetPointId, {
+      lock: { x: false, y: true },
+    }),
+  FollowY: (restrainedPointId: string, targetPointId: string) =>
+    new FollowRestraint(restrainedPointId, targetPointId, {
+      lock: { x: true, y: false },
+    }),
+};
 
 export class YoyoCurveBuilder {
   private points: PointList;
@@ -66,7 +84,7 @@ export class YoyoCurveBuilder {
 
     if (restraintType) {
       this.restraints.push(
-        RESTRAINT_MAP[restraintType](prevPoint.id, point.id)
+        RESTRAINT_BUILDERS[restraintType](prevPoint.id, point.id)
       );
     }
     return this;
@@ -85,17 +103,3 @@ export class YoyoCurveBuilder {
     return this.restraints;
   }
 }
-
-const RESTRAINT_MAP = {
-  Follow: (prevPointId: string, nextPointId: string) =>
-    new FollowRestraint(prevPointId, nextPointId),
-  FollowX: (prevPointId: string, nextPointId: string) =>
-    new FollowRestraint(prevPointId, nextPointId, {
-      lock: { x: false, y: true },
-    }),
-  FollowY: (prevPointId: string, nextPointId: string) =>
-    new FollowRestraint(prevPointId, nextPointId, {
-      lock: { x: true, y: false },
-    }),
-};
-type RestraintType = keyof typeof RESTRAINT_MAP;

@@ -1,11 +1,11 @@
 import { getMovementVector } from "../../CurveEditor/function/getMovementVector";
 import { isMoved } from "../../CurveEditor/function/isMoved";
 import { PointMap } from "../Point/PointMap";
-import { BaseRestraint } from "./BaseRestraint";
+import { Restraint } from "./BaseRestraint";
 
-export class FollowRestraint implements BaseRestraint {
+export class FollowRestraint implements Restraint {
   constructor(
-    readonly pointId: string,
+    readonly restrainedPointId: string,
     readonly targetPointId: string,
     readonly options?: { lock: { x: boolean; y: boolean } }
   ) {}
@@ -22,7 +22,7 @@ export class FollowRestraint implements BaseRestraint {
       return;
     }
 
-    const point = updatedPoints.get(this.pointId);
+    const point = updatedPoints.get(this.restrainedPointId);
     if (!this.options?.lock?.x) {
       point.x += targetPointMovementVector.x;
     }
