@@ -1,5 +1,17 @@
 import { Vector2 } from "../../../math/vector2";
 
+type Vector2Like = {
+  x: number;
+  y: number;
+};
+
+type CubicBezierCurveHandle = {
+  v0: Vector2Like;
+  v1: Vector2Like;
+  v2: Vector2Like;
+  v3: Vector2Like;
+};
+
 export function getCubicBezierCurve(
   { v0, v1, v2, v3 }: CubicBezierCurveHandle,
   numPoints: number
@@ -25,11 +37,4 @@ export function getCubicBezierCurve(
   }
 
   return points;
-}
-
-interface CubicBezierCurveHandle {
-  v0: Vector2;
-  v1: Vector2;
-  v2: Vector2;
-  v3: Vector2;
 }

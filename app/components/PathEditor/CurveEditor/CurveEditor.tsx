@@ -2,14 +2,16 @@
  * ユーザーが操作できるヨーヨーのパスを表示するコンポーネント
  */
 
-import { Circle, Line, Group } from "react-konva";
-import { CurveComponentFactory } from "./CurveComponentFactory";
+import { Line, Group } from "react-konva";
+import { ConnectionComponentFactory } from "./CurveComponentFactory";
 import { useMemo } from "react";
 import { Vector2 } from "../../../math/vector2";
 import { PATH_COLOR } from "../style";
 import { useCurves } from "./hooks/useCurves";
 import { useUpdateCurvesStore } from "./hooks/useUpdateCurvesStore";
 import { Bearing } from "../../../yoyo/bearing";
+import { DraggableCircle } from "./CurveComponent/parts/DraggableCircle";
+import { CSizeBearingSeat } from "./CurveComponent/CSizeBearingSeat";
 
 type Props = {
   bearing: Bearing;
@@ -17,46 +19,69 @@ type Props = {
 };
 
 export function CurveEditor({ scale }: Props) {
-  const { curves, updateCurve } = useCurves();
-  useUpdateCurvesStore(curves);
+  const {
+    points,
+    connections,
+    getConnectionPoints,
+    bearingSeat,
+    refreshConnections,
+    path,
+  } = useCurves();
+  useUpdateCurvesStore(path);
 
-  const mirreredPathes = useMemo(() => {
-    const yMirreredPath = curves
-      .flatMap((curve) => curve.getPath())
-      .map((v) => new Vector2(v.x, -v.y));
-    return {
-      xMirrerdPath: curves
-        .flatMap((curve) => curve.getPath())
-        .map((v) => new Vector2(-v.x, v.y)),
-      yMirreredPath,
-      xyMirroredPath: yMirreredPath.map((v) => new Vector2(-v.x, v.y)),
-    };
-  }, [curves]);
+  const mirroredPathes = useMemo(() => {
+    const mirroredXPath = path.map((point) => new Vector2(-point.x, point.y));
+    const mirroredYPath = path.map((point) => new Vector2(point.x, -point.y));
+    const mirroredXYPath = path.map((point) => new Vector2(-point.x, -point.y));
+    return [mirroredXPath, mirroredYPath, mirroredXYPath];
+  }, [path]);
 
   return (
     <Group scale={{ x: scale, y: -scale }}>
-      <Circle x={200} y={200} stroke="black" radius={50} />
-      {Object.entries(mirreredPathes).map(([key, path]) => (
+      {[...points.entries()].map(([id, point]) => {
+        if (!point.option?.editable) {
+          return null;
+        }
+        return (
+          <DraggableCircle
+            key={id}
+            x={point.x}
+            y={point.y}
+            radius={2}
+            color={PATH_COLOR}
+            onDragMove={(e) => {
+              if (point.option?.fixed?.x) {
+                e.target.x(point.x);
+              }
+              if (point.option?.fixed?.y) {
+                e.target.y(point.y);
+              }
+              point.x = e.target.x();
+              point.y = e.target.y();
+              refreshConnections();
+            }}
+          />
+        );
+      })}
+      {[...connections.values()].map((connection) => (
+        <ConnectionComponentFactory
+          key={connection.id}
+          connection={connection}
+          getConnectionPoints={getConnectionPoints}
+          refreshConnections={refreshConnections}
+        />
+      ))}
+      {mirroredPathes.map((mirroredPath, index) => (
         <Line
-          key={key}
+          key={`mirrored-${index}`}
+          points={mirroredPath.flatMap((point) => [point.x, point.y])}
           stroke={PATH_COLOR}
           strokeWidth={0.4}
-          points={path.reduce<number[]>((acc, cur) => {
-            acc.push(cur.x);
-            acc.push(cur.y);
-            return acc;
-          }, [])}
+          opacity={0.5}
         />
       ))}
-      {curves.map((curve, index) => (
-        <CurveComponentFactory
-          key={curve.id}
-          curve={curve}
-          update={(curve) => {
-            updateCurve(curve, index);
-          }}
-        />
-      ))}
+
+      <CSizeBearingSeat curve={bearingSeat} />
     </Group>
   );
 }

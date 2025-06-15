@@ -14,19 +14,7 @@ type Props = {
   onDragMove?: (e: KonvaEventObject<DragEvent>) => void;
 };
 
-export function DraggableCircle({
-  x,
-  y,
-  radius,
-  color,
-  draggable = false,
-  onDragMove,
-}: Props) {
-  if (!draggable) {
-    // ドラッグ可能でない場合は、円を描画しない
-    return;
-  }
-
+export function DraggableCircle({ x, y, radius, color, onDragMove }: Props) {
   return (
     <Circle
       x={x}
@@ -35,7 +23,7 @@ export function DraggableCircle({
       stroke={color}
       strokeWidth={0.3}
       opacity={0.5}
-      draggable={draggable}
+      draggable={true}
       onDragMove={onDragMove}
     />
   );
