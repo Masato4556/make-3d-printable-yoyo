@@ -27,7 +27,8 @@ export default function Index() {
   return (
     <div id="canvas-container">
       <ModeSwitch setMode={change} />
-      <ModelViewer hidden={mode !== "MODEL"} />
+      {mode === "MODEL" && <ModelViewer />}
+      {/* パスの状態を維持するためにパスエディターは非表示にするだけ、 */}
       <Editor hidden={mode !== "PATH"} />
     </div>
   );

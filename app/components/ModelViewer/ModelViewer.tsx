@@ -8,18 +8,13 @@ import { DownoadButton } from "./DownoadButton/DownoadButton";
 import { YoyoModel } from "./YoyoModel";
 import { ExportStl } from "./ExportStl";
 
-type Props = {
-  hidden: boolean;
-};
 
-export function ModelViewer(props: Props) {
-  const { hidden } = props;
 
+export function ModelViewer() {
   return (
     <>
       <Canvas
         id="model-viewer"
-        hidden={hidden}
         camera={{
           fov: 75,
           near: 0.1,
@@ -41,7 +36,7 @@ export function ModelViewer(props: Props) {
         <OrbitControls />
         <ExportStl />
       </Canvas>
-      {!hidden && <DownoadButton />}
+      <DownoadButton />
     </>
   );
 }

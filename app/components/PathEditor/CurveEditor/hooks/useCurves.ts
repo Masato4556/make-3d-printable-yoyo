@@ -6,6 +6,7 @@ import { YoyoCurveBuilder } from "./YoyoCurveBuilder";
 import { getCubicBezierCurve } from "../../models/getCubicBezierCurve";
 import { PointMap } from "../../models/Point/PointMap";
 import { Restraint } from "../../models/Restraint/BaseRestraint";
+import { useEventStore } from "../../../../stores/useEventStore";
 
 export const useCurves = () => {
   const yoyoCurveBuilder = useMemo(() => generateYoyoCurveBuilder(), []);
@@ -27,7 +28,8 @@ export const useCurves = () => {
     [curveData.points]
   );
 
-  // pointの更新をconnectionに伝えて再レンダリングを促す関数
+  // pointの更新をconnectionに伝えて再レンダリングを促す関数dd
+  const { publishUpdatePathEvent } = useEventStore();
   const refreshConnections = useCallback(() => {
     restraints.forEach((restraint) => {
       restraint.apply(prevPoints, curveData.points);
@@ -37,7 +39,8 @@ export const useCurves = () => {
       connections: [...curveData.connections],
     });
     setPrevPoints(curveData.points.clone());
-  }, [curveData, prevPoints, restraints]);
+    publishUpdatePathEvent();
+  }, [curveData.connections, curveData.points, prevPoints, publishUpdatePathEvent, restraints]);
 
   const getConnectionPoints = useCallback(
     (connection: Connection) => {
@@ -89,11 +92,11 @@ export const useCurves = () => {
 const generateYoyoCurveBuilder = () =>
   new YoyoCurveBuilder()
     .addCubicBezierCurve(Point.fromPosition(21, 27.5, { editable: true }), {
-      start: new Vector2(5.25, 10.55),
-      end: new Vector2(15.75, 27.5),
+      start: Point.fromPosition(5.25, 10.55, { editable: true }),
+      end: Point.fromPosition(15.75, 27.5, { editable: true }),
     })
     // Horizontal line to the right
-    .addLine(Point.fromPosition(28, 27.5))
+    .addLine(Point.fromPosition(28, 27.5), { type: "FollowY", relationshipWithPrevPoint: "RestrainedBy" })
     // Vertical line down
     .addLine(
       Point.fromPosition(28, 10, {
