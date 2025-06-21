@@ -1,5 +1,3 @@
-import { getMovementVector } from "../../CurveEditor/function/getMovementVector";
-import { isMoved } from "../../CurveEditor/function/isMoved";
 import { PointMap } from "../Point/PointMap";
 import { Restraint } from "./BaseRestraint";
 
@@ -8,26 +6,24 @@ export class FollowRestraint implements Restraint {
     readonly restrainedPointId: string,
     readonly targetPointId: string,
     readonly options?: { lock: { x: boolean; y: boolean } }
-  ) {}
+  ) { }
 
   public apply(points: PointMap, updatedPoints: PointMap): void {
     const targetPoint = points.get(this.targetPointId);
     const updatedTargetPoint = updatedPoints.get(this.targetPointId);
-    const targetPointMovementVector = getMovementVector(
-      targetPoint,
-      updatedTargetPoint
-    );
+    const restrainedPoint = points.get(this.restrainedPointId);
+    const updatedRestrainedPoint = updatedPoints.get(this.restrainedPointId);
 
-    if (!isMoved(targetPointMovementVector)) {
-      return;
-    }
+    // オフセットを計算
+    const offsetX = restrainedPoint.x - targetPoint.x;
+    const offsetY = restrainedPoint.y - targetPoint.y;
 
-    const point = updatedPoints.get(this.restrainedPointId);
+    // 新しいターゲット位置にオフセットを加える
     if (!this.options?.lock?.x) {
-      point.x += targetPointMovementVector.x;
+      updatedRestrainedPoint.x = updatedTargetPoint.x + offsetX;
     }
     if (!this.options?.lock?.y) {
-      point.y += targetPointMovementVector.y;
+      updatedRestrainedPoint.y = updatedTargetPoint.y + offsetY;
     }
   }
 }
