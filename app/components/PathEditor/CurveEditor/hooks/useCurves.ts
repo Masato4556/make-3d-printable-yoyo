@@ -40,7 +40,7 @@ export const useCurves = () => {
     });
     setPrevPoints(curveData.points.clone());
     publishUpdatePathEvent();
-  }, [curveData, prevPoints, restraints]);
+  }, [curveData.connections, curveData.points, prevPoints, publishUpdatePathEvent, restraints]);
 
   const getConnectionPoints = useCallback(
     (connection: Connection) => {
@@ -92,11 +92,11 @@ export const useCurves = () => {
 const generateYoyoCurveBuilder = () =>
   new YoyoCurveBuilder()
     .addCubicBezierCurve(Point.fromPosition(21, 27.5, { editable: true }), {
-      start: new Vector2(5.25, 10.55),
-      end: new Vector2(15.75, 27.5),
+      start: Point.fromPosition(5.25, 10.55, { editable: true }),
+      end: Point.fromPosition(15.75, 27.5, { editable: true }),
     })
     // Horizontal line to the right
-    .addLine(Point.fromPosition(28, 27.5))
+    .addLine(Point.fromPosition(28, 27.5), { type: "FollowY", relationshipWithPrevPoint: "RestrainedBy" })
     // Vertical line down
     .addLine(
       Point.fromPosition(28, 10, {

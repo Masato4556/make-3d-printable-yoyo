@@ -14,6 +14,11 @@ export class FollowRestraint implements Restraint {
     const restrainedPoint = points.get(this.restrainedPointId);
     const updatedRestrainedPoint = updatedPoints.get(this.restrainedPointId);
 
+    // targetPointが動いていない場合スキップ
+    if (targetPoint.equals(updatedTargetPoint)) {
+      return;
+    }
+
     // オフセットを計算
     const offsetX = restrainedPoint.x - targetPoint.x;
     const offsetY = restrainedPoint.y - targetPoint.y;

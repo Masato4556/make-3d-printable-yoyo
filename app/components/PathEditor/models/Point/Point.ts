@@ -36,4 +36,8 @@ export class Point {
       id: this.id,
     });
   }
+
+  public equals(other: Point): boolean {
+    return this.x === other.x && this.y === other.y && this.id === other.id;
+  }
 }
