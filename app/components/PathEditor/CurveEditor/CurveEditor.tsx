@@ -22,7 +22,6 @@ export function CurveEditor({ scale }: Props) {
   const {
     points,
     connections,
-    getConnectionPoints,
     bearingSeat,
     refreshConnections,
     path,
@@ -67,7 +66,6 @@ export function CurveEditor({ scale }: Props) {
         <ConnectionComponentFactory
           key={connection.id}
           connection={connection}
-          getConnectionPoints={getConnectionPoints}
           refreshConnections={refreshConnections}
         />
       ))}

@@ -1,64 +1,48 @@
 import { useCallback, useMemo, useState } from "react";
 import { Vector2 } from "../../../../math/vector2";
-import { Point } from "../../models/Point/Point";
-import { Connection } from "../../models/Connection/Connection";
-import { YoyoCurveBuilder } from "./YoyoCurveBuilder";
 import { getCubicBezierCurve } from "../../models/getCubicBezierCurve";
-import { PointMap } from "../../models/Point/PointMap";
-import { Restraint } from "../../models/Restraint/BaseRestraint";
 import { useEventStore } from "../../../../stores/useEventStore";
+import { useYoyoCurveStore } from "../../../../stores/useYoyoCurveStore";
 
 export const useCurves = () => {
-  const yoyoCurveBuilder = useMemo(() => generateYoyoCurveBuilder(), []);
+  const {
+    pointMap,
+    setPointMap,
+    getPoint,
+    restraints,
+    connections,
+    setConnections,
+    bearingSeat,
+  } = useYoyoCurveStore();
 
-  const [curveData, setCurveData] = useState<{
-    points: PointMap;
-    connections: Connection[];
-  }>({
-    points: new PointMap(yoyoCurveBuilder.getPoints()),
-    connections: yoyoCurveBuilder.getConnections(),
-  });
-  const [prevPoints, setPrevPoints] = useState(curveData.points.clone());
-  const [restraints, setRestraints] = useState<Restraint[]>(
-    yoyoCurveBuilder.getRestraints()
-  );
-
-  const getPoint = useCallback(
-    (pointId: string): Point | undefined => curveData.points.get(pointId),
-    [curveData.points]
-  );
+  const [prevPoints, setPrevPoints] = useState(pointMap.clone());
 
   // pointの更新をconnectionに伝えて再レンダリングを促す関数dd
   const { publishUpdatePathEvent } = useEventStore();
   const refreshConnections = useCallback(() => {
     restraints.forEach((restraint) => {
-      restraint.apply(prevPoints, curveData.points);
+      restraint.apply(prevPoints, pointMap);
     });
-    setCurveData({
-      points: curveData.points.clone(),
-      connections: [...curveData.connections],
-    });
-    setPrevPoints(curveData.points.clone());
+    setPointMap(pointMap.clone());
+    setConnections([...connections]);
+    setPrevPoints(pointMap.clone());
     publishUpdatePathEvent();
-  }, [curveData.connections, curveData.points, prevPoints, publishUpdatePathEvent, restraints]);
-
-  const getConnectionPoints = useCallback(
-    (connection: Connection) => {
-      const startPoint = getPoint(connection.startPointId);
-      const endPoint = getPoint(connection.endPointId);
-      if (!startPoint || !endPoint) {
-        throw new Error("Connection points not found");
-      }
-      return { start: startPoint, end: endPoint };
-    },
-    [getPoint]
-  );
+  }, [
+    connections,
+    pointMap,
+    prevPoints,
+    publishUpdatePathEvent,
+    restraints,
+    setConnections,
+    setPointMap,
+  ]);
 
   const path = useMemo(
     () => [
-      ...yoyoCurveBuilder.getBearingSeat().getPath(),
-      ...curveData.connections.flatMap((connection) => {
-        const { start, end } = getConnectionPoints(connection);
+      ...bearingSeat.getPath(),
+      ...connections.flatMap((connection) => {
+        const start = getPoint(connection.startPointId);
+        const end = getPoint(connection.endPointId);
         if (connection.__brand === "CubicBezierConnection") {
           return getCubicBezierCurve(
             {
@@ -76,37 +60,14 @@ export const useCurves = () => {
         return [];
       }, []),
     ],
-    [curveData.connections, getConnectionPoints, yoyoCurveBuilder]
+    [bearingSeat, connections, getPoint]
   );
 
   return {
-    points: curveData.points,
-    connections: curveData.connections,
-    getConnectionPoints,
+    points: pointMap,
+    connections,
     refreshConnections,
-    bearingSeat: yoyoCurveBuilder.getBearingSeat(),
+    bearingSeat,
     path,
   };
 };
-
-const generateYoyoCurveBuilder = () =>
-  new YoyoCurveBuilder()
-    .addCubicBezierCurve(Point.fromPosition(21, 27.5, { editable: true }), {
-      start: Point.fromPosition(5.25, 10.55, { editable: true }),
-      end: Point.fromPosition(15.75, 27.5, { editable: true }),
-    })
-    // Horizontal line to the right
-    .addLine(Point.fromPosition(28, 27.5), { type: "FollowY", relationshipWithPrevPoint: "RestrainedBy" })
-    // Vertical line down
-    .addLine(
-      Point.fromPosition(28, 10, {
-        editable: true,
-      }),
-      { type: "FollowX", relationshipWithPrevPoint: "TargetedBy" }
-    )
-    // Diagonal line to the left
-    .addLine(Point.fromPosition(20, 2, { editable: true, fixed: { y: true } }))
-    // Horizontal line to the left
-    .addLine(Point.fromPosition(8, 2))
-    // Vertical line down
-    .addLine(Point.fromPosition(8, 0));

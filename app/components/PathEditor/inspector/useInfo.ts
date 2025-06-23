@@ -4,7 +4,7 @@
 
 import { useMemo } from "react";
 import { Vector2 } from "../../../math/vector2";
-import { usePathStore } from "../../../stores/useCurveStore";
+import { usePathStore } from "../../../stores/usePathStore";
 
 export function useInfo() {
   const { path } = usePathStore();
