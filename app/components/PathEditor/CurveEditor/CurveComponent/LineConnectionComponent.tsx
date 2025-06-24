@@ -4,13 +4,17 @@
 
 import { Line } from "react-konva";
 import { PATH_COLOR } from "../../style";
+import { useYoyoCurveStore } from "../../../../stores/useYoyoCurveStore";
+import { LineConnection } from "../../models/Connection/LineConnection";
 
 type Props = {
-  startPoint: { x: number; y: number };
-  endPoint: { x: number; y: number };
+  connection: LineConnection;
 };
 
-export function LineConnectionComponent({ startPoint, endPoint }: Props) {
+export function LineConnectionComponent({ connection }: Props) {
+  const { getPoint } = useYoyoCurveStore();
+  const startPoint = getPoint(connection.startPointId);
+  const endPoint = getPoint(connection.endPointId);
   return (
     <>
       <Line

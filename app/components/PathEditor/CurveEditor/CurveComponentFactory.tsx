@@ -5,7 +5,6 @@
 import { LineConnectionComponent } from "./CurveComponent/LineConnectionComponent";
 import { CubicBezierConnectionComponent } from "./CurveComponent/CubicBezierConnectionComponent";
 import { Connection } from "../models/Connection/Connection";
-import { useYoyoCurveStore } from "../../../stores/useYoyoCurveStore";
 
 type Props = {
   connection: Connection;
@@ -16,9 +15,6 @@ export function ConnectionComponentFactory({
   connection,
   refreshConnections,
 }: Props) {
-  const {getPoint} = useYoyoCurveStore();
-  const start = getPoint(connection.startPointId);
-  const end = getPoint(connection.endPointId);
   switch (connection.__brand) {
     case "CubicBezierConnection":
       return (
@@ -28,7 +24,7 @@ export function ConnectionComponentFactory({
         />
       );
     case "LineConnection":
-      return <LineConnectionComponent startPoint={start} endPoint={end} />;
+      return <LineConnectionComponent connection={connection} />;
     default:
       throw new Error(`Unknown connection type`);
   }
