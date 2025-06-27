@@ -54,7 +54,11 @@ export const useCurveStore = create(
     setConnections: (connections: Connection[]) => set({ connections }),
     getPoint: (pointId: string) => {
       const { pointMap } = get();
-      return pointMap.get(pointId);
+      const point = pointMap.get(pointId);
+      if (!point) {
+        throw new Error(`Point with id ${pointId} not found.`);
+      }
+      return point;
     },
     getPath: () => {
       const { bearingSeat, connections, getPoint } = get();
