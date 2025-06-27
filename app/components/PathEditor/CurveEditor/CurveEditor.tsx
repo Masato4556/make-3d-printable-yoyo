@@ -22,7 +22,7 @@ export function CurveEditor({ scale }: Props) {
     points,
     connections,
     bearingSeat,
-    refreshConnections,
+    updatePoint,
     path,
   } = useCurves();
 
@@ -53,9 +53,7 @@ export function CurveEditor({ scale }: Props) {
               if (point.option?.fixed?.y) {
                 e.target.y(point.y);
               }
-              point.x = e.target.x();
-              point.y = e.target.y();
-              refreshConnections();
+              updatePoint(point.id, e.target.x(), e.target.y());
             }}
           />
         );
@@ -64,7 +62,6 @@ export function CurveEditor({ scale }: Props) {
         <ConnectionComponentFactory
           key={connection.id}
           connection={connection}
-          refreshConnections={refreshConnections}
         />
       ))}
       {mirroredPathes.map((mirroredPath, index) => (

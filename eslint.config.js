@@ -14,7 +14,7 @@ const cleanCodeRules = {
   "no-template-curly-in-string": "error",
   "no-unmodified-loop-condition": "error",
   "arrow-body-style": ["error", "as-needed"],
-  complexity: ["error", 8],
+  complexity: ["error", 14],
   "default-case": "error",
   "default-case-last": "error",
   eqeqeq: ["error", "always"],

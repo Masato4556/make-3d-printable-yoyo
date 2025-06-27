@@ -8,19 +8,16 @@ import { Connection } from "../models/Connection/Connection";
 
 type Props = {
   connection: Connection;
-  refreshConnections: () => void;
 };
 
 export function ConnectionComponentFactory({
   connection,
-  refreshConnections,
 }: Props) {
   switch (connection.__brand) {
     case "CubicBezierConnection":
       return (
         <CubicBezierConnectionComponent
           connection={connection}
-          refreshConnections={refreshConnections}
         />
       );
     case "LineConnection":

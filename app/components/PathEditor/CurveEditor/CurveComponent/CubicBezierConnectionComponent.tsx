@@ -9,18 +9,18 @@ import { Vector2 } from "../../../../math/vector2";
 import { DraggableCircle } from "./parts/DraggableCircle";
 import { CubicBezierConnection } from "../../models/Connection/CubicBezierConnection";
 import { useCurveStore } from "../../../../stores/useCurveStore";
+import { useEventStore } from "../../../../stores/useEventStore";
 
 
 type Props = {
   connection: CubicBezierConnection;
-  refreshConnections: () => void;
 };
 
 export function CubicBezierConnectionComponent({
   connection,
-  refreshConnections,
 }: Props) {
-  const {getPoint} = useCurveStore()
+  const {getPoint, connections, setConnections} = useCurveStore()
+  const { publishUpdatePathEvent } = useEventStore();
   const start = getPoint(connection.startPointId);
   const end = getPoint(connection.endPointId);
   const { control1, control2 } = connection;
@@ -53,8 +53,19 @@ export function CubicBezierConnectionComponent({
           x: control1.x,
           y: control1.y,
           onDragMove: (e) => {
-            connection.control1 = new Vector2(e.target.x(), e.target.y());
-            refreshConnections();
+            const newControl1 = new Vector2(e.target.x(), e.target.y());
+            const newConnections = connections.map((conn) =>
+              conn.id === connection.id
+                ? new CubicBezierConnection(
+                    connection.startPointId,
+                    connection.endPointId,
+                    newControl1,
+                    connection.control2,
+                  )
+                : conn
+            );
+            setConnections(newConnections);
+            publishUpdatePathEvent();
           },
         }}
       />
@@ -68,8 +79,19 @@ export function CubicBezierConnectionComponent({
           x: control2.x,
           y: control2.y,
           onDragMove: (e) => {
-            connection.control2 = new Vector2(e.target.x(), e.target.y());
-            refreshConnections();
+            const newControl2 = new Vector2(e.target.x(), e.target.y());
+            const newConnections = connections.map((conn) =>
+              conn.id === connection.id
+                ? new CubicBezierConnection(
+                    connection.startPointId,
+                    connection.endPointId,
+                    connection.control1,
+                    newControl2,
+                  )
+                : conn
+            );
+            setConnections(newConnections);
+            publishUpdatePathEvent();
           },
         }}
       />

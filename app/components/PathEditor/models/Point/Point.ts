@@ -17,7 +17,7 @@ export class Point {
   public y: number;
   readonly option?: Option;
 
-  private constructor({ x, y, option, id }: ConstructorProps) {
+  public constructor({ x, y, option, id }: ConstructorProps) {
     this.x = x;
     this.y = y;
     this.option = option;

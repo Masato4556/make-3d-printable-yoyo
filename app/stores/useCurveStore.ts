@@ -17,6 +17,7 @@ type CurveStore = {
   setPointMap: (pointMap: PointMap) => void;
   setConnections: (connections: Connection[]) => void;
   getPoint: (pointId: string) => Point;
+  updatePoint: (pointId: string, newX: number, newY: number) => void;
   getPath: () => Vector2[];
 };
 
@@ -84,6 +85,30 @@ export const useCurveStore = create(
           return [];
         }),
       ];
+    },
+    updatePoint: (pointId: string, newX: number, newY: number) => {
+      const { pointMap, restraints, connections } = get();
+      const prevPoints = pointMap.clone();
+
+      const pointToModify = pointMap.get(pointId);
+      if (!pointToModify) {
+        console.warn(`Point with id ${pointId} not found for update.`);
+        return;
+      }
+
+      const updatedPoint = new Point({
+        x: newX,
+        y: newY,
+        id: pointToModify.id,
+        option: pointToModify.option,
+      });
+
+      pointMap.set(updatedPoint);
+
+      restraints.forEach((restraint) => {
+        restraint.apply(prevPoints, pointMap);
+      });
+      set({ pointMap: pointMap.clone(), connections: [...connections] });
     },
   }))
 );
