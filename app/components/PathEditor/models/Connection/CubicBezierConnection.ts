@@ -1,30 +1,48 @@
-import { Vector2 } from "../../../../math/vector2";
 import { BaseConnection } from "./BaseConnection";
 
 export class CubicBezierConnection implements BaseConnection {
   readonly type = "CubicBezier";
   readonly __brand = "CubicBezierConnection";
-  readonly id: string = crypto.randomUUID();
-  constructor(
-    readonly startPointId: string,
-    readonly endPointId: string,
-    public control1: Vector2,
-    public control2: Vector2
-  ) {}
+  readonly id: string;
+  public startPointId: string;
+  public endPointId: string;
+  public control1Id: string;
+  public control2Id: string;
+  constructor({
+    startPointId,
+    endPointId,
+    control1Id,
+    control2Id,
+    id,
+  }: {
+    startPointId: string;
+    endPointId: string;
+    control1Id: string;
+    control2Id: string;
+    id?: string;
+  }) {
+    this.startPointId = startPointId;
+    this.endPointId = endPointId;
+    this.control1Id = control1Id;
+    this.control2Id = control2Id;
+    this.id = id || crypto.randomUUID();
+  }
   withStartPointId(startPointId: string): CubicBezierConnection {
-    return new CubicBezierConnection(
+    return new CubicBezierConnection({
       startPointId,
-      this.endPointId,
-      this.control1,
-      this.control2
-    );
+      endPointId: this.endPointId,
+      control1Id: this.control1Id,
+      control2Id: this.control2Id,
+      id: this.id,
+    });
   }
   withEndPointId(endPointId: string): CubicBezierConnection {
-    return new CubicBezierConnection(
-      this.startPointId,
+    return new CubicBezierConnection({
+      startPointId: this.startPointId,
       endPointId,
-      this.control1,
-      this.control2
-    );
+      control1Id: this.control1Id,
+      control2Id: this.control2Id,
+      id: this.id,
+    });
   }
 }

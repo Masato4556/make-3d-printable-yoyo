@@ -1,4 +1,3 @@
-import { Vector2 } from "../../../../math/vector2";
 import { CSizeBearingSeatCurve } from "../../models/BearingSeat/CSizeBearingSeatCurve";
 
 import { ConnectionList } from "../../models/Connection/ConnectionList";
@@ -36,6 +35,7 @@ type RestraintOptions = {
 
 export class YoyoCurveBuilder {
   private points: PointList;
+  private controlPoints: PointList;
   private connections: ConnectionList;
   private bearingSeat: CSizeBearingSeatCurve;
   private restraints: Restraint[] = [];
@@ -48,17 +48,23 @@ export class YoyoCurveBuilder {
     if (!firstBearingSeatPoint || !lastBearingSeatPoint) {
       throw new Error("Invalid bearing seat path.");
     }
-    this.points = new PointList([
-      Point.fromPosition(firstBearingSeatPoint.x, firstBearingSeatPoint.y),
-      Point.fromPosition(lastBearingSeatPoint.x, lastBearingSeatPoint.y),
-    ]);
+    const firstPoint = Point.fromPosition(
+      firstBearingSeatPoint.x,
+      firstBearingSeatPoint.y
+    );
+    const lastPoint = Point.fromPosition(
+      lastBearingSeatPoint.x,
+      lastBearingSeatPoint.y
+    );
+    this.points = new PointList([firstPoint, lastPoint]);
+    this.controlPoints = new PointList();
     this.connections = new ConnectionList();
     this.bearingSeat = bearingSeat;
   }
 
   public addCubicBezierCurve(
     point: Point,
-    handle: { start: Vector2; end: Vector2 }
+    handle: { start: Point; end: Point }
   ) {
     const prevPoint = this.points.getLast();
     if (!prevPoint) {
@@ -66,14 +72,22 @@ export class YoyoCurveBuilder {
     }
 
     this.points = this.points.add(point);
+    this.controlPoints = this.controlPoints.add(handle.start).add(handle.end);
     this.connections = this.connections.add(
-      new CubicBezierConnection(
-        prevPoint.id,
-        point.id,
-        handle.start,
-        handle.end
-      )
+      new CubicBezierConnection({
+        startPointId: prevPoint.id,
+        endPointId: point.id,
+        control1Id: handle.start.id,
+        control2Id: handle.end.id,
+      })
     );
+
+    // Add restraints for control points
+    this.restraints.push(
+      new FollowRestraint(handle.start.id, prevPoint.id),
+      new FollowRestraint(handle.end.id, point.id)
+    );
+
     return this;
   }
 
@@ -104,7 +118,7 @@ export class YoyoCurveBuilder {
     return this.bearingSeat;
   }
   public getPoints() {
-    return this.points.getPoints();
+    return [...this.points.getPoints(), ...this.controlPoints.getPoints()];
   }
   public getConnections() {
     return this.connections.getConnections();

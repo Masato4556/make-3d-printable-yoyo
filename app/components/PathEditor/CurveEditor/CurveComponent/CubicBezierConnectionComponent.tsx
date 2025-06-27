@@ -5,8 +5,6 @@
 import { KonvaEventObject } from "konva/lib/Node";
 import { Line, Shape } from "react-konva";
 import { PATH_COLOR, WIRE_COLOR } from "../../style";
-import { Vector2 } from "../../../../math/vector2";
-import { DraggableCircle } from "./parts/DraggableCircle";
 import { CubicBezierConnection } from "../../models/Connection/CubicBezierConnection";
 import { useCurveStore } from "../../../../stores/useCurveStore";
 import { useEventStore } from "../../../../stores/useEventStore";
@@ -19,11 +17,12 @@ type Props = {
 export function CubicBezierConnectionComponent({
   connection,
 }: Props) {
-  const {getPoint, connections, setConnections} = useCurveStore()
+  const {getPoint, updatePoint} = useCurveStore()
   const { publishUpdatePathEvent } = useEventStore();
   const start = getPoint(connection.startPointId);
   const end = getPoint(connection.endPointId);
-  const { control1, control2 } = connection;
+  const control1 = getPoint(connection.control1Id);
+  const control2 = getPoint(connection.control2Id);
   return (
     <>
       <Shape
@@ -53,18 +52,7 @@ export function CubicBezierConnectionComponent({
           x: control1.x,
           y: control1.y,
           onDragMove: (e) => {
-            const newControl1 = new Vector2(e.target.x(), e.target.y());
-            const newConnections = connections.map((conn) =>
-              conn.id === connection.id
-                ? new CubicBezierConnection(
-                    connection.startPointId,
-                    connection.endPointId,
-                    newControl1,
-                    connection.control2,
-                  )
-                : conn
-            );
-            setConnections(newConnections);
+            updatePoint(control1.id, e.target.x(), e.target.y());
             publishUpdatePathEvent();
           },
         }}
@@ -79,18 +67,7 @@ export function CubicBezierConnectionComponent({
           x: control2.x,
           y: control2.y,
           onDragMove: (e) => {
-            const newControl2 = new Vector2(e.target.x(), e.target.y());
-            const newConnections = connections.map((conn) =>
-              conn.id === connection.id
-                ? new CubicBezierConnection(
-                    connection.startPointId,
-                    connection.endPointId,
-                    connection.control1,
-                    newControl2,
-                  )
-                : conn
-            );
-            setConnections(newConnections);
+            updatePoint(control2.id, e.target.x(), e.target.y());
             publishUpdatePathEvent();
           },
         }}
@@ -119,14 +96,6 @@ function BezierCurvePoint({ point, handle }: BezierCurvePointProps) {
         strokeWidth={0.4}
         opacity={0.5}
         lineJoin="round"
-      />
-      <DraggableCircle
-        x={handle.x}
-        y={handle.y}
-        radius={1}
-        draggable
-        onDragMove={handle.onDragMove}
-        color={PATH_COLOR}
       />
     </>
   );

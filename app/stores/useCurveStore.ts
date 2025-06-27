@@ -23,8 +23,8 @@ type CurveStore = {
 
 const yoyoCurveBuilder = new YoyoCurveBuilder()
   .addCubicBezierCurve(Point.fromPosition(21, 27.5, { editable: true }), {
-    start: new Vector2(5.25, 10.55),
-    end: new Vector2(15.75, 27.5),
+    start: Point.fromPosition(5.25, 10.55, { editable: true }),
+    end: Point.fromPosition(15.75, 27.5, { editable: true }),
   })
   // Horizontal line to the right
   .addLine(Point.fromPosition(28, 27.5), {
@@ -46,69 +46,72 @@ const yoyoCurveBuilder = new YoyoCurveBuilder()
   .addLine(Point.fromPosition(8, 0));
 
 export const useCurveStore = create(
-  immer<CurveStore>((set, get) => ({
-    pointMap: new PointMap(yoyoCurveBuilder.getPoints()),
-    connections: yoyoCurveBuilder.getConnections(),
-    restraints: yoyoCurveBuilder.getRestraints(),
-    bearingSeat: yoyoCurveBuilder.getBearingSeat(),
-    setPointMap: (pointMap: PointMap) => set({ pointMap }),
-    setConnections: (connections: Connection[]) => set({ connections }),
-    getPoint: (pointId: string) => {
-      const { pointMap } = get();
-      const point = pointMap.get(pointId);
-      if (!point) {
-        throw new Error(`Point with id ${pointId} not found.`);
-      }
-      return point;
-    },
-    getPath: () => {
-      const { bearingSeat, connections, getPoint } = get();
-      return [
-        ...bearingSeat.getPath(),
-        ...connections.flatMap((connection) => {
-          const start = getPoint(connection.startPointId);
-          const end = getPoint(connection.endPointId);
-          if (connection.__brand === "CubicBezierConnection") {
-            return getCubicBezierCurve(
-              {
-                v0: start,
-                v1: connection.control1,
-                v2: connection.control2,
-                v3: end,
-              },
-              100
-            );
-          }
-          if (connection.__brand === "LineConnection") {
-            return [new Vector2(start.x, start.y), new Vector2(end.x, end.y)];
-          }
-          return [];
-        }),
-      ];
-    },
-    updatePoint: (pointId: string, newX: number, newY: number) => {
-      const { pointMap, restraints, connections } = get();
-      const prevPoints = pointMap.clone();
+  immer<CurveStore>((set, get) => {
+    const initialPoints = yoyoCurveBuilder.getPoints();
+    const initialPointMap = new PointMap(initialPoints);
 
-      const pointToModify = pointMap.get(pointId);
-      if (!pointToModify) {
-        console.warn(`Point with id ${pointId} not found for update.`);
-        return;
-      }
+    return {
+      pointMap: initialPointMap,
+      connections: yoyoCurveBuilder.getConnections(),
+      restraints: yoyoCurveBuilder.getRestraints(),
+      bearingSeat: yoyoCurveBuilder.getBearingSeat(),
+      setPointMap: (pointMap: PointMap) => set({ pointMap }),
+      setConnections: (connections: Connection[]) => set({ connections }),
+      getPoint: (pointId: string) => {
+        const { pointMap } = get();
+        const point = pointMap.get(pointId);
+        if (!point) {
+          throw new Error(`Point with id ${pointId} not found.`);
+        }
+        return point;
+      },
+      getPath: () => {
+        const { bearingSeat, connections, getPoint } = get();
+        return [
+          ...bearingSeat.getPath(),
+          ...connections.flatMap((connection) => {
+            const start = getPoint(connection.startPointId);
+            const end = getPoint(connection.endPointId);
+            if (connection.__brand === "CubicBezierConnection") {
+              const control1 = getPoint(connection.control1Id);
+              const control2 = getPoint(connection.control2Id);
+              return getCubicBezierCurve(
+                {
+                  v0: start,
+                  v1: control1,
+                  v2: control2,
+                  v3: end,
+                },
+                100
+              );
+            }
+            if (connection.__brand === "LineConnection") {
+              return [new Vector2(start.x, start.y), new Vector2(end.x, end.y)];
+            }
+            return [];
+          }),
+        ];
+      },
+      updatePoint: (pointId: string, newX: number, newY: number) => {
+        const { pointMap, restraints, connections } = get();
+        const prevPoints = pointMap.clone();
 
-      const updatedPoint = new Point({
-        x: newX,
-        y: newY,
-        id: pointToModify.id,
-        option: pointToModify.option,
-      });
+        const pointToModify = pointMap.get(pointId);
+        if (!pointToModify) {
+          console.error(`Point with id ${pointId} not found for update.`);
+          return;
+        }
 
-      pointMap.set(updatedPoint);
+        pointToModify.x = newX;
+        pointToModify.y = newY;
 
-      restraints.forEach((restraint) => {
-        restraint.apply(prevPoints, pointMap);
-      });
-      set({ pointMap: pointMap.clone(), connections: [...connections] });
-    },
-  }))
+        pointMap.set(pointToModify);
+
+        restraints.forEach((restraint) => {
+          restraint.apply(prevPoints, pointMap);
+        });
+        set({ pointMap: pointMap.clone(), connections: [...connections] });
+      },
+    };
+  })
 );
