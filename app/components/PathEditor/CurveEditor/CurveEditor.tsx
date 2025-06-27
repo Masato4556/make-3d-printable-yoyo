@@ -8,7 +8,6 @@ import { useMemo } from "react";
 import { Vector2 } from "../../../math/vector2";
 import { PATH_COLOR } from "../style";
 import { useCurves } from "./hooks/useCurves";
-import { useUpdateCurvesStore } from "./hooks/useUpdateCurvesStore";
 import { Bearing } from "../../../yoyo/bearing";
 import { DraggableCircle } from "./CurveComponent/parts/DraggableCircle";
 import { CSizeBearingSeat } from "./CurveComponent/CSizeBearingSeat";
@@ -26,7 +25,6 @@ export function CurveEditor({ scale }: Props) {
     refreshConnections,
     path,
   } = useCurves();
-  useUpdateCurvesStore(path);
 
   const mirroredPathes = useMemo(() => {
     const mirroredXPath = path.map((point) => new Vector2(-point.x, point.y));

@@ -8,7 +8,8 @@ import { PATH_COLOR, WIRE_COLOR } from "../../style";
 import { Vector2 } from "../../../../math/vector2";
 import { DraggableCircle } from "./parts/DraggableCircle";
 import { CubicBezierConnection } from "../../models/Connection/CubicBezierConnection";
-import { useYoyoCurveStore } from "../../../../stores/useYoyoCurveStore";
+import { useCurveStore } from "../../../../stores/useCurveStore";
+
 
 type Props = {
   connection: CubicBezierConnection;
@@ -19,7 +20,7 @@ export function CubicBezierConnectionComponent({
   connection,
   refreshConnections,
 }: Props) {
-  const {getPoint} = useYoyoCurveStore()
+  const {getPoint} = useCurveStore()
   const start = getPoint(connection.startPointId);
   const end = getPoint(connection.endPointId);
   const { control1, control2 } = connection;

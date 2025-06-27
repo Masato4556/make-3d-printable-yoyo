@@ -66,6 +66,8 @@ export default [
       "!**/.client",
       ".react-router/**/*",
       ".dependency-cruiser.cjs",
+      "build/**",
+      "node_modules/**",
     ],
   },
   { languageOptions: { globals: globals.browser } },

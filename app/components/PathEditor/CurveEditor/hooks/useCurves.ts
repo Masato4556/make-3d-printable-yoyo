@@ -1,19 +1,17 @@
-import { useCallback, useMemo, useState } from "react";
-import { Vector2 } from "../../../../math/vector2";
-import { getCubicBezierCurve } from "../../models/getCubicBezierCurve";
+import { useCallback, useState } from "react";
 import { useEventStore } from "../../../../stores/useEventStore";
-import { useYoyoCurveStore } from "../../../../stores/useYoyoCurveStore";
+import { useCurveStore } from "../../../../stores/useCurveStore";
 
 export const useCurves = () => {
   const {
     pointMap,
     setPointMap,
-    getPoint,
     restraints,
     connections,
     setConnections,
     bearingSeat,
-  } = useYoyoCurveStore();
+    getPath,
+  } = useCurveStore();
 
   const [prevPoints, setPrevPoints] = useState(pointMap.clone());
 
@@ -37,37 +35,11 @@ export const useCurves = () => {
     setPointMap,
   ]);
 
-  const path = useMemo(
-    () => [
-      ...bearingSeat.getPath(),
-      ...connections.flatMap((connection) => {
-        const start = getPoint(connection.startPointId);
-        const end = getPoint(connection.endPointId);
-        if (connection.__brand === "CubicBezierConnection") {
-          return getCubicBezierCurve(
-            {
-              v0: start,
-              v1: connection.control1,
-              v2: connection.control2,
-              v3: end,
-            },
-            100
-          );
-        }
-        if (connection.__brand === "LineConnection") {
-          return [new Vector2(start.x, start.y), new Vector2(end.x, end.y)];
-        }
-        return [];
-      }, []),
-    ],
-    [bearingSeat, connections, getPoint]
-  );
-
   return {
     points: pointMap,
     connections,
     refreshConnections,
     bearingSeat,
-    path,
+    path: getPath(),
   };
 };
