@@ -7,7 +7,7 @@ import { Restraint } from "../components/PathEditor/models/Restraint/BaseRestrai
 import { Connection } from "../components/PathEditor/models/Connection/Connection";
 import { CSizeBearingSeatCurve } from "../components/PathEditor/models/BearingSeat/CSizeBearingSeatCurve";
 import { Vector2 } from "../math/vector2";
-import { getCubicBezierCurve } from "../components/PathEditor/models/getCubicBezierCurve";
+import { getCubicBezierCurve } from "../components/PathEditor/functions/getCubicBezierCurve";
 
 type CurveStore = {
   pointMap: PointMap;

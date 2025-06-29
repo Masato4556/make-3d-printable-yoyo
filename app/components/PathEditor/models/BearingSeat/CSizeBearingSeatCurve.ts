@@ -1,7 +1,6 @@
 import { CubicBezierCurve, Vector2 as ThreeVector2 } from "three";
 
 import { Vector2 } from "../../../../math/vector2";
-import { YoyoCurve } from "../YoyoCurve";
 
 const CSzieBearingSeatPath = [new ThreeVector2(0, -4)]
   .concat(
@@ -46,9 +45,7 @@ const CSzieBearingSeatPath = [new ThreeVector2(0, -4)]
   )
   .map((point) => new Vector2(-point.y + 2.085 + 4.76 / 2, point.x));
 
-export class CSizeBearingSeatCurve implements YoyoCurve {
-  index: number = 0;
-  type: string = "CSizeBearingSeatCurve";
+export class CSizeBearingSeatCurve {
   curve: Vector2[] = CSzieBearingSeatPath ?? [];
 
   id: string;
@@ -79,8 +76,5 @@ export class CSizeBearingSeatCurve implements YoyoCurve {
   updateLastPoint(v: Vector2): void {
     if (this.getLastPoint().equals(v)) return;
     throw new Error("CSizeBearingSeatCurveの最後の点は変更できません");
-  }
-  setIndex(index: number): void {
-    this.index = index;
   }
 }
