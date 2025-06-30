@@ -15,7 +15,9 @@
     "report:dep": "depcruise app --include-only \"^app\" --output-type dot | dot -T svg > dependency-graph.svg",
     "knip": "knip",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "npx vitest --coverage.enabled --coverage.all",
+    "test:ui": "vitest --ui --coverage"
   },
   "dependencies": {
     "@ls-lint/ls-lint": "^2.3.0",
@@ -48,6 +50,8 @@
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
     "@vitejs/plugin-react": "^4.4.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
     "dependency-cruiser": "^16.10.0",
     "eslint": "^9.22.0",
     "eslint-import-resolver-typescript": "^4.4.3",

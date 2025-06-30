@@ -9,5 +9,9 @@ export default defineConfig({
     environment: "happy-dom",
     globals: true,
     setupFiles: "./vitest.setup.ts",
+    coverage: {
+      include: ["app/**/*.{ts,tsx}"],
+      reportsDirectory: "./vitest/coverage",
+    },
   },
 });

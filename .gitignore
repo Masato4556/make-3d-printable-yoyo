@@ -4,7 +4,7 @@ node_modules
 /build
 .env
 .vercel
-
 .DS_Store
-
 .react-router
+vitest/coverage
+GEMINI.md
