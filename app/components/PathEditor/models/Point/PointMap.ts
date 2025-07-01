@@ -15,6 +15,20 @@ export class PointMap {
     return this.points.get(id);
   }
 
+  public update(pointId: string, newX: number, newY: number): boolean {
+    const pointToModify = this.get(pointId);
+    if (!pointToModify) {
+      console.error(`Point with id ${pointId} not found for update.`);
+      return false;
+    }
+
+    pointToModify.x = newX;
+    pointToModify.y = newY;
+    this.set(pointToModify);
+
+    return true;
+  }
+
   public has(id: string): boolean {
     return this.points.has(id);
   }
