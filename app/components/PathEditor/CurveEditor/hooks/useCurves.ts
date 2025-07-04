@@ -3,23 +3,22 @@ import { useEventStore } from "../../../../stores/useEventStore";
 import { useCurveStore } from "../../../../stores/useCurveStore";
 
 export const useCurves = () => {
-  const { pointMap, connections, bearingSeat, getPath, updatePoint } =
-    useCurveStore();
+  const { shape, getPath, movePoint } = useCurveStore();
 
   const { publishUpdatePathEvent } = useEventStore();
 
   const updatePointAndRefresh = useCallback(
     (pointId: string, newX: number, newY: number) => {
-      updatePoint(pointId, newX, newY);
+      movePoint(pointId, newX, newY);
       publishUpdatePathEvent();
     },
-    [publishUpdatePathEvent, updatePoint]
+    [publishUpdatePathEvent, movePoint]
   );
 
   return {
-    points: pointMap,
-    connections,
-    bearingSeat,
+    points: shape.getPoints(),
+    connections: shape.getConnections(),
+    bearingSeat: shape.getBearingSeat(),
     path: getPath(),
     updatePoint: updatePointAndRefresh,
   };

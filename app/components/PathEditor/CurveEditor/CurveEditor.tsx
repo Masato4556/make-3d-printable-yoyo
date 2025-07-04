@@ -35,13 +35,13 @@ export function CurveEditor({ scale }: Props) {
 
   return (
     <Group scale={{ x: scale, y: -scale }}>
-      {[...points.entries()].map(([id, point]) => {
+      {points.map((point) => {
         if (!point.option?.editable) {
           return null;
         }
         return (
           <DraggableCircle
-            key={id}
+            key={point.id}
             x={point.x}
             y={point.y}
             radius={2}

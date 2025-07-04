@@ -17,7 +17,7 @@ type Props = {
 export function CubicBezierConnectionComponent({
   connection,
 }: Props) {
-  const {getPoint, updatePoint} = useCurveStore()
+  const {getPoint, movePoint} = useCurveStore()
   const { publishUpdatePathEvent } = useEventStore();
   const start = getPoint(connection.startPointId);
   const end = getPoint(connection.endPointId);
@@ -52,7 +52,7 @@ export function CubicBezierConnectionComponent({
           x: control1.x,
           y: control1.y,
           onDragMove: (e) => {
-            updatePoint(control1.id, e.target.x(), e.target.y());
+            movePoint(control1.id, e.target.x(), e.target.y());
             publishUpdatePathEvent();
           },
         }}
@@ -67,7 +67,7 @@ export function CubicBezierConnectionComponent({
           x: control2.x,
           y: control2.y,
           onDragMove: (e) => {
-            updatePoint(control2.id, e.target.x(), e.target.y());
+            movePoint(control2.id, e.target.x(), e.target.y());
             publishUpdatePathEvent();
           },
         }}
