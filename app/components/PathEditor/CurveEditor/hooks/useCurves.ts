@@ -16,9 +16,9 @@ export const useCurves = () => {
   );
 
   return {
-    points: shape.pointMap,
-    connections: shape.connections,
-    bearingSeat: shape.bearingSeat,
+    points: shape.getPoints(),
+    connections: shape.getConnections(),
+    bearingSeat: shape.getBearingSeat(),
     path: getPath(),
     updatePoint: updatePointAndRefresh,
   };

@@ -9,10 +9,10 @@ import { YoyoCurveBuilder } from "../components/PathEditor/CurveEditor/hooks/Yoy
 
 export class YoyoShape {
   constructor(
-    public readonly pointMap: PointMap,
-    public readonly connections: Connection[],
-    public readonly restraints: Restraint[],
-    public readonly bearingSeat: CSizeBearingSeatCurve
+    private readonly pointMap: PointMap,
+    private readonly connections: Connection[],
+    private readonly restraints: Restraint[],
+    private readonly bearingSeat: CSizeBearingSeatCurve
   ) {}
 
   static createDefault(): YoyoShape {
@@ -44,12 +44,24 @@ export class YoyoShape {
     return new YoyoShape(initialPointMap, connections, restraints, bearingSeat);
   }
 
+  getPoints(): Point[] {
+    return [...this.pointMap.values()];
+  }
+
   getPoint(pointId: string): Point {
     const point = this.pointMap.get(pointId);
     if (!point) {
       throw new Error(`Point with id ${pointId} not found.`);
     }
     return point;
+  }
+
+  getConnections(): Connection[] {
+    return [...this.connections];
+  }
+
+  getBearingSeat(): CSizeBearingSeatCurve {
+    return this.bearingSeat;
   }
 
   getPath(): Vector2[] {
