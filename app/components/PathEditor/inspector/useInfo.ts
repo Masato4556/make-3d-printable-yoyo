@@ -8,12 +8,11 @@ import { useCurveStore } from "../../../stores/useCurveStore";
 import { calculateVolume } from "../../../functions/calculateVolume";
 
 export function useInfo() {
-  const { getPath } = useCurveStore();
+  const { shape } = useCurveStore();
   return useMemo(() => {
-    const path = getPath();
-    const volumeMm3 = calculateYoyoVolume(path);
+    const volumeMm3 = calculateYoyoVolume(shape.getPath());
     return { volumeCm3: volumeMm3 / 1000 };
-  }, [getPath]);
+  }, [shape]);
 }
 
 function calculateYoyoVolume(yoyoPath: Vector2[]): number {
