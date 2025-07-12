@@ -17,7 +17,7 @@ type Props = {
   scale: number;
 };
 
-export function CurveEditor({ scale }: Props) {
+export function InteractiveCurve({ scale }: Props) {
   const {
     points,
     connections,
