@@ -1,7 +1,7 @@
 import { BufferGeometry, LatheGeometry, Vector2 as ThreeVector2 } from "three";
 
-import { Bearing, BearingSizeType } from "../../../yoyo/bearing";
-import { Vector2 } from "../../../math/vector2";
+import { Bearing, BearingSizeType } from "../../../models/yoyo/bearing";
+import { Vector2 } from "../../../models/math/vector2";
 import { differenceGeometry } from "./unionGeometry";
 
 /**

@@ -3,7 +3,7 @@
  */
 
 import { useMemo } from "react";
-import { Vector2 } from "../../../math/vector2";
+import { Vector2 } from "../../../models/math/vector2";
 import { useCurveStore } from "../../../stores/useCurveStore";
 import { calculateVolume } from "../../../functions/calculateVolume";
 

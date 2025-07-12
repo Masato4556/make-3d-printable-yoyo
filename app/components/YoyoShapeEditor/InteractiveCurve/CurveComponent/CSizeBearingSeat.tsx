@@ -3,9 +3,9 @@
  */
 
 import { Line } from "react-konva";
-import { CSizeBearingSeatCurve } from "../../models/BearingSeat/CSizeBearingSeatCurve";
 import { useMemo } from "react";
 import { PATH_COLOR } from "../../style";
+import { CSizeBearingSeatCurve } from "../../../../models/yoyo/BearingSeat/CSizeBearingSeatCurve";
 
 type Props = {
   curve: CSizeBearingSeatCurve;

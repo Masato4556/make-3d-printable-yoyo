@@ -1,6 +1,6 @@
-import { getCubicBezierCurve } from "../../../../../functions/getCubicBezierCurve";
-import { Vector2 } from "../../../../../math/vector2";
-import { Point } from "../../Point/Point";
+import { getCubicBezierCurve } from "../../../../functions/getCubicBezierCurve";
+import { Vector2 } from "../../../math/vector2";
+import { Point } from "../../Point";
 import { Connection } from "../Connection";
 
 export const createPathFromConnections = (

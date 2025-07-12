@@ -7,7 +7,7 @@ import { Layer, Stage } from "react-konva";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { GridLayer } from "./GridLayer";
 import { BearingPathLayer } from "./BearingPathLayer";
-import { Bearing } from "../../yoyo/bearing";
+import { Bearing } from "../../models/yoyo/bearing";
 
 type Props = {
   hidden: boolean;

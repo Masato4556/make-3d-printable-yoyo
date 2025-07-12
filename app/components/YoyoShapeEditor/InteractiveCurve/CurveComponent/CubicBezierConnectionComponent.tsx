@@ -5,9 +5,9 @@
 import { KonvaEventObject } from "konva/lib/Node";
 import { Line, Shape } from "react-konva";
 import { PATH_COLOR, WIRE_COLOR } from "../../style";
-import { CubicBezierConnection } from "../../models/Connection/CubicBezierConnection";
 import { useCurveStore } from "../../../../stores/useCurveStore";
 import { useEventStore } from "../../../../stores/useEventStore";
+import { CubicBezierConnection } from "../../../../models/yoyo/Connection";
 
 
 type Props = {

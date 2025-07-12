@@ -1,4 +1,4 @@
-import { PointMap } from "../Point/PointMap";
+import { PointMap } from "../Point";
 import { Restraint } from "./BaseRestraint";
 
 export class FollowRestraint implements Restraint {
@@ -6,7 +6,7 @@ export class FollowRestraint implements Restraint {
     readonly restrainedPointId: string,
     readonly targetPointId: string,
     readonly options?: { lock: { x: boolean; y: boolean } }
-  ) { }
+  ) {}
 
   public apply(points: PointMap, updatedPoints: PointMap): void {
     const targetPoint = points.get(this.targetPointId);
@@ -14,7 +14,12 @@ export class FollowRestraint implements Restraint {
     const restrainedPoint = points.get(this.restrainedPointId);
     const updatedRestrainedPoint = updatedPoints.get(this.restrainedPointId);
 
-    if (!targetPoint || !updatedTargetPoint || !restrainedPoint || !updatedRestrainedPoint) {
+    if (
+      !targetPoint ||
+      !updatedTargetPoint ||
+      !restrainedPoint ||
+      !updatedRestrainedPoint
+    ) {
       return;
     }
 

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useEventStore } from "../../../../stores/useEventStore";
-import { useCurveStore } from "../../../../stores/useCurveStore";
+import { useEventStore } from "../../../stores/useEventStore";
+import { useCurveStore } from "../../../stores/useCurveStore";
 
 export const useCurves = () => {
   const { shape, getPath, movePoint } = useCurveStore();

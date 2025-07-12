@@ -1,6 +1,5 @@
 import { CubicBezierCurve, Vector2 as ThreeVector2 } from "three";
-
-import { Vector2 } from "../../../../math/vector2";
+import { Vector2 } from "../../math/vector2";
 
 const CSzieBearingSeatPath = [new ThreeVector2(0, -4)]
   .concat(

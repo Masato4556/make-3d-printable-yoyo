@@ -5,11 +5,11 @@
 import { Line, Group } from "react-konva";
 import { ConnectionComponentFactory } from "./CurveComponentFactory";
 import { useMemo } from "react";
-import { Vector2 } from "../../../math/vector2";
+import { Vector2 } from "../../../models/math/vector2";
 import { PATH_COLOR } from "../style";
-import { useCurves } from "./hooks/useCurves";
-import { Bearing } from "../../../yoyo/bearing";
-import { DraggableCircle } from "./CurveComponent/parts/DraggableCircle";
+import { useCurves } from "./useCurves";
+import { Bearing } from "../../../models/yoyo/bearing";
+import { DraggableCircle } from "./DraggableCircle";
 import { CSizeBearingSeat } from "./CurveComponent/CSizeBearingSeat";
 
 type Props = {
