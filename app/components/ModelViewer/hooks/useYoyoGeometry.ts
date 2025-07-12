@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { GeometryFactory } from "../geometry/GeometryFactory";
+import { GeometryFactory } from "../GeometryFactory/GeometryFactory";
 import { useCurveStore } from "../../../stores/useCurveStore";
 
 export function useYoyoGeometry() {

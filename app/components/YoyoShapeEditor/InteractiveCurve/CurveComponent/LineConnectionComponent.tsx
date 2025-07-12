@@ -4,8 +4,8 @@
 
 import { Line } from "react-konva";
 import { PATH_COLOR } from "../../style";
-import { LineConnection } from "../../models/Connection/LineConnection";
 import { useCurveStore } from "../../../../stores/useCurveStore";
+import { LineConnection } from "../../../../models/yoyo/Connection";
 
 type Props = {
   connection: LineConnection;

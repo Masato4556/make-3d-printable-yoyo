@@ -4,7 +4,7 @@
 
 import { LineConnectionComponent } from "./CurveComponent/LineConnectionComponent";
 import { CubicBezierConnectionComponent } from "./CurveComponent/CubicBezierConnectionComponent";
-import { Connection } from "../models/Connection/Connection";
+import { Connection } from "../../../models/yoyo/Connection";
 
 type Props = {
   connection: Connection;

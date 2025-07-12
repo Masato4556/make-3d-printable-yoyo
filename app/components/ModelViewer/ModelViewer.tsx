@@ -8,8 +8,6 @@ import { DownoadButton } from "./DownoadButton/DownoadButton";
 import { YoyoModel } from "./YoyoModel";
 import { ExportStl } from "./ExportStl";
 
-
-
 export function ModelViewer() {
   return (
     <>

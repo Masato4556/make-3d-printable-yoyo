@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { Point } from "../components/PathEditor/models/Point/Point";
-import { Vector2 } from "../math/vector2";
-import { YoyoShape } from "../yoyo/YoyoShape";
+import { Vector2 } from "../models/math/vector2";
+import { YoyoShape } from "../models/yoyo/YoyoShape";
+import { Point } from "../models/yoyo/Point/Point";
 
 type CurveStore = {
   shape: YoyoShape;

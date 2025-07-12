@@ -3,7 +3,7 @@ import styles from "../styles/index.scss?url";
 
 import { ModeSwitch } from "../components/ModeSwitch/ModeSwitch";
 import { ModelViewer } from "../components/ModelViewer/ModelViewer";
-import { Editor } from "../components/PathEditor/Editor";
+import { YoyoShapeEditor } from "../components/YoyoShapeEditor/YoyoShapeEditor";
 import { useModeStore } from "../stores/useModeStore";
 
 export const meta: MetaFunction = () => [
@@ -29,7 +29,7 @@ export default function Index() {
       <ModeSwitch setMode={change} />
       {mode === "MODEL" && <ModelViewer />}
       {/* パスの状態を維持するためにパスエディターは非表示にするだけ、 */}
-      <Editor hidden={mode !== "PATH"} />
+      <YoyoShapeEditor hidden={mode !== "PATH"} />
     </div>
   );
 }

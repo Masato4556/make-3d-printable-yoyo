@@ -1,11 +1,9 @@
-import { PointMap } from "../components/PathEditor/models/Point/PointMap";
-import { Point } from "../components/PathEditor/models/Point/Point";
-import { Restraint } from "../components/PathEditor/models/Restraint/BaseRestraint";
-import { Connection } from "../components/PathEditor/models/Connection/Connection";
-import { CSizeBearingSeatCurve } from "../components/PathEditor/models/BearingSeat/CSizeBearingSeatCurve";
+import { YoyoCurveBuilder } from "./YoyoCurveBuilder";
 import { Vector2 } from "../math/vector2";
-import { createPathFromConnections } from "../components/PathEditor/models/Connection/function/createPathFromConnections";
-import { YoyoCurveBuilder } from "../components/PathEditor/CurveEditor/hooks/YoyoCurveBuilder";
+import { Connection, createPathFromConnections } from "./Connection";
+import { Restraint } from "./Restraint";
+import { CSizeBearingSeatCurve } from "./BearingSeat/CSizeBearingSeatCurve";
+import { Point, PointMap } from "./Point";
 
 export class YoyoShape {
   constructor(

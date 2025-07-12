@@ -1,12 +1,7 @@
-import { CSizeBearingSeatCurve } from "../../models/BearingSeat/CSizeBearingSeatCurve";
-
-import { ConnectionList } from "../../models/Connection/ConnectionList";
-import { CubicBezierConnection } from "../../models/Connection/CubicBezierConnection";
-import { LineConnection } from "../../models/Connection/LineConnection";
-import { Point } from "../../models/Point/Point";
-import { PointList } from "../../models/Point/PointList";
-import { Restraint } from "../../models/Restraint/BaseRestraint";
-import { FollowRestraint } from "../../models/Restraint/FollowRestraint";
+import { CSizeBearingSeatCurve } from "./BearingSeat/CSizeBearingSeatCurve";
+import { ConnectionList, LineConnection, CubicBezierConnection } from "./Connection";
+import { Point, PointList } from "./Point";
+import { Restraint, FollowRestraint } from "./Restraint";
 
 type RestraintType = "Follow" | "FollowX" | "FollowY";
 

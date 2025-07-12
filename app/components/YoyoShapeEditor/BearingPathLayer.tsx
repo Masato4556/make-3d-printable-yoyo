@@ -1,6 +1,6 @@
 import { Layer, Line } from "react-konva";
 import { BEARING_COLOR } from "./style";
-import { Bearing } from "../../yoyo/bearing";
+import { Bearing } from "../../models/yoyo/bearing";
 
 type Props = {
   bearing: Bearing;

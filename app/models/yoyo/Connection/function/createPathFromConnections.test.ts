@@ -3,8 +3,8 @@ import { createPathFromConnections } from "./createPathFromConnections";
 import { Point } from "../../Point/Point";
 import { LineConnection } from "../LineConnection";
 import { CubicBezierConnection } from "../CubicBezierConnection";
-import { Vector2 } from "../../../../../math/vector2";
 import { Connection } from "../Connection";
+import { Vector2 } from "../../../math/vector2";
 
 describe("createPathFromConnections", () => {
   const p1 = new Point({ id: "p1", x: 0, y: 0 });
