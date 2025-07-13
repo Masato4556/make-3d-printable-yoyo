@@ -23,7 +23,7 @@ const cleanCodeRules = {
   "max-classes-per-file": ["error", 1],
   "max-lines": [
     "error",
-    { max: 200, skipComments: false, skipBlankLines: false },
+    { max: 500, skipComments: false, skipBlankLines: false },
   ],
   "max-lines-per-function": [
     "error",

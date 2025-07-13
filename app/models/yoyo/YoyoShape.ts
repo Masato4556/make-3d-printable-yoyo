@@ -5,6 +5,7 @@ import { Restraint } from "./Restraint";
 import { CSizeBearingSeatCurve } from "./BearingSeat/CSizeBearingSeatCurve";
 import { Point, PointMap } from "./Point";
 
+// x軸：回転軸方向、y軸：回転軸に垂直な方向
 export class YoyoShape {
   constructor(
     private readonly pointMap: PointMap,
