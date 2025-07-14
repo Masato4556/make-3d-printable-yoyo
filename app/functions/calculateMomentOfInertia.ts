@@ -1,4 +1,4 @@
-import { reducePairwise } from "./arrayUtils";
+import { reducePairwise } from "./reducePairwise";
 
 // MEMO：この関数（およびテストケース）が正しいか自信がない。3DCADの慣性モーメント計算と同様の値になるかを確認したい。
 export const calculateYoyoMomentOfInertia = (
