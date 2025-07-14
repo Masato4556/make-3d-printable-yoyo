@@ -3,7 +3,7 @@ import { reducePairwise } from "./reducePairwise";
 // MEMO：この関数（およびテストケース）が正しいか自信がない。3DCADの慣性モーメント計算と同様の値になるかを確認したい。
 export const calculateYoyoMomentOfInertia = (
   points: { x: number; y: number }[], // x: 軸方向, y: 回転軸からの距離
-  density: number
+  density: number // 質量密度（g/cm³など）
 ): number =>
   // 回転体として各要素の慣性モーメントを積分
   // I = ∫ r² dm (rは回転軸からの距離)
@@ -27,10 +27,10 @@ export const calculateYoyoMomentOfInertia = (
       const r1_4 = r1_2 * r1_2;
       const r2_4 = r2_2 * r2_2;
       const momentOfInertia =
-        ((Math.PI * density * dx) / 10) *
+        ((Math.PI * ((density * 100 * 100) / 1000) * dx) / 10) *
         (r1_4 + r1 * r1_2 * r2 + r1_2 * r2_2 + r1 * r2 * r2_2 + r2_4);
 
-      return totalMomentOfInertia + momentOfInertia;
+      return totalMomentOfInertia + momentOfInertia; // kg・cm²
     },
     0
   );

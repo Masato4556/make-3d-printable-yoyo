@@ -6,13 +6,28 @@ import { useMemo } from "react";
 import { Vector2 } from "../../../models/math/vector2";
 import { useCurveStore } from "../../../stores/useCurveStore";
 import { calculateVolume } from "../../../functions/calculateVolume";
+import { calculateYoyoMomentOfInertia } from "../../../functions/calculateMomentOfInertia";
 
 export function useInfo() {
   const { shape } = useCurveStore();
+  const infillRate = 0.9; // インフィル率（0.0〜1.0）
+  const density = 1.25 * infillRate; // PLAの密度 g/cm³
+
   return useMemo(() => {
     const volumeMm3 = calculateYoyoVolume(shape.getPath());
-    return { volumeCm3: volumeMm3 / 1000 };
-  }, [shape]);
+    const momentOfInertia = calculateYoyoMomentOfInertia(
+      shape.getPath().map((point) => ({
+        x: point.x / 1000, // mm to m
+        y: point.y / 1000, // mm to m
+      })),
+      density
+    );
+    return {
+      volumeCm3: (volumeMm3 * 2) / 10 ** 3, // ヨーヨー両側の体積
+      massG: ((volumeMm3 * 2) / 10 ** 3) * density,
+      momentOfInertia: momentOfInertia * 2, // ヨーヨー両側の慣性モーメント
+    };
+  }, [density, shape]);
 }
 
 function calculateYoyoVolume(yoyoPath: Vector2[]): number {
