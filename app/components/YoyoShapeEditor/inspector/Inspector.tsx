@@ -7,8 +7,8 @@ import { useState, type FC, type ReactNode } from "react";
 import { useMaterialProperties } from "./useMaterialProperties";
 
 const PRESETS = [
-  { name: "PLA", infillRate: 0.2, filamentDensity: 1.25 },
-  { name: "ABS", infillRate: 0.2, filamentDensity: 1.04 },
+  { name: "PLA", filamentDensity: 1.25 },
+  { name: "ABS", filamentDensity: 1.04 },
 ];
 
 const InspectorRow: FC<{ label: string; children: ReactNode }> = ({
@@ -65,7 +65,6 @@ const InspectorPanel = ({ onClose }: { onClose: () => void }) => {
                   <button
                     key={preset.name}
                     onClick={() => {
-                      setInfillRate(preset.infillRate);
                       setFilamentDensity(preset.filamentDensity);
                     }}
                   >
