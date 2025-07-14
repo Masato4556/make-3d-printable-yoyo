@@ -10,9 +10,12 @@ export function Inspector() {
   const [isOpen, setIsOpen] = useState(false);
 
   // TODO: インフィル率と密度を設定できるようにする
-  const infillRate = 0.9; // インフィル率（0.0〜1.0）
-  const density = 1.25 * infillRate; // PLAの密度 g/cm³
-  const { volumeCm3, massG, momentOfInertia } = useInfo();
+  const [filamentDensity, setFilamentDensity] = useState(1.25); // フィラメントの密度 g/cm³
+  const [infillRate, setInfillRate] = useState(0.9); // インフィル率（0.0〜1.0）
+  const { volumeCm3, massG, momentOfInertia } = useInfo(
+    infillRate,
+    filamentDensity
+  );
 
   return (
     <div>
@@ -30,28 +33,54 @@ export function Inspector() {
         <div className={classes.overlay_form_box}>
           <table>
             <tr>
-              <td className={classes.overlay}>
-                Infill Rate:
-              </td>
+              <td className={classes.overlay}>Infill Rate:</td>
               <td className={classes.value}>
-                {infillRate * 100}%
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  step={5}
+                  value={infillRate * 100}
+                  onChange={(e) => setInfillRate(Number(e.target.value) / 100)}
+                />
               </td>
             </tr>
             <tr>
-              <td className={classes.overlay}>
-                Density:
-              </td>
+              <td className={classes.overlay}>Filament Density:</td>
               <td className={classes.value}>
-                {density.toFixed(2)}
+                <input
+                  type="number"
+                  min={0}
+                  value={filamentDensity}
+                  onChange={(e) => setFilamentDensity(Number(e.target.value))}
+                />
                 <var>
                   g/cm<sup>3</sup>
                 </var>
               </td>
+              <td>
+                <div>
+                  <button
+                    onClick={() => {
+                      setInfillRate(0.2);
+                      setFilamentDensity(1.25);
+                    }}
+                  >
+                    PLA
+                  </button>
+                  <button
+                    onClick={() => {
+                      setInfillRate(0.2);
+                      setFilamentDensity(1.04);
+                    }}
+                  >
+                    ABS
+                  </button>
+                </div>
+              </td>
             </tr>
             <tr>
-              <td className={classes.overlay}>
-                Volume:
-              </td>
+              <td className={classes.overlay}>Volume:</td>
               <td className={classes.value}>
                 {volumeCm3.toFixed(2)}{" "}
                 <var>
@@ -60,20 +89,13 @@ export function Inspector() {
               </td>
             </tr>
             <tr>
-              <td className={classes.overlay}>
-                Mass:
-              </td>
+              <td className={classes.overlay}>Mass:</td>
               <td className={classes.value}>
-                {massG.toFixed(2)}{" "}
-                <var>
-                  g
-                </var>
+                {massG.toFixed(2)} <var>g</var>
               </td>
             </tr>
             <tr>
-              <td className={classes.overlay}>
-                Moment of Inertia:
-              </td>
+              <td className={classes.overlay}>Moment of Inertia:</td>
               <td className={classes.value}>
                 {momentOfInertia.toExponential(2)}{" "}
                 <var>
@@ -81,7 +103,6 @@ export function Inspector() {
                 </var>
               </td>
             </tr>
-
           </table>
           <div>
             <button

@@ -8,10 +8,9 @@ import { useCurveStore } from "../../../stores/useCurveStore";
 import { calculateVolume } from "../../../functions/calculateVolume";
 import { calculateYoyoMomentOfInertia } from "../../../functions/calculateMomentOfInertia";
 
-export function useInfo() {
+export function useInfo(infillRate: number, filamentDensity: number) {
   const { shape } = useCurveStore();
-  const infillRate = 0.9; // インフィル率（0.0〜1.0）
-  const density = 1.25 * infillRate; // PLAの密度 g/cm³
+  const density = filamentDensity * infillRate;
 
   return useMemo(() => {
     const volumeMm3 = calculateYoyoVolume(shape.getPath());
