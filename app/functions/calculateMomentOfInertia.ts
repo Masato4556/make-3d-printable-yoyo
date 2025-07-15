@@ -3,7 +3,7 @@ import { reducePairwise } from "./reducePairwise";
 // MEMO：この関数（およびテストケース）が正しいか自信がない。3DCADの慣性モーメント計算と同様の値になるかを確認したい。
 export const calculateYoyoMomentOfInertia = (
   points: { x: number; y: number }[], // x: 軸方向, y: 回転軸からの距離
-  density: number // 質量密度（g/cm³など）
+  density: number // 質量密度
 ): number =>
   // 回転体として各要素の慣性モーメントを積分
   // I = ∫ r² dm (rは回転軸からの距離)
@@ -19,18 +19,18 @@ export const calculateYoyoMomentOfInertia = (
         return totalMomentOfInertia;
       }
 
-      // 台形の回転体の慣性モーメント（正確な公式を使用）
-      // I = (π * ρ * h / 10) * (r1⁴ + r1³*r2 + r1²*r2² + r1*r2³ + r2⁴)
-      // 質量が負の場合、慣性モーメントも負になる（中空部分の減算を表す）
+      // 台形回転体の慣性モーメント計算
+      // 台形回転体を微小円環の積分として計算
+      // I = π * ρ * h * (r1⁴ + r1³*r2 + r1²*r2² + r1*r2³ + r2⁴) / 10
       const r1_2 = r1 * r1;
       const r2_2 = r2 * r2;
       const r1_4 = r1_2 * r1_2;
       const r2_4 = r2_2 * r2_2;
       const momentOfInertia =
-        ((Math.PI * ((density * 100 * 100) / 1000) * dx) / 10) *
-        (r1_4 + r1 * r1_2 * r2 + r1_2 * r2_2 + r1 * r2 * r2_2 + r2_4);
+        (Math.PI * density * dx * 
+         (r1_4 + r1 * r1_2 * r2 + r1_2 * r2_2 + r1 * r2 * r2_2 + r2_4)) / 10;
 
-      return totalMomentOfInertia + momentOfInertia; // kg・cm²
+      return totalMomentOfInertia + momentOfInertia;
     },
     0
   );

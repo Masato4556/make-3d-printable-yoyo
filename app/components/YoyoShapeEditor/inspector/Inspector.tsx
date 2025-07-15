@@ -86,7 +86,7 @@ const InspectorPanel = ({ onClose }: { onClose: () => void }) => {
           <InspectorRow label="Moment of Inertia">
             {momentOfInertia.toExponential(2)}{" "}
             <var>
-              kg・cm<sup>2</sup>
+              kg・m<sup>2</sup>
             </var>
           </InspectorRow>
         </tbody>

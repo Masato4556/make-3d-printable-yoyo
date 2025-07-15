@@ -197,9 +197,8 @@ describe("calculateYoyoMomentOfInertia - エッジケースと特殊な場合", 
     // 台形回転体（truncated cone）の理論値計算
     // 体積 V = π * h * (r1² + r1*r2 + r2²) / 3 = π * 6 * (25 + 15 + 9) / 3 = 98π
     // 質量 m = 98π
-    // 台形回転体の慣性モーメントは複雑な公式になるため、
-    // ここでは近似値として範囲テストを行う
-    expect(result).toBeGreaterThan(1000 * Math.PI);
-    expect(result).toBeLessThan(2000 * Math.PI);
+    // 台形回転体の慣性モーメント: I = (π * ρ * h / 10) * (r1⁴ + r1³*r2 + r1²*r2² + r1*r2³ + r2⁴)
+    // = (π * 1 * 6 / 10) * (625 + 375 + 225 + 135 + 81) = 864.6π ≈ 2716.22
+    expect(result).toBeCloseTo(864.6 * Math.PI, 1);
   });
 });
