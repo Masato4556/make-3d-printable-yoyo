@@ -1,6 +1,7 @@
 import { reducePairwise } from "./reducePairwise";
 
-// MEMO：この関数（およびテストケース）が正しいか自信がない。3DCADの慣性モーメント計算と同様の値になるかを確認したい。
+// ヨーヨーの慣性モーメントを計算する関数
+// 台形回転体の理論公式に基づいて計算
 export const calculateYoyoMomentOfInertia = (
   points: { x: number; y: number }[], // x: 軸方向, y: 回転軸からの距離
   density: number // 質量密度
