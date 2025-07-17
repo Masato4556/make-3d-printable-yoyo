@@ -74,6 +74,11 @@ const InspectorPanel = ({ onClose }: { onClose: () => void }) => {
               </div>
             </td>
           </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr className={classes.separator} />
+            </td>
+          </tr>
           <InspectorRow label="Volume">
             {volumeCm3.toFixed(2)}{" "}
             <var>
