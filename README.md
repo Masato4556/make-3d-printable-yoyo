@@ -29,3 +29,7 @@ This application allows users to design and generate 3D printable yoyo models. U
 ## Development
 
 Refer to `README.md` for development and deployment instructions.
+
+## Documentation
+
+The rules and guidelines for documentation management are described in [docs/DOCUMENTATION_POLICY.md](docs/DOCUMENTATION_POLICY.md).
