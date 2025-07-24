@@ -27,22 +27,4 @@ export class CubicBezierConnection implements BaseConnection {
     this.control2Id = control2Id;
     this.id = id || crypto.randomUUID();
   }
-  withStartPointId(startPointId: string): CubicBezierConnection {
-    return new CubicBezierConnection({
-      startPointId,
-      endPointId: this.endPointId,
-      control1Id: this.control1Id,
-      control2Id: this.control2Id,
-      id: this.id,
-    });
-  }
-  withEndPointId(endPointId: string): CubicBezierConnection {
-    return new CubicBezierConnection({
-      startPointId: this.startPointId,
-      endPointId,
-      control1Id: this.control1Id,
-      control2Id: this.control2Id,
-      id: this.id,
-    });
-  }
 }

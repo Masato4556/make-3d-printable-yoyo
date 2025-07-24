@@ -13,7 +13,7 @@ type BearingSize = {
 
 type BearingSizes = Record<BearingType, BearingSize>;
 
-const bearingSizes: BearingSizes = {
+export const BEARING_SIZE: BearingSizes = {
   sizeC: {
     width: 4.76,
     innerDiameter: 6.35,
@@ -21,21 +21,18 @@ const bearingSizes: BearingSizes = {
   },
 };
 
-export type BearingSizeType = keyof typeof bearingSizes;
+export type BearingSizeType = keyof typeof BEARING_SIZE;
 
-export class Bearing {
-  public width: number;
-  public innerDiameter: number;
-  public outerDiameter: number;
+export type Bearing = (typeof BEARING_SIZE)[BearingSizeType];
 
-  constructor(width: number, innerDiameter: number, outerDiameter: number) {
-    this.width = width;
-    this.innerDiameter = innerDiameter;
-    this.outerDiameter = outerDiameter;
+export const createBearing = (sizeType: BearingSizeType): Bearing => {
+  const size = BEARING_SIZE[sizeType];
+  if (!size) {
+    throw new Error(`Unknown bearing size type: ${sizeType}`);
   }
-
-  public static fromSize(type: BearingSizeType) {
-    const size = bearingSizes[type];
-    return new Bearing(size.width, size.innerDiameter, size.outerDiameter);
-  }
-}
+  return {
+    width: size.width,
+    innerDiameter: size.innerDiameter,
+    outerDiameter: size.outerDiameter,
+  };
+};

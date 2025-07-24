@@ -1,6 +1,10 @@
 import { BufferGeometry, LatheGeometry, Vector2 as ThreeVector2 } from "three";
 
-import { Bearing, BearingSizeType } from "../../../models/yoyo/bearing";
+import {
+  Bearing,
+  BearingSizeType,
+  createBearing,
+} from "../../../models/yoyo/bearing";
 import { Vector2 } from "../../../models/math/vector2";
 import { differenceGeometry } from "./unionGeometry";
 
@@ -12,7 +16,7 @@ export class GeometryFactory {
   private bearing: Bearing;
   private wingGeometry: BufferGeometry;
   constructor(bearingSizeType: BearingSizeType, wingPath: Vector2[]) {
-    this.bearing = Bearing.fromSize(bearingSizeType);
+    this.bearing = createBearing(bearingSizeType);
     this.wingGeometry = GeometryFactory.createWingGeometry(wingPath);
   }
 

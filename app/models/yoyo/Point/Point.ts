@@ -40,8 +40,4 @@ export class Point {
   public equals(other: Point): boolean {
     return this.x === other.x && this.y === other.y && this.id === other.id;
   }
-
-  public isEditable(): boolean {
-    return this.option?.editable ?? true;
-  }
 }

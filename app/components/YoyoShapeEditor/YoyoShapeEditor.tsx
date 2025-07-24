@@ -7,7 +7,7 @@ import { Layer, Stage } from "react-konva";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { GridLayer } from "./GridLayer";
 import { BearingPathLayer } from "./BearingPathLayer";
-import { Bearing } from "../../models/yoyo/bearing";
+import { createBearing } from "../../models/yoyo/bearing";
 
 type Props = {
   hidden: boolean;
@@ -18,7 +18,7 @@ export function YoyoShapeEditor(props: Props) {
 
   const { width, height } = useWindowSize();
 
-  const bearing = Bearing.fromSize("sizeC");
+  const bearing = createBearing("sizeC");
   const scale = 5;
 
   return (
