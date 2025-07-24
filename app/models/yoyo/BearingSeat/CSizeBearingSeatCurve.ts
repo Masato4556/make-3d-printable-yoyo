@@ -1,49 +1,73 @@
-import { CubicBezierCurve, Vector2 as ThreeVector2 } from "three";
 import { Vector2 } from "../../math/vector2";
+import { getCubicBezierCurve } from "../../../functions/getCubicBezierCurve";
+import { BEARING_SIZE } from "../bearing";
 
-const CSzieBearingSeatPath = [new ThreeVector2(0, -4)]
-  .concat(
-    new ThreeVector2(2, -4),
-    new ThreeVector2(2, 4),
-    new CubicBezierCurve(
-      new ThreeVector2(2.5, 4),
-      new ThreeVector2(3.15, 4),
-      new ThreeVector2(3.15, 4),
-      new ThreeVector2(3.15, 3.5)
-    ).getPoints(8),
-    new ThreeVector2(3.15, 2),
-    new CubicBezierCurve(
-      new ThreeVector2(3.85, 2),
-      new ThreeVector2(4.15, 2),
-      new ThreeVector2(4.15, 2),
-      new ThreeVector2(4.15, 1.7)
-    ).getPoints(8),
-    new ThreeVector2(4.15, 0.59),
-    new ThreeVector2(6.45, 0.59),
-    new CubicBezierCurve(
-      new ThreeVector2(6.45, 2.14 - 0.2),
-      new ThreeVector2(6.45, 2.14),
-      new ThreeVector2(6.45, 2.14),
-      new ThreeVector2(6.45 - 0.2, 2.14)
-    ).getPoints(8),
-    new CubicBezierCurve(
-      new ThreeVector2(7.1 - 0.2, 2.14),
-      new ThreeVector2(7.1, 2.14),
-      new ThreeVector2(7.1, 2.14),
-      new ThreeVector2(7.1, 2.14 - 0.2)
-    ).getPoints(8),
-    new ThreeVector2(7.1, 0.885),
-    new ThreeVector2(9.55, 0.885),
-    new CubicBezierCurve(
-      new ThreeVector2(9.55, 2.085 - 0.3),
-      new ThreeVector2(9.55, 2.085),
-      new ThreeVector2(9.55, 2.085),
-      new ThreeVector2(9.55 - 0.3, 2.085)
-    ).getPoints(8),
-    new ThreeVector2(10.55, 2.085)
-  )
-  .map((point) => new Vector2(-point.y + 2.085 + 4.76 / 2, point.x));
+// TODO：ベジェカーブを作成する関数を用意できたので、そちらを用いるように変更する
+const CSzieBearingSeatPath: Vector2[] = [
+  new Vector2(4, 0),
+  new Vector2(4, 2),
+  new Vector2(-4, 2),
+  ...getCubicBezierCurve(
+    {
+      v0: new Vector2(-4, 2.5),
+      v1: new Vector2(-4, 3.15),
+      v2: new Vector2(-4, 3.15),
+      v3: new Vector2(-3.5, 3.15),
+    },
+    8
+  ),
+  new Vector2(-2, 3.15),
+  ...getCubicBezierCurve(
+    {
+      v0: new Vector2(-2, 3.85),
+      v1: new Vector2(-2, 4.15),
+      v2: new Vector2(-2, 4.15),
+      v3: new Vector2(-1.7, 4.15),
+    },
+    8
+  ),
+  new Vector2(-0.59, 4.15),
+  new Vector2(-0.59, 6.45),
+  ...getCubicBezierCurve(
+    {
+      v0: new Vector2(-1.94, 6.45),
+      v1: new Vector2(-2.14, 6.45),
+      v2: new Vector2(-2.14, 6.45),
+      v3: new Vector2(-2.14, 6.25),
+    },
+    8
+  ),
+  ...getCubicBezierCurve(
+    {
+      v0: new Vector2(-2.14, 6.9),
+      v1: new Vector2(-2.14, 7.1),
+      v2: new Vector2(-2.14, 7.1),
+      v3: new Vector2(-1.94, 7.1),
+    },
+    8
+  ),
+  new Vector2(-0.885, 7.1),
+  new Vector2(-0.885, 9.55),
+  ...getCubicBezierCurve(
+    {
+      v0: new Vector2(-1.785, 9.55),
+      v1: new Vector2(-2.085, 9.55),
+      v2: new Vector2(-2.085, 9.55),
+      v3: new Vector2(-2.085, 9.25),
+    },
+    8
+  ),
+  new Vector2(-2.085, 10.55),
+].map(
+  (point) =>
+    new Vector2(point.x + 2.085 + BEARING_SIZE.sizeC.width / 2, point.y)
+);
 
+/**
+ * CSizeBearingSeatCurve
+ * Cサイズのベアリングシートのパスを表現するクラスです。
+ * このクラスは、ベアリングシートの形状を定義し、そのパスを取得するためのメソッドを提供します。
+ */
 export class CSizeBearingSeatCurve {
   curve: Vector2[] = CSzieBearingSeatPath ?? [];
 
@@ -54,26 +78,17 @@ export class CSizeBearingSeatCurve {
   getPath(): Vector2[] {
     return this.curve;
   }
-  getFirstPoint(): Vector2 {
-    const firstPoint = this.curve[0];
-    if (firstPoint === undefined) {
-      throw new Error("CSizeBearingSeatCurveの最初の点が取得できませんでした");
+  getFirthPoint(): Vector2 {
+    if (this.curve[0] === undefined) {
+      throw new Error("Curve is empty, cannot get first point.");
     }
-    return firstPoint;
+    return this.curve[0];
   }
   getLastPoint(): Vector2 {
-    const [lastPoint] = this.curve.slice(-1);
+    const lastPoint = this.curve[this.curve.length - 1];
     if (lastPoint === undefined) {
-      throw new Error("CSizeBearingSeatCurveの最後の点が取得できませんでした");
+      throw new Error("Curve is empty, cannot get last point.");
     }
     return lastPoint;
-  }
-  updateFirstPoint(v: Vector2): void {
-    if (this.getFirstPoint().equals(v)) return;
-    throw new Error("CSizeBearingSeatCurveの最初の点は変更できません");
-  }
-  updateLastPoint(v: Vector2): void {
-    if (this.getLastPoint().equals(v)) return;
-    throw new Error("CSizeBearingSeatCurveの最後の点は変更できません");
   }
 }

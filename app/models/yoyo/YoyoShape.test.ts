@@ -33,7 +33,9 @@ describe("YoyoShape", () => {
   describe("movePoint", () => {
     it("should return a new YoyoShape instance and not mutate the original", () => {
       const initialShape = YoyoShape.createDefault();
-      const pointToMove = initialShape.getPoints().find((p) => p.isEditable());
+      const pointToMove = initialShape
+        .getPoints()
+        .find((p) => p.option?.editable);
       expect(pointToMove, "No editable point found for testing").toBeDefined();
 
       const pointId = pointToMove!.id;

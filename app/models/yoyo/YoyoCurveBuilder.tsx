@@ -1,5 +1,9 @@
 import { CSizeBearingSeatCurve } from "./BearingSeat/CSizeBearingSeatCurve";
-import { ConnectionList, LineConnection, CubicBezierConnection } from "./Connection";
+import {
+  ConnectionList,
+  LineConnection,
+  CubicBezierConnection,
+} from "./Connection";
 import { Point, PointList } from "./Point";
 import { Restraint, FollowRestraint } from "./Restraint";
 
@@ -37,9 +41,8 @@ export class YoyoCurveBuilder {
 
   constructor() {
     const bearingSeat = new CSizeBearingSeatCurve();
-    const bearingSeatPath = bearingSeat.getPath();
-    const firstBearingSeatPoint = bearingSeatPath[0];
-    const lastBearingSeatPoint = bearingSeatPath[bearingSeatPath.length - 1];
+    const firstBearingSeatPoint = bearingSeat.getFirthPoint();
+    const lastBearingSeatPoint = bearingSeat.getLastPoint();
     if (!firstBearingSeatPoint || !lastBearingSeatPoint) {
       throw new Error("Invalid bearing seat path.");
     }

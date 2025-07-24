@@ -18,13 +18,7 @@ type Props = {
 };
 
 export function InteractiveCurve({ scale }: Props) {
-  const {
-    points,
-    connections,
-    bearingSeat,
-    updatePoint,
-    path,
-  } = useCurves();
+  const { points, connections, bearingSeat, updatePoint, path } = useCurves();
 
   const mirroredPathes = useMemo(() => {
     const mirroredXPath = path.map((point) => new Vector2(-point.x, point.y));
