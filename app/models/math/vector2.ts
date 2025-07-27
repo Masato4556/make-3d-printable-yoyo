@@ -25,4 +25,16 @@ export class Vector2 {
   public equals(v: Vector2): boolean {
     return this.x === v.x && this.y === v.y;
   }
+
+  public normalize(): Vector2 {
+    const length = Math.sqrt(this.x * this.x + this.y * this.y);
+    if (length === 0) {
+      return new Vector2(0, 0);
+    }
+    return new Vector2(this.x / length, this.y / length);
+  }
+
+  public dot(v: Vector2): number {
+    return this.x * v.x + this.y * v.y;
+  }
 }

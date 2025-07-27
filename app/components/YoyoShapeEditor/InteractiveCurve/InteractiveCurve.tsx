@@ -58,6 +58,16 @@ export function InteractiveCurve({ scale }: Props) {
           connection={connection}
         />
       ))}
+
+      <Line
+        key={`path`}
+        points={path.flatMap((point) => [point.x, point.y])}
+        stroke={PATH_COLOR}
+        strokeWidth={0.4}
+        lineCap="round"
+      />
+
+      {/* Mirrored paths */}
       {mirroredPathes.map((mirroredPath, index) => (
         <Line
           key={`mirrored-${index}`}
