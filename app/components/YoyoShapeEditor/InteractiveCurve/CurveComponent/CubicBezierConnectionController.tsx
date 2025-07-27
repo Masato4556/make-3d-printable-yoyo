@@ -13,7 +13,7 @@ type Props = {
   connection: CubicBezierConnection;
 };
 
-export function CubicBezierConnectionComponent({ connection }: Props) {
+export function CubicBezierConnectionController({ connection }: Props) {
   const { getPoint, movePoint } = useCurveStore();
   const { publishUpdatePathEvent } = useEventStore();
   const start = getPoint(connection.startPointId);

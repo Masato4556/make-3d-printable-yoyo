@@ -3,7 +3,7 @@
  */
 
 import { Line, Group } from "react-konva";
-import { ConnectionComponentFactory } from "./CurveComponentFactory";
+import { ConnectionController } from "./ConnectionController";
 import { useMemo } from "react";
 import { Vector2 } from "../../../models/math/vector2";
 import { PATH_COLOR } from "../style";
@@ -53,10 +53,7 @@ export function InteractiveCurve({ scale }: Props) {
         );
       })}
       {[...connections.values()].map((connection) => (
-        <ConnectionComponentFactory
-          key={connection.id}
-          connection={connection}
-        />
+        <ConnectionController key={connection.id} connection={connection} />
       ))}
 
       <Line
