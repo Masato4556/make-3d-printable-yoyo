@@ -3,21 +3,18 @@
  */
 
 import { KonvaEventObject } from "konva/lib/Node";
-import { Line, Shape } from "react-konva";
-import { PATH_COLOR, WIRE_COLOR } from "../../style";
+import { Line } from "react-konva";
+import { WIRE_COLOR } from "../../style";
 import { useCurveStore } from "../../../../stores/useCurveStore";
 import { useEventStore } from "../../../../stores/useEventStore";
 import { CubicBezierConnection } from "../../../../models/yoyo/Connection";
-
 
 type Props = {
   connection: CubicBezierConnection;
 };
 
-export function CubicBezierConnectionComponent({
-  connection,
-}: Props) {
-  const {getPoint, movePoint} = useCurveStore()
+export function CubicBezierConnectionController({ connection }: Props) {
+  const { getPoint, movePoint } = useCurveStore();
   const { publishUpdatePathEvent } = useEventStore();
   const start = getPoint(connection.startPointId);
   const end = getPoint(connection.endPointId);
@@ -25,24 +22,6 @@ export function CubicBezierConnectionComponent({
   const control2 = getPoint(connection.control2Id);
   return (
     <>
-      <Shape
-        stroke={PATH_COLOR}
-        strokeWidth={0.4}
-        lineCap="round"
-        sceneFunc={(ctx, shape) => {
-          ctx.beginPath();
-          ctx.moveTo(start.x, start.y);
-          ctx.bezierCurveTo(
-            control1.x,
-            control1.y,
-            control2.x,
-            control2.y,
-            end.x,
-            end.y
-          );
-          ctx.fillStrokeShape(shape);
-        }}
-      />
       <BezierCurvePoint
         point={{
           x: start.x,
@@ -57,7 +36,6 @@ export function CubicBezierConnectionComponent({
           },
         }}
       />
-
       <BezierCurvePoint
         point={{
           x: end.x,

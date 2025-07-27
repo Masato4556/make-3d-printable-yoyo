@@ -2,12 +2,19 @@ import { getCubicBezierCurve } from "../../../../functions/getCubicBezierCurve";
 import { Vector2 } from "../../../math/vector2";
 import { Point } from "../../Point";
 import { Connection } from "../Connection";
+import { generateConnectionsWithEffects } from "./generateConnectionsWithEffects";
 
 export const createPathFromConnections = (
   connections: Connection[],
-  getPoint: (id: string) => Point
-): Vector2[] =>
-  connections.flatMap((connection) => {
+  getOriginalPoint: (id: string) => Point
+): Vector2[] => {
+  const { processedConnections, generatedPoints } =
+    generateConnectionsWithEffects(connections, getOriginalPoint);
+
+  const getPoint = (id: string): Point =>
+    generatedPoints.get(id) || getOriginalPoint(id);
+
+  return processedConnections.flatMap((connection) => {
     const start = getPoint(connection.startPointId);
     const end = getPoint(connection.endPointId);
     if (connection.__brand === "CubicBezierConnection") {
@@ -28,3 +35,4 @@ export const createPathFromConnections = (
     }
     return [];
   });
+};

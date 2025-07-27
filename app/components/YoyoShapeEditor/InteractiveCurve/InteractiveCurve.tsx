@@ -3,7 +3,7 @@
  */
 
 import { Line, Group } from "react-konva";
-import { ConnectionComponentFactory } from "./CurveComponentFactory";
+import { ConnectionController } from "./ConnectionController";
 import { useMemo } from "react";
 import { Vector2 } from "../../../models/math/vector2";
 import { PATH_COLOR } from "../style";
@@ -53,11 +53,18 @@ export function InteractiveCurve({ scale }: Props) {
         );
       })}
       {[...connections.values()].map((connection) => (
-        <ConnectionComponentFactory
-          key={connection.id}
-          connection={connection}
-        />
+        <ConnectionController key={connection.id} connection={connection} />
       ))}
+
+      <Line
+        key={`path`}
+        points={path.flatMap((point) => [point.x, point.y])}
+        stroke={PATH_COLOR}
+        strokeWidth={0.4}
+        lineCap="round"
+      />
+
+      {/* Mirrored paths */}
       {mirroredPathes.map((mirroredPath, index) => (
         <Line
           key={`mirrored-${index}`}

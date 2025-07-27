@@ -63,4 +63,36 @@ describe("Vector2", () => {
     const v2 = new Vector2(1, 20);
     expect(v1.equals(v2)).toBe(false);
   });
+
+  describe("normalize", () => {
+    it("should normalize a vector with non-zero length", () => {
+      const v = new Vector2(3, 4);
+      const normalized = v.normalize();
+      expect(normalized.x).toBeCloseTo(0.6, 1e-10);
+      expect(normalized.y).toBeCloseTo(0.8, 1e-10);
+    });
+
+    it("should return a zero vector when normalizing a zero vector", () => {
+      const v = new Vector2(0, 0);
+      const normalized = v.normalize();
+      expect(normalized.x).toBe(0);
+      expect(normalized.y).toBe(0);
+    });
+  });
+
+  describe("dot product", () => {
+    it("should calculate the dot product of two vectors", () => {
+      const v1 = new Vector2(1, 2);
+      const v2 = new Vector2(3, 4);
+      const dotProduct = v1.dot(v2);
+      expect(dotProduct).toBe(11); // 1*3 + 2*4 = 3 + 8 = 11
+    });
+
+    it("should return zero for orthogonal vectors", () => {
+      const v1 = new Vector2(1, 0);
+      const v2 = new Vector2(0, 1);
+      const dotProduct = v1.dot(v2);
+      expect(dotProduct).toBe(0); // 1*0 + 0*1 = 0
+    });
+  });
 });

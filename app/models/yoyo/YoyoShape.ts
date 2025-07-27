@@ -20,7 +20,7 @@ export class YoyoShape {
         start: Point.fromPosition(5.25, 10.55, { editable: true }),
         end: Point.fromPosition(15.75, 27.5, { editable: true }),
       })
-      .addLine(Point.fromPosition(28, 27.5), {
+      .addLine(Point.fromPosition(28, 27.5, {}, { type: "chamfer", size: 2 }), {
         type: "FollowY",
         relationshipWithPrevPoint: "RestrainedBy",
       })
