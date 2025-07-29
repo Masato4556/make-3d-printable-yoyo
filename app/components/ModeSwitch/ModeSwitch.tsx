@@ -20,7 +20,6 @@ export function ModeSwitch(props: Props) {
           setMode(Mode.PATH);
         }}
       />
-      <div>{" > "}</div>
       <ModeSwitchButton
         label={"DOWNLOAD"}
         onClick={() => {

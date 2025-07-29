@@ -1,10 +1,10 @@
 import type { MetaFunction, LinksFunction } from "react-router";
 import styles from "../styles/index.scss?url";
 
-import { ModeSwitch } from "../components/ModeSwitch/ModeSwitch";
 import { ModelViewer } from "../components/ModelViewer/ModelViewer";
 import { YoyoShapeEditor } from "../components/YoyoShapeEditor/YoyoShapeEditor";
 import { useModeStore } from "../stores/useModeStore";
+import { MenuBar } from "../components/MenuBar/MenuBar";
 
 export const meta: MetaFunction = () => [
   { title: "PrintYoYo" },
@@ -26,7 +26,7 @@ export default function Index() {
   const { mode, change } = useModeStore();
   return (
     <div id="canvas-container">
-      <ModeSwitch setMode={change} />
+      <MenuBar setMode={change} />
       {mode === "MODEL" && <ModelViewer />}
       {/* パスの状態を維持するためにパスエディターは非表示にするだけ、 */}
       <YoyoShapeEditor hidden={mode !== "PATH"} />
