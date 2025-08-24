@@ -2,30 +2,27 @@
  * 画面切り替えボタンのコンポーネント
  */
 
-import { Mode } from "../../stores/useModeStore";
+import { useModeStore, Mode } from "../../stores/useModeStore";
 import { ModeSwitchButton } from "./ModeSwitchButton";
 import classes from "./style.module.scss";
 
-type Props = {
-  setMode: (mode: Mode) => void;
-};
-
-export function ModeSwitch(props: Props) {
-  const { setMode } = props;
+export function ModeSwitch() {
+  const { mode, change } = useModeStore();
   return (
     <div className={classes["ui-header"]}>
       <ModeSwitchButton
         label={"SHAPE"}
         onClick={() => {
-          setMode(Mode.PATH);
+          change(Mode.PATH);
         }}
+        isActive={mode === Mode.PATH}
       />
-      <div>{" > "}</div>
       <ModeSwitchButton
         label={"DOWNLOAD"}
         onClick={() => {
-          setMode(Mode.MODEL);
+          change(Mode.MODEL);
         }}
+        isActive={mode === Mode.MODEL}
       />
     </div>
   );
