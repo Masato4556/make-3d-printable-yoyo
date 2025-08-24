@@ -23,10 +23,10 @@ export const links: LinksFunction = () => [
 ];
 
 export default function Index() {
-  const { mode, change } = useModeStore();
+  const { mode } = useModeStore();
   return (
     <div id="canvas-container">
-      <MenuBar setMode={change} />
+      <MenuBar />
       {mode === "MODEL" && <ModelViewer />}
       {/* パスの状態を維持するためにパスエディターは非表示にするだけ、 */}
       <YoyoShapeEditor hidden={mode !== "PATH"} />

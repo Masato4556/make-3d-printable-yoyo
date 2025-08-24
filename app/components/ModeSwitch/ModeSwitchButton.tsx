@@ -7,14 +7,17 @@ import classes from "./style.module.scss";
 type Props = {
   label: string;
   onClick: () => void;
+  isActive: boolean;
 };
 
-export function ModeSwitchButton({ label, onClick }: Props) {
+export function ModeSwitchButton({ label, onClick, isActive }: Props) {
+  const buttonClasses = [
+    classes["mode-button"],
+    isActive ? classes.active : "",
+  ].join(" ");
+
   return (
-    <button
-      className={`${classes["mode-button"]} ${classes["mode-button"]}`}
-      onClick={onClick}
-    >
+    <button className={buttonClasses} onClick={onClick}>
       {label}
     </button>
   );

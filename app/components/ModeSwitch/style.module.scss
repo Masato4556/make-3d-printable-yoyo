@@ -13,7 +13,8 @@
     margin: 10px;
     color: var(--header-text-color);
     border: solid 2px var(--header-text-color);
-    &:hover {
+    &:hover,
+    &.active {
         color: var(--header-background-color);
         background-color: var(--sub-background-color);
     }
