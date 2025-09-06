@@ -1,12 +1,22 @@
 :root {
-    --primary-background-color: #0D0D0D;
-    --sub-background-color: #262626;
-    --header-background-color: #ffffff;
-    --header-text-color: #0D0D0D;;
-    --primary-text-color: #BFBDBA;
-    --primary-button-color: #595958;
-    --hover-button-color: #8C8A88;
-    --separator-color: #444;
+    --color-gray-900: #121212;
+    --color-gray-800: #262626;
+    --color-gray-700: #353535;
+    --color-gray-600: #444;
+    --color-gray-500: #595959;
+    --color-gray-400: #777;
+    --color-gray-300: #8C8A88;
+    --color-gray-100: #BFBDBA;
+    --primary-background-color: var(--color-gray-900);
+    --sub-background-color: var(--color-gray-800);
+    --header-text-color: #fff;
+    --primary-text-color: #fff;
+    --primary-button-color: var(--color-gray-600);
+    --hover-button-color: var(--color-gray-600);
+    --selected-button-color: var(--color-gray-500);
+    --separator-color: var(--color-gray-600);
+
+    color: var(--primary-text-color);
 }
 
 html {
@@ -23,7 +33,11 @@ body {
     width: 100%;
     margin: 0;
     overflow: hidden;
-    color: #BFBDBA;
+    color: var(--primary-text-color);
+}
+
+button {
+    color: var(--primary-text-color);
 }
 
 button {
