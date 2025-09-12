@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { ModeSwitch } from "./ModeSwitch";
-import { useModeStore, Mode } from "../../stores/useModeStore";
+import { useModeStore, Mode } from "../../../../stores/useModeStore";
 
-vi.mock("../../stores/useModeStore");
+vi.mock("../../../../stores/useModeStore");
 
 describe("ModeSwitch", () => {
   it("should call change with 'PATH' when SHAPE button is clicked", async () => {
@@ -16,7 +16,7 @@ describe("ModeSwitch", () => {
 
     render(<ModeSwitch />);
 
-    const shapeButton = screen.getByText("SHAPE");
+    const shapeButton = screen.getByText("EDIT");
     await userEvent.click(shapeButton);
 
     expect(changeMock).toHaveBeenCalledWith("PATH");
@@ -31,7 +31,7 @@ describe("ModeSwitch", () => {
 
     render(<ModeSwitch />);
 
-    const downloadButton = screen.getByText("DOWNLOAD");
+    const downloadButton = screen.getByText("PREVIEW");
     await userEvent.click(downloadButton);
 
     expect(changeMock).toHaveBeenCalledWith("MODEL");
