@@ -11,6 +11,7 @@
     --sub-background-color: var(--color-gray-800);
     --header-text-color: #fff;
     --primary-text-color: #fff;
+    // TODO：ボタンの背景色が黒すぎて見づらいので白にする？そうすると、テキストが見づらくなるので黒にする
     --primary-button-color: var(--color-gray-600);
     --hover-button-color: var(--color-gray-600);
     --selected-button-color: var(--color-gray-500);
@@ -33,10 +34,6 @@ body {
     width: 100%;
     margin: 0;
     overflow: hidden;
-    color: var(--primary-text-color);
-}
-
-button {
     color: var(--primary-text-color);
 }
 
