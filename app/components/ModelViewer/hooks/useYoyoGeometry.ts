@@ -5,14 +5,16 @@ import { useCurveStore } from "../../../stores/useCurveStore";
 export function useYoyoGeometry() {
   const bearingType = "sizeC";
 
-  const { getPath } = useCurveStore();
+  const { shape } = useCurveStore();
 
-  return useMemo(() => {
-    const path = getPath();
+  const result = useMemo(() => {
+    const path = shape.getPath();
     const geometryFactory = new GeometryFactory(bearingType, path);
     return {
       bearing: geometryFactory.getBearing(),
       wingGeometry: geometryFactory.getWingGeometry(),
     };
-  }, [getPath]);
+  }, [shape]);
+
+  return result;
 }

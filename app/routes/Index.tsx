@@ -5,6 +5,7 @@ import { ModelViewer } from "../components/ModelViewer/ModelViewer";
 import { YoyoShapeEditor } from "../components/YoyoShapeEditor/YoyoShapeEditor";
 import { useModeStore } from "../stores/useModeStore";
 import { MenuBar } from "../components/MenuBar/MenuBar";
+import { DownoadButton } from "../components/ModelViewer/DownoadButton/DownoadButton";
 
 export const meta: MetaFunction = () => [
   { title: "PrintYoYo" },
@@ -30,6 +31,8 @@ export default function Index() {
       {mode === "MODEL" && <ModelViewer />}
       {/* パスの状態を維持するためにパスエディターは非表示にするだけ、 */}
       <YoyoShapeEditor hidden={mode !== "PATH"} />
+      {/* STL出力とダウンロードボタンはモードに関係なく常に利用可能にする */}
+      <DownoadButton />
     </div>
   );
 }

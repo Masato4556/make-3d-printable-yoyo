@@ -4,9 +4,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { DownoadButton } from "./DownoadButton/DownoadButton";
 import { YoyoModel } from "./YoyoModel";
-import { ExportStl } from "./ExportStl";
 
 export function ModelViewer() {
   return (
@@ -32,9 +30,7 @@ export function ModelViewer() {
         <ambientLight intensity={0.5} />
 
         <OrbitControls />
-        <ExportStl />
       </Canvas>
-      <DownoadButton />
     </>
   );
 }
