@@ -5,7 +5,6 @@
 import { MeshPhysicalMaterial, Vector3 } from "three";
 import { useMirroredGeometry } from "./hooks/useMirroredGeometry";
 import { useYoyoGeometry } from "./hooks/useYoyoGeometry";
-import { MODEL_NAME } from "./ExportStl";
 
 export function YoyoModel() {
   const { bearing, wingGeometry } = useYoyoGeometry();
@@ -25,7 +24,6 @@ export function YoyoModel() {
     <group>
       <group position={new Vector3(-bearing.width / 2, 0, 0)}>
         <mesh
-          name={MODEL_NAME.WING}
           geometry={wingGeometry}
           material={material}
           position={new Vector3(0, 0, 0)}

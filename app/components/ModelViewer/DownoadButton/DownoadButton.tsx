@@ -5,15 +5,16 @@
 import { useCallback } from "react";
 import classes from "./style.module.scss";
 import { BuyMeACoffee } from "./BuyMeACoffee/BuyMeACoffee";
-import { useModelStore } from "../../../stores/useModelStore";
+import { useStlExport } from "../hooks/useStlExport";
 
 export function DownoadButton() {
-  const { wing } = useModelStore();
+  const { generateStlBlob } = useStlExport();
 
   const downloadWing = useCallback(() => {
-    if (wing === undefined) return;
-    downloadBlob(wing, "wing.stl");
-  }, [wing]);
+    // 最新の状態からSTL blobを生成してダウンロード
+    const wingBlob = generateStlBlob();
+    downloadBlob(wingBlob, "wing.stl");
+  }, [generateStlBlob]);
 
   return (
     <div className={classes["overlay-form-box"]}>
