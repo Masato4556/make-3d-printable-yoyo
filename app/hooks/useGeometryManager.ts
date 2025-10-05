@@ -4,8 +4,8 @@
  * 呼び出された時に常に最新のgeometryを生成・更新する
  */
 import { useCallback } from "react";
-import { GeometryFactory } from "../ModelViewer/GeometryFactory/GeometryFactory";
-import { useCurveStore } from "../../stores/useCurveStore";
+import { GeometryFactory } from "../components/ModelViewer/GeometryFactory/GeometryFactory";
+import { useCurveStore } from "../stores/useCurveStore";
 
 export function useGeometryManager() {
   const bearingType = "sizeC";

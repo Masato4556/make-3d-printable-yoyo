@@ -4,10 +4,9 @@
 
 import { useCallback } from "react";
 import classes from "./style.module.scss";
-import { BuyMeACoffee } from "./BuyMeACoffee/BuyMeACoffee";
-import { useStlExport } from "../hooks/useStlExport";
+import { useStlExport } from "../../../../hooks/useStlExport";
 
-export function DownoadButton() {
+export function DownloadButton() {
   const { generateStlBlob } = useStlExport();
 
   const downloadWing = useCallback(() => {
@@ -17,15 +16,9 @@ export function DownoadButton() {
   }, [generateStlBlob]);
 
   return (
-    <div className={classes["overlay-form-box"]}>
-      <div className={classes["download-button-container"]}>
-        <div className={classes["download-label"]}>DOWNLOAD</div>
-        <button className={classes["download-button"]} onClick={downloadWing}>
-          <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
-        </button>
-      </div>
-      <BuyMeACoffee />
-    </div>
+    <button className={classes["download-button"]} onClick={downloadWing}>
+      <img src="/svg/download.svg" alt="download icon" width={"20rem"} />
+    </button>
   );
 }
 

@@ -1,4 +1,6 @@
+import { BuyMeACoffee } from "./components/BuyMeACoffee/BuyMeACoffee";
 import { ModeSwitch } from "./components/ModeSwitch/ModeSwitch";
+import { DownloadButton } from "./components/DownloadButton/DownloadButton";
 import classes from "./style.module.scss";
 
 export function MenuBar() {
@@ -7,8 +9,11 @@ export function MenuBar() {
       <div className={classes["menu-bar-left"]}></div>
       <div className={classes["menu-bar-center"]}>
         <ModeSwitch />
+        <DownloadButton />
       </div>
-      <div className={classes["menu-bar-right"]}></div>
+      <div className={classes["menu-bar-right"]}>
+        <BuyMeACoffee />
+      </div>
     </header>
   );
 }
