@@ -7,7 +7,7 @@
 import { useCallback } from "react";
 import { Mesh } from "three";
 import { STLExporter } from "three/examples/jsm/Addons.js";
-import { useGeometryManager } from "../../hooks/useGeometryManager";
+import { useGeometryManager } from "./useGeometryManager";
 
 export function useStlExport() {
   const { generateGeometry } = useGeometryManager();
