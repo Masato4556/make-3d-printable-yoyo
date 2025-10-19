@@ -6,11 +6,13 @@
   "packageRules": [
     {
       "matchDepTypes": ["dependencies"],
-      "groupName": "dependencies"
+      "groupName": "dependencies",
+      "minimumReleaseAge": "14 days"
     },
     {
       "matchDepTypes": ["devDependencies"],
-      "groupName": "devDependencies"
+      "groupName": "devDependencies",
+      "minimumReleaseAge": "14 days"
     }
   ]
 }
