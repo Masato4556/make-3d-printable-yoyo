@@ -11,6 +11,7 @@ import { useCurves } from "./useCurves";
 import { Bearing } from "../../../models/yoyo/bearing";
 import { DraggableCircle } from "./DraggableCircle";
 import { CSizeBearingSeat } from "./CurveComponent/CSizeBearingSeat";
+import { useGeometryStore } from "../../../stores/useGeometryStore";
 
 type Props = {
   bearing: Bearing;
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export function InteractiveCurve({ scale }: Props) {
+  const { triggerUpdate } = useGeometryStore();
   const { points, connections, bearingSeat, updatePoint, path } = useCurves();
 
   const mirroredPathes = useMemo(() => {
@@ -28,7 +30,12 @@ export function InteractiveCurve({ scale }: Props) {
   }, [path]);
 
   return (
-    <Group scale={{ x: scale, y: -scale }}>
+    <Group
+      scale={{ x: scale, y: -scale }}
+      onDragEnd={() => {
+        triggerUpdate();
+      }}
+    >
       {points.map((point) => {
         if (!point.option?.editable) {
           return null;

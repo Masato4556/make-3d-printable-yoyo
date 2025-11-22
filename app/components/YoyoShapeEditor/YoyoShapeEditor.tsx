@@ -1,7 +1,6 @@
 /**
  * ヨーヨーのパスエディターのトップレベルコンポーネント
  */
-import { Inspector } from "./inspector/Inspector";
 import { InteractiveCurve } from "./InteractiveCurve/InteractiveCurve";
 import { Layer, Stage } from "react-konva";
 import { useWindowSize } from "../../hooks/useWindowSize";
@@ -9,13 +8,7 @@ import { GridLayer } from "./GridLayer";
 import { BearingPathLayer } from "./BearingPathLayer";
 import { createBearing } from "../../models/yoyo/bearing";
 
-type Props = {
-  hidden: boolean;
-};
-
-export function YoyoShapeEditor(props: Props) {
-  const { hidden } = props;
-
+export function YoyoShapeEditor() {
   const { width, height } = useWindowSize();
 
   const bearing = createBearing("sizeC");
@@ -38,7 +31,6 @@ export function YoyoShapeEditor(props: Props) {
         <BearingPathLayer bearing={bearing} zIndex={5} scale={scale} />
         <GridLayer width={width} height={height} zIndex={-10} scale={scale} />
       </Stage>
-      {!hidden && <Inspector />}
     </>
   );
 }

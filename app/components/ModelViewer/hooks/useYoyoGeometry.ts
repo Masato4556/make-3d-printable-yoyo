@@ -1,20 +1,23 @@
 import { useMemo } from "react";
-import { GeometryFactory } from "../GeometryFactory/GeometryFactory";
-import { useCurveStore } from "../../../stores/useCurveStore";
 
+import { useGeometryStore } from "../../../stores/useGeometryStore";
+
+/**
+ * ヨーヨーのジオメトリを取得するフック
+ */
 export function useYoyoGeometry() {
-  const bearingType = "sizeC";
+  const { wingGeometry, bearing } = useGeometryStore();
 
-  const { shape } = useCurveStore();
+  const mirroredWingGeometry = useMemo(() => {
+    if (!wingGeometry) {
+      return undefined;
+    }
+    const mirroredGeometry = wingGeometry.clone();
+    // 法線が反転するため、X軸だけでなくY軸も反転させる
+    mirroredGeometry.scale(-1, -1, 1);
 
-  const result = useMemo(() => {
-    const path = shape.getPath();
-    const geometryFactory = new GeometryFactory(bearingType, path);
-    return {
-      bearing: geometryFactory.getBearing(),
-      wingGeometry: geometryFactory.getWingGeometry(),
-    };
-  }, [shape]);
+    return mirroredGeometry;
+  }, [wingGeometry]);
 
-  return result;
+  return { wingGeometry, mirroredWingGeometry, bearing };
 }

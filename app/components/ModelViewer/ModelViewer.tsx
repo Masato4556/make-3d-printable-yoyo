@@ -5,8 +5,19 @@
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { YoyoModel } from "./YoyoModel";
+import { useUpdateYoyoGeometry } from "./hooks/useUpdateYoyoGeometry";
 
-export function ModelViewer() {
+type Props = {
+  hidden?: boolean;
+};
+
+export function ModelViewer({ hidden }: Props) {
+  /**
+   * Canvasコンポーネントがhidden状態でもジオメトリの更新を行うために
+   * Canvasコンポーネントの外側でジオメトリ更新のフックを呼び出す
+   */
+  useUpdateYoyoGeometry();
+
   return (
     <>
       <Canvas
@@ -19,6 +30,7 @@ export function ModelViewer() {
           type: "OrthographicCamera",
         }}
         className="background"
+        hidden={hidden}
       >
         <Environment
           preset={"night"}
