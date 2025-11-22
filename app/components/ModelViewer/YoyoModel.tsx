@@ -3,7 +3,6 @@
  */
 
 import { MeshPhysicalMaterial, Vector3 } from "three";
-import { useMirroredGeometry } from "./hooks/useMirroredGeometry";
 import { useYoyoGeometry } from "./hooks/useYoyoGeometry";
 
 /**
@@ -13,8 +12,7 @@ import { useYoyoGeometry } from "./hooks/useYoyoGeometry";
 const YOYO_OFFSET = 2.3;
 
 export function YoyoModel() {
-  const { bearing, wingGeometry } = useYoyoGeometry();
-  const mirroredWingGeometry = useMirroredGeometry(wingGeometry);
+  const { bearing, wingGeometry, mirroredWingGeometry } = useYoyoGeometry();
 
   const material = new MeshPhysicalMaterial({
     color: 0xe64349,
@@ -25,6 +23,10 @@ export function YoyoModel() {
     iridescence: 0.5,
     specularColor: 0x000000,
   });
+
+  if (!wingGeometry || !mirroredWingGeometry) {
+    return null;
+  }
 
   return (
     <group>
