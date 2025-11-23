@@ -33,3 +33,19 @@
 }
 
 
+.button {
+    display: flex;
+    align-items: center;
+
+    background-color: var(--primary-button-color);
+    padding: 0.5rem;
+    margin: 0 10px 10px 0;
+    border-radius: 8px;
+    z-index: 10;
+
+    img {
+        display: block;
+        margin: auto;
+    }
+}
+

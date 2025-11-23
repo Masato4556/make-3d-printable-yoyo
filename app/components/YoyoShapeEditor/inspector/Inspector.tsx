@@ -5,6 +5,8 @@
 import classes from "./style.module.scss";
 import { useState, type FC, type ReactNode } from "react";
 import { useMaterialProperties } from "./useMaterialProperties";
+import { FaInfoCircle } from "react-icons/fa";
+import { IconButton } from "../../IconButton/IconButton";
 
 const PRESETS = [
   { name: "PLA", filamentDensity: 1.25 },
@@ -111,14 +113,14 @@ export function Inspector() {
   return (
     <div>
       {!isOpen && (
-        <button
-          className={classes.button}
-          onClick={() => {
-            setIsOpen(true);
-          }}
-        >
-          <img src="/svg/info.svg" alt="info icon" width={"25rem"} />
-        </button>
+        <div className={classes.button}>
+          <IconButton
+            icon={<FaInfoCircle />}
+            onClick={() => {
+              setIsOpen(true);
+            }}
+          />
+        </div>
       )}
       {isOpen && <InspectorPanel onClose={() => setIsOpen(false)} />}
     </div>
