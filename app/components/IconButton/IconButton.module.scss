@@ -1,0 +1,12 @@
+.button {
+    display: flex;
+    align-items: center;
+
+    background-color: var(--primary-button-color);
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.button:disabled {
+    visibility: hidden;
+}
