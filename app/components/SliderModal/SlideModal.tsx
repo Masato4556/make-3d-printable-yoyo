@@ -34,7 +34,7 @@ export function SlideModal({ slide, modalRef }: Props) {
   };
 
   return (
-    <dialog className={styles.overlay} ref={modalRef} open>
+    <dialog className={styles.overlay} ref={modalRef}>
       <div className={styles.modal}>
         <div className={styles.row}>
           <h2>{currentSlide.title}</h2>
