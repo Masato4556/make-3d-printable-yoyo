@@ -19,6 +19,10 @@ export function useSlider(slide: Slide[]) {
     setPage((prev) => prev - 1);
   }, [page]);
 
+  const resetPage = useCallback(() => {
+    setPage(0);
+  }, []);
+
   if (slide.length === 0) {
     throw new Error("Slide data is empty");
   }
@@ -33,6 +37,7 @@ export function useSlider(slide: Slide[]) {
     hasNextPage: page < slide.length - 1,
     flipNextPage,
     flipPrevPage,
+    resetPage,
     currentPage: page,
     currentSlide: getSlide(slide, page),
   };

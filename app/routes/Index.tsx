@@ -6,7 +6,7 @@ import { YoyoShapeEditor } from "../components/YoyoShapeEditor/YoyoShapeEditor";
 import { Mode, useModeStore } from "../stores/useModeStore";
 import { MenuBar } from "../components/MenuBar/MenuBar";
 import { Inspector } from "../components/YoyoShapeEditor/inspector/Inspector";
-import { SliderModal } from "../components/SliderModal/SliderModal";
+import { SlideModal } from "../components/SliderModal/SlideModal";
 import { Slide } from "../components/SliderModal/hooks/useSlider";
 import { useRef } from "react";
 import { IconContext } from "react-icons";
@@ -36,39 +36,71 @@ export default function Index() {
     }
   };
 
+  /**
+   * スライドの草案
+   * 1: このサイトは何？
+   * 2: ヨーヨーのデザイン方法(パスエディターの使い方)
+   * 3: 3Dプレビューの見方(モデルビューアの使い方)
+   * 4: ヨーヨーのスペックを確認する方法(インスペクタの使い方)
+   * 5: デザインしたヨーヨーを3Dプリントする方法(3Dモデルのエクスポート)
+   * 6: 再度このヘルプを見る方法
+   */
   const slide: Slide[] = [
     {
       image: {
-        url: "/slides/slide1.png",
+        url: "/img/waffle.png",
         alt: "Slide 1",
       },
       title: "Welcome to PrintYoYo",
-      description: "Create your own 3D printable yoyo designs easily!",
+      description:
+        "〇〇へようこそ！ 〇〇は3Dプリント可能なヨーヨーをデザインするためのツールです。",
     },
     {
       image: {
-        url: "/slides/slide2.png",
+        url: "/img/waffle.png",
         alt: "Slide 2",
       },
-      title: "Design Your Yoyo",
-      description:
-        "Use our intuitive editor to shape your yoyo just the way you want.",
+      title: "パスエディターの使い方",
+      description: "hogehoge",
     },
     {
       image: {
-        url: "/slides/slide3.png",
+        url: "/img/waffle.png",
         alt: "Slide 3",
       },
-      title: "Export and Print",
-      description:
-        "Export your design as an STL file and print it with your 3D printer.",
+      title: "モデルビューアの使い方",
+      description: "hogehoge",
+    },
+    {
+      image: {
+        url: "/img/waffle.png",
+        alt: "Slide 4",
+      },
+      title: "インスペクタの使い方",
+      description: "hogehoge",
+    },
+    {
+      image: {
+        url: "/img/waffle.png",
+        alt: "Slide 5",
+      },
+      title: "3Dモデルのエクスポート方法",
+      description: "hogehoge",
+    },
+    {
+      image: {
+        url: "/img/waffle.png",
+        alt: "Slide 6",
+      },
+      title: "再度このヘルプを見る方法",
+      description: "hogehoge",
     },
   ];
 
   return (
     <IconContext.Provider value={{ size: "2rem", color: "fff" }}>
       <div id="canvas-container">
-        <SliderModal slide={slide} modalRef={modalRef} />
+        <SlideModal slide={slide} modalRef={modalRef} />
         <MenuBar openModal={openModal} />
         <ModelViewer hidden={mode !== Mode.MODEL} />
         {/* パスの状態を維持するためにパスエディターは常に表示したまま */}
