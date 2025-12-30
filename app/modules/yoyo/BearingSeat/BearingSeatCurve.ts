@@ -115,6 +115,3 @@ export class BearingSeatCurve {
     return lastPoint;
   }
 }
-
-// 後方互換性のために旧クラス名もエクスポート
-export { BearingSeatCurve as CSizeBearingSeatCurve };
