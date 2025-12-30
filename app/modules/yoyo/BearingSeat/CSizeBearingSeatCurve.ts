@@ -1,4 +1,4 @@
-import { Vector2 } from "../../math/vector2";
+import { Vector2 } from "../../math";
 import { getCubicBezierCurve } from "../../../functions/getCubicBezierCurve";
 import { BEARING_SIZE } from "../bearing";
 

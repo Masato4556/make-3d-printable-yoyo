@@ -7,7 +7,7 @@ import { Line } from "react-konva";
 import { WIRE_COLOR } from "../../style";
 import { useCurveStore } from "../../../../stores/useCurveStore";
 import { useEventStore } from "../../../../stores/useEventStore";
-import { CubicBezierConnection } from "../../../../models/yoyo/Connection";
+import { CubicBezierConnection } from "../../../../modules/yoyo";
 
 type Props = {
   connection: CubicBezierConnection;

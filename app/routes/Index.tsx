@@ -4,6 +4,7 @@ import styles from "../styles/index.scss?url";
 import { ModelViewer } from "../components/ModelViewer/ModelViewer";
 import { YoyoShapeEditor } from "../components/YoyoShapeEditor/YoyoShapeEditor";
 import { Mode, useModeStore } from "../stores/useModeStore";
+
 import { MenuBar } from "../components/MenuBar/MenuBar";
 import { Inspector } from "../components/YoyoShapeEditor/inspector/Inspector";
 import { SlideModal } from "../components/SliderModal/SlideModal";

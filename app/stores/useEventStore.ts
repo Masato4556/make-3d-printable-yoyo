@@ -8,10 +8,12 @@ type EventStore = {
 export const useEventStore = create<EventStore>((set) => ({
   updatePathEvent: { lastPublished: null },
   publishUpdatePathEvent: () => {
-
     set((state) => {
       const now = Date.now();
-      if (state.updatePathEvent.lastPublished && now - state.updatePathEvent.lastPublished < 10000) {
+      if (
+        state.updatePathEvent.lastPublished &&
+        now - state.updatePathEvent.lastPublished < 10000
+      ) {
         return state;
       }
       return {
@@ -21,5 +23,3 @@ export const useEventStore = create<EventStore>((set) => ({
     });
   },
 }));
-
-

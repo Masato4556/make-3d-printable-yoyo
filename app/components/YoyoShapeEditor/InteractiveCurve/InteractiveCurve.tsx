@@ -5,12 +5,12 @@
 import { Line, Group } from "react-konva";
 import { ConnectionController } from "./ConnectionController";
 import { useMemo } from "react";
-import { Vector2 } from "../../../models/math/vector2";
+import { Vector2 } from "../../../modules/math";
 import { PATH_COLOR } from "../style";
 import { useCurves } from "./useCurves";
-import { Bearing } from "../../../models/yoyo/bearing";
+import { Bearing } from "../../../modules/yoyo";
 import { DraggableCircle } from "./DraggableCircle";
-import { CSizeBearingSeat } from "./CurveComponent/CSizeBearingSeat";
+import { BearingSeat } from "./CurveComponent/BearingSeat";
 import { useGeometryStore } from "../../../stores/useGeometryStore";
 
 type Props = {
@@ -82,7 +82,7 @@ export function InteractiveCurve({ scale }: Props) {
         />
       ))}
 
-      <CSizeBearingSeat curve={bearingSeat} />
+      <BearingSeat curve={bearingSeat} />
     </Group>
   );
 }

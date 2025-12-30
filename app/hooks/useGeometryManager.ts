@@ -4,7 +4,7 @@
  * 呼び出された時に常に最新のgeometryを生成・更新する
  */
 import { useCallback } from "react";
-import { GeometryFactory } from "../components/ModelViewer/GeometryFactory/GeometryFactory";
+import { GeometryFactory } from "../modules/yoyo";
 import { useCurveStore } from "../stores/useCurveStore";
 
 export function useGeometryManager() {

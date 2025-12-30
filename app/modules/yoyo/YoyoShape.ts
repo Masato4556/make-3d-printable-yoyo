@@ -1,9 +1,10 @@
 import { YoyoCurveBuilder } from "./YoyoCurveBuilder";
-import { Vector2 } from "../math/vector2";
+import { Vector2 } from "../math";
 import { Connection, createPathFromConnections } from "./Connection";
 import { Restraint } from "./Restraint";
-import { CSizeBearingSeatCurve } from "./BearingSeat/CSizeBearingSeatCurve";
+import { BearingSeatCurve } from "./BearingSeat/BearingSeatCurve";
 import { Point, PointMap } from "./Point";
+import { BearingSizeType, Bearing } from "./bearing";
 
 // x軸：回転軸方向、y軸：回転軸に垂直な方向
 export class YoyoShape {
@@ -11,11 +12,11 @@ export class YoyoShape {
     private readonly pointMap: PointMap,
     private readonly connections: Connection[],
     private readonly restraints: Restraint[],
-    private readonly bearingSeat: CSizeBearingSeatCurve
+    private readonly bearingSeat: BearingSeatCurve
   ) {}
 
-  static createDefault(): YoyoShape {
-    const yoyoCurveBuilder = new YoyoCurveBuilder()
+  static createDefault(bearingSize: BearingSizeType = "sizeC"): YoyoShape {
+    const yoyoCurveBuilder = new YoyoCurveBuilder(bearingSize)
       .addCubicBezierCurve(Point.fromPosition(21, 27.5, { editable: true }), {
         start: Point.fromPosition(5.25, 10.55, { editable: true }),
         end: Point.fromPosition(15.75, 27.5, { editable: true }),
@@ -59,8 +60,12 @@ export class YoyoShape {
     return [...this.connections];
   }
 
-  getBearingSeat(): CSizeBearingSeatCurve {
+  getBearingSeat(): BearingSeatCurve {
     return this.bearingSeat;
+  }
+
+  getBearing(): Bearing {
+    return this.bearingSeat.bearing;
   }
 
   getPath(): Vector2[] {

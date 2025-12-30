@@ -4,14 +4,16 @@
 import { InteractiveCurve } from "./InteractiveCurve/InteractiveCurve";
 import { Layer, Stage } from "react-konva";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { useCurveStore } from "../../stores/useCurveStore";
 import { GridLayer } from "./GridLayer";
 import { BearingPathLayer } from "./BearingPathLayer";
-import { createBearing } from "../../models/yoyo/bearing";
+
 
 export function YoyoShapeEditor() {
   const { width, height } = useWindowSize();
 
-  const bearing = createBearing("sizeC");
+  const { shape } = useCurveStore();
+  const bearing = shape.getBearing();
   const scale = 5;
 
   return (
