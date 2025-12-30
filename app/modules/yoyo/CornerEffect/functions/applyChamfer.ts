@@ -1,5 +1,5 @@
 import { Point } from "../../Point";
-import { Vector2 } from "../../../math/vector2";
+import { Vector2 } from "../../../math";
 
 type ChamferResult = {
   chamferStartPoint: Point;

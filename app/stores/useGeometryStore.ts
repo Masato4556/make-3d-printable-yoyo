@@ -1,8 +1,11 @@
 import { create } from "zustand";
 import { BufferGeometry } from "three";
-import { Bearing, BEARING_SIZE } from "../models/yoyo/bearing";
-import { YoyoShape } from "../models/yoyo/YoyoShape";
-import { GeometryFactory } from "../components/ModelViewer/GeometryFactory/GeometryFactory";
+import {
+  GeometryFactory,
+  YoyoShape,
+  Bearing,
+  BEARING_SIZE,
+} from "../modules/yoyo";
 
 type GeometryStore = {
   wingGeometry: BufferGeometry | undefined;

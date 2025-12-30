@@ -1,17 +1,17 @@
 /**
- * 2次ベジェ曲線を描画するコンポーネント
+ * ベアリングシートを描画する汎用コンポーネント
  */
 
 import { Line } from "react-konva";
 import { useMemo } from "react";
 import { PATH_COLOR } from "../../style";
-import { CSizeBearingSeatCurve } from "../../../../models/yoyo/BearingSeat/CSizeBearingSeatCurve";
+import { BearingSeatCurve } from "../../../../modules/yoyo";
 
 type Props = {
-  curve: CSizeBearingSeatCurve;
+  curve: BearingSeatCurve;
 };
 
-export function CSizeBearingSeat({ curve }: Props) {
+export function BearingSeat({ curve }: Props) {
   const path = useMemo(() => curve.getPath(), [curve]);
   return (
     <>
