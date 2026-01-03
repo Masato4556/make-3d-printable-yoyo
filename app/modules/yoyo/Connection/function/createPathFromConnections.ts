@@ -27,7 +27,7 @@ export const createPathFromConnections = (
           v2: control2,
           v3: end,
         },
-        100
+        connection.resolution ?? 100
       );
     }
     if (connection.__brand === "LineConnection") {

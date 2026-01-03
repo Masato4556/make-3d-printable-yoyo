@@ -10,7 +10,6 @@ import { PATH_COLOR } from "../style";
 import { useCurves } from "./useCurves";
 import { Bearing } from "../../../modules/yoyo";
 import { DraggableCircle } from "./DraggableCircle";
-import { BearingSeat } from "./CurveComponent/BearingSeat";
 import { useGeometryStore } from "../../../stores/useGeometryStore";
 
 type Props = {
@@ -20,7 +19,7 @@ type Props = {
 
 export function InteractiveCurve({ scale }: Props) {
   const { triggerUpdate } = useGeometryStore();
-  const { points, connections, bearingSeat, updatePoint, path } = useCurves();
+  const { points, connections, updatePoint, path } = useCurves();
 
   const mirroredPathes = useMemo(() => {
     const mirroredXPath = path.map((point) => new Vector2(-point.x, point.y));
@@ -82,7 +81,6 @@ export function InteractiveCurve({ scale }: Props) {
         />
       ))}
 
-      <BearingSeat curve={bearingSeat} />
     </Group>
   );
 }

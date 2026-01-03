@@ -1,22 +1,22 @@
 import { describe, expect, it } from "vitest";
-import { YoyoShape } from "./YoyoShape";
+import { YoyoShape, Point, CSizeBearingPresetYoyoShapeBuilder } from "./index";
 
 describe("YoyoShape", () => {
   describe("createDefault", () => {
     it("should create a default YoyoShape with points, connections, and a bearing seat", () => {
-      const yoyoShape = YoyoShape.createDefault();
+      const yoyoShape = CSizeBearingPresetYoyoShapeBuilder.build();
 
       expect(yoyoShape).toBeInstanceOf(YoyoShape);
       expect(yoyoShape.getPoints().length).toBeGreaterThan(0);
       expect(yoyoShape.getConnections().length).toBeGreaterThan(0);
-      expect(yoyoShape.getBearingSeat()).toBeDefined();
+      expect(yoyoShape.getBearing()).toBeDefined();
       expect(yoyoShape.getPath().length).toBeGreaterThan(0);
     });
   });
 
   describe("getPoint", () => {
     it("should get a point by its ID", () => {
-      const yoyoShape = YoyoShape.createDefault();
+      const yoyoShape = CSizeBearingPresetYoyoShapeBuilder.build();
       const firstPoint = yoyoShape.getPoints()[0];
       expect(firstPoint).toBeDefined();
 
@@ -25,17 +25,17 @@ describe("YoyoShape", () => {
     });
 
     it("should throw an error if the point ID does not exist", () => {
-      const yoyoShape = YoyoShape.createDefault();
+      const yoyoShape = CSizeBearingPresetYoyoShapeBuilder.build();
       expect(() => yoyoShape.getPoint("non-existent-id")).toThrow();
     });
   });
 
   describe("movePoint", () => {
     it("should return a new YoyoShape instance and not mutate the original", () => {
-      const initialShape = YoyoShape.createDefault();
+      const initialShape = CSizeBearingPresetYoyoShapeBuilder.build();
       const pointToMove = initialShape
         .getPoints()
-        .find((p) => p.option?.editable);
+        .find((p: Point) => p.option?.editable);
       expect(pointToMove, "No editable point found for testing").toBeDefined();
 
       const pointId = pointToMove!.id;
@@ -67,12 +67,16 @@ describe("YoyoShape", () => {
     });
 
     it("should apply 'FollowY' restraint when a controlling point is moved", () => {
-      const initialShape = YoyoShape.createDefault();
+      const initialShape = CSizeBearingPresetYoyoShapeBuilder.build();
       const points = initialShape.getPoints();
 
       // From the definition in YoyoCurveBuilder, the point at (21, 27.5) controls the Y-coordinate of the point at (28, 27.5)
-      const controllingPoint = points.find((p) => p.x === 21 && p.y === 27.5);
-      const followerPoint = points.find((p) => p.x === 28 && p.y === 27.5);
+      const controllingPoint = points.find(
+        (p: Point) => p.x === 21 && p.y === 27.5
+      );
+      const followerPoint = points.find(
+        (p: Point) => p.x === 28 && p.y === 27.5
+      );
 
       expect(
         controllingPoint,

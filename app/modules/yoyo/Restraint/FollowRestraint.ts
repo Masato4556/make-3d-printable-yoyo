@@ -1,23 +1,23 @@
-import { PointMap } from "../Point";
-import { Restraint } from "./BaseRestraint";
+import { Restraint, PointsTransition } from "./BaseRestraint";
 
 export class FollowRestraint implements Restraint {
   constructor(
     readonly restrainedPointId: string,
     readonly targetPointId: string,
-    readonly options?: { lock: { x: boolean; y: boolean } }
-  ) {}
+    readonly options: { follows: { x: boolean; y: boolean } }
+  ) { }
 
-  public apply(points: PointMap, updatedPoints: PointMap): void {
-    const targetPoint = points.get(this.targetPointId);
-    const updatedTargetPoint = updatedPoints.get(this.targetPointId);
-    const restrainedPoint = points.get(this.restrainedPointId);
-    const updatedRestrainedPoint = updatedPoints.get(this.restrainedPointId);
+  public apply(transition: PointsTransition): void {
+    const { before, after } = transition;
+    const targetPoint = before.get(this.targetPointId);
+    const restrainedPoint = before.get(this.restrainedPointId);
+    const updatedTargetPoint = after.get(this.targetPointId);
+    const updatedRestrainedPoint = after.get(this.restrainedPointId);
 
     if (
       !targetPoint ||
-      !updatedTargetPoint ||
       !restrainedPoint ||
+      !updatedTargetPoint ||
       !updatedRestrainedPoint
     ) {
       return;
@@ -33,10 +33,10 @@ export class FollowRestraint implements Restraint {
     const offsetY = restrainedPoint.y - targetPoint.y;
 
     // 新しいターゲット位置にオフセットを加える
-    if (!this.options?.lock?.x) {
+    if (this.options.follows.x) {
       updatedRestrainedPoint.x = updatedTargetPoint.x + offsetX;
     }
-    if (!this.options?.lock?.y) {
+    if (this.options.follows.y) {
       updatedRestrainedPoint.y = updatedTargetPoint.y + offsetY;
     }
   }
