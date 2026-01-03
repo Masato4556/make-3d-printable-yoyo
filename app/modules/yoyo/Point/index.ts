@@ -1,3 +1,2 @@
 export { Point } from "./Point";
-export { PointList } from "./PointList";
-export { PointMap } from "./PointMap";
+export { PointsSnapshot } from "./PointsSnapshot";

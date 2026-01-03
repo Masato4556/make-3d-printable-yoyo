@@ -3,7 +3,7 @@ import {
   BearingSizeType,
 } from "./bearing";
 import { Point } from "./Point";
-import { YoyoShapeBuilder } from "./YoyoCurveBuilder";
+import { YoyoShapeBuilder } from "./YoyoShapeBuilder";
 import { YoyoShape } from "./YoyoShape";
 
 export class CSizeBearingPresetYoyoShapeBuilder {
@@ -12,11 +12,13 @@ export class CSizeBearingPresetYoyoShapeBuilder {
     const size = BEARING_SIZE[bearingSize];
     const offsetX = 2.085 + size.width / 2;
 
-    const builder = new YoyoShapeBuilder(bearingSize);
+    const builder = new YoyoShapeBuilder(
+      Point.fromPosition(4 + offsetX, 0, { editable: false }),
+      bearingSize
+    );
 
     // Bearing Seat
     builder
-      .startAt(Point.fromPosition(4 + offsetX, 0, { editable: false }))
       .addLine(Point.fromPosition(4 + offsetX, 2, { editable: false }))
       .addLine(Point.fromPosition(-4 + offsetX, 2, { editable: false }))
       .addLine(Point.fromPosition(-4 + offsetX, 2.5, { editable: false }))

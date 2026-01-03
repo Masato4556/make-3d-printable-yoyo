@@ -1,36 +1,32 @@
 import { Vector2 } from "../math";
 import { Connection, createPathFromConnections } from "./Connection";
-import { Restraint } from "./Restraint";
-import { Point, PointMap } from "./Point";
+import { Point, PointsSnapshot } from "./Point";
 import { Bearing } from "./bearing";
 
 /**
  * yoyoの形状クラス
- * @property {PointMap} pointMap - 各点の位置を管理するマップ
+ * @property {PointsSnapshot} points - 各点の位置を管理するスナップショット
  * @property {Connection[]} connections - 各点間の接続を管理するリスト
- * @property {Restraint[]} restraints - 各点間の制約を管理するリスト
  * @property {Bearing} bearing - yoyoのベアリング情報
  * 
  * @description x軸：回転軸方向、y軸：回転軸に垂直な方向
  * @todo YoyoShapeがベアリングの情報を持たずに済むようにリファクタリングする 
  */
 export class YoyoShape {
-  constructor(
-    private readonly pointMap: PointMap,
-    private readonly connections: Connection[],
-    private readonly restraints: Restraint[],
-    private readonly bearing: Bearing
-  ) {}
-
   private _path: Vector2[] | null = null;
 
+  constructor(
+    private readonly points: PointsSnapshot,
+    private readonly connections: Connection[],
+    private readonly bearing: Bearing
+  ) { }
 
   getPoints(): Point[] {
-    return [...this.pointMap.values()];
+    return [...this.points.values()];
   }
 
   getPoint(pointId: string): Point {
-    const point = this.pointMap.get(pointId);
+    const point = this.points.get(pointId);
     if (!point) {
       throw new Error(`Point with id ${pointId} not found.`);
     }
@@ -56,18 +52,11 @@ export class YoyoShape {
   }
 
   movePoint(pointId: string, newX: number, newY: number): YoyoShape {
-    const newPointMap = this.pointMap.clone();
-    newPointMap.update(pointId, newX, newY);
+    const nextPoints = this.points.movePoint(pointId, newX, newY);
 
-    this.restraints.forEach((restraint) => {
-      restraint.apply(this.pointMap, newPointMap);
-    });
-
-    // Create a new instance to ensure immutability
     return new YoyoShape(
-      newPointMap,
+      nextPoints,
       [...this.connections],
-      this.restraints,
       this.bearing
     );
   }

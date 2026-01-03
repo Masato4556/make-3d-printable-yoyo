@@ -3,14 +3,10 @@ import {
   LineConnection,
   CubicBezierConnection,
 } from "./Connection";
-import { Point, PointList, PointMap } from "./Point";
+import { Point, PointsSnapshot } from "./Point";
 import { Restraint, FollowRestraint } from "./Restraint";
 import { YoyoShape } from "./YoyoShape";
-import {
-  Bearing,
-  BearingSizeType,
-  createBearing,
-} from "./bearing";
+import { Bearing, BearingSizeType, createBearing } from "./bearing";
 
 type RestraintType = "FollowX" | "FollowY";
 
@@ -39,11 +35,11 @@ export class YoyoShapeBuilder {
   /**
    * パス上の点
    */
-  private pathPoints: PointList;
+  private pathPoints: Point[];
   /**
-   * 各曲線の制御点
+   * 曲線の制御点
    */
-  private curveControlPoints: PointList;
+  private curveControlPoints: Point[];
   /**
    * 各点間の接続
    */
@@ -52,16 +48,11 @@ export class YoyoShapeBuilder {
 
   private bearing: Bearing;
 
-  constructor(bearingSize: BearingSizeType = "sizeC") {
-    this.pathPoints = new PointList();
-    this.curveControlPoints = new PointList();
+  constructor(startPoint: Point, bearingSize: BearingSizeType = "sizeC") {
+    this.pathPoints = [startPoint];
+    this.curveControlPoints = [];
     this.connections = new ConnectionList();
     this.bearing = createBearing(bearingSize);
-  }
-
-  public startAt(point: Point): this {
-    this.pathPoints = this.pathPoints.add(point);
-    return this;
   }
 
   public addCubicBezierCurve(
@@ -69,13 +60,9 @@ export class YoyoShapeBuilder {
     handle: { start: Point; end: Point },
     resolution?: number
   ) {
-    const prevPoint = this.pathPoints.getLast();
-    if (!prevPoint) {
-      throw new Error("No points available to create a curve.");
-    }
-
-    this.pathPoints = this.pathPoints.add(point);
-    this.curveControlPoints = this.curveControlPoints.add(handle.start).add(handle.end);
+    const prevPoint = this.pathPoints.at(-1)!;
+    this.pathPoints.push(point);
+    this.curveControlPoints.push(handle.start, handle.end);
     this.connections = this.connections.add(
       new CubicBezierConnection({
         startPointId: prevPoint.id,
@@ -88,21 +75,20 @@ export class YoyoShapeBuilder {
 
     // Add restraints for control points
     this.restraints.push(
-      new FollowRestraint(handle.start.id, prevPoint.id, { follows: { x: true, y: true } }),
-      new FollowRestraint(handle.end.id, point.id, { follows: { x: true, y: true } })
+      new FollowRestraint(handle.start.id, prevPoint.id, {
+        follows: { x: true, y: true },
+      }),
+      new FollowRestraint(handle.end.id, point.id, {
+        follows: { x: true, y: true },
+      })
     );
 
     return this;
   }
 
   public addLine(point: Point, restraint?: RestraintOptions) {
-    const prevPoint = this.pathPoints.getLast();
-    if (!prevPoint) {
-      throw new Error(
-        "No previous point available to create a horizontal line."
-      );
-    }
-    this.pathPoints = this.pathPoints.add(point);
+    const prevPoint = this.pathPoints.at(-1)!;
+    this.pathPoints.push(point);
     this.connections = this.connections.add(
       new LineConnection(prevPoint.id, point.id)
     );
@@ -119,12 +105,14 @@ export class YoyoShapeBuilder {
   }
 
   public build(): YoyoShape {
-    const initialPoints = [...this.pathPoints.getPoints(), ...this.curveControlPoints.getPoints()];
-    const initialPointMap = new PointMap(initialPoints);
+    const initialPoints = [...this.pathPoints, ...this.curveControlPoints];
+    const initialPointsSnapshot = new PointsSnapshot(
+      initialPoints,
+      this.restraints
+    );
     const connections = this.connections.getConnections();
-    const restraints = this.restraints;
     const bearing = this.bearing;
 
-    return new YoyoShape(initialPointMap, connections, restraints, bearing);
+    return new YoyoShape(initialPointsSnapshot, connections, bearing);
   }
 }

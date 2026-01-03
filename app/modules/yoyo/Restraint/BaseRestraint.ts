@@ -1,5 +1,10 @@
-import { PointMap } from "../Point";
+import { PointsSnapshot } from "../Point";
+
+export interface PointsTransition {
+  before: PointsSnapshot;
+  after: PointsSnapshot;
+}
 
 export interface Restraint {
-  apply: (points: PointMap, updatedPoints: PointMap) => void;
+  apply: (transition: PointsTransition) => void;
 }
