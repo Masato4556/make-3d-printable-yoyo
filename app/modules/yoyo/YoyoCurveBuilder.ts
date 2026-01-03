@@ -12,21 +12,19 @@ import {
   createBearing,
 } from "./bearing";
 
-type RestraintType = "Follow" | "FollowX" | "FollowY";
+type RestraintType = "FollowX" | "FollowY";
 
 const RESTRAINT_BUILDERS: Record<
   RestraintType,
   (restrainedPointId: string, targetPointId: string) => Restraint
 > = {
-  Follow: (restrainedPointId: string, targetPointId: string) =>
-    new FollowRestraint(restrainedPointId, targetPointId),
   FollowX: (restrainedPointId: string, targetPointId: string) =>
     new FollowRestraint(restrainedPointId, targetPointId, {
-      lock: { x: false, y: true },
+      follows: { x: true, y: false },
     }),
   FollowY: (restrainedPointId: string, targetPointId: string) =>
     new FollowRestraint(restrainedPointId, targetPointId, {
-      lock: { x: true, y: false },
+      follows: { x: false, y: true },
     }),
 };
 
@@ -90,8 +88,8 @@ export class YoyoShapeBuilder {
 
     // Add restraints for control points
     this.restraints.push(
-      new FollowRestraint(handle.start.id, prevPoint.id),
-      new FollowRestraint(handle.end.id, point.id)
+      new FollowRestraint(handle.start.id, prevPoint.id, { follows: { x: true, y: true } }),
+      new FollowRestraint(handle.end.id, point.id, { follows: { x: true, y: true } })
     );
 
     return this;
@@ -128,5 +126,5 @@ export class YoyoShapeBuilder {
     const bearing = this.bearing;
 
     return new YoyoShape(initialPointMap, connections, restraints, bearing);
-  } 
+  }
 }
