@@ -18,7 +18,6 @@ export const useCurves = () => {
   return {
     points: shape.getPoints(),
     connections: shape.getConnections(),
-    bearingSeat: shape.getBearingSeat(),
     path: getPath(),
     updatePoint: updatePointAndRefresh,
   };

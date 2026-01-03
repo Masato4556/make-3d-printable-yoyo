@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Vector2 } from "../modules/math";
-import { Point, YoyoShape } from "../modules/yoyo";
+import { Point, YoyoShape, CSizeBearingPresetYoyoShapeBuilder } from "../modules/yoyo";
 
 type CurveStore = {
   shape: YoyoShape;
@@ -13,7 +13,7 @@ type CurveActions = {
 };
 
 export const useCurveStore = create<CurveStore & CurveActions>((set, get) => ({
-  shape: YoyoShape.createDefault(),
+  shape: CSizeBearingPresetYoyoShapeBuilder.build(),
   getPoint: (pointId: string) => {
     const { shape } = get();
     return shape.getPoint(pointId);

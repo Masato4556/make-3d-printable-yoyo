@@ -1,12 +1,16 @@
-import { BearingSeatCurve } from "./BearingSeat/BearingSeatCurve";
 import {
   ConnectionList,
   LineConnection,
   CubicBezierConnection,
 } from "./Connection";
-import { Point, PointList } from "./Point";
+import { Point, PointList, PointMap } from "./Point";
 import { Restraint, FollowRestraint } from "./Restraint";
-import { BearingSizeType } from "./bearing";
+import { YoyoShape } from "./YoyoShape";
+import {
+  Bearing,
+  BearingSizeType,
+  createBearing,
+} from "./bearing";
 
 type RestraintType = "Follow" | "FollowX" | "FollowY";
 
@@ -33,51 +37,54 @@ type RestraintOptions = {
   relationshipWithPrevPoint: RestraintRelationship;
 };
 
-export class YoyoCurveBuilder {
-  private points: PointList;
-  private controlPoints: PointList;
+export class YoyoShapeBuilder {
+  /**
+   * パス上の点
+   */
+  private pathPoints: PointList;
+  /**
+   * 各曲線の制御点
+   */
+  private curveControlPoints: PointList;
+  /**
+   * 各点間の接続
+   */
   private connections: ConnectionList;
-  private bearingSeat: BearingSeatCurve;
   private restraints: Restraint[] = [];
 
+  private bearing: Bearing;
+
   constructor(bearingSize: BearingSizeType = "sizeC") {
-    const bearingSeat = new BearingSeatCurve(bearingSize);
-    const firstBearingSeatPoint = bearingSeat.getFirstPoint();
-    const lastBearingSeatPoint = bearingSeat.getLastPoint();
-    if (!firstBearingSeatPoint || !lastBearingSeatPoint) {
-      throw new Error("Invalid bearing seat path.");
-    }
-    const firstPoint = Point.fromPosition(
-      firstBearingSeatPoint.x,
-      firstBearingSeatPoint.y
-    );
-    const lastPoint = Point.fromPosition(
-      lastBearingSeatPoint.x,
-      lastBearingSeatPoint.y
-    );
-    this.points = new PointList([firstPoint, lastPoint]);
-    this.controlPoints = new PointList();
+    this.pathPoints = new PointList();
+    this.curveControlPoints = new PointList();
     this.connections = new ConnectionList();
-    this.bearingSeat = bearingSeat;
+    this.bearing = createBearing(bearingSize);
+  }
+
+  public startAt(point: Point): this {
+    this.pathPoints = this.pathPoints.add(point);
+    return this;
   }
 
   public addCubicBezierCurve(
     point: Point,
-    handle: { start: Point; end: Point }
+    handle: { start: Point; end: Point },
+    resolution?: number
   ) {
-    const prevPoint = this.points.getLast();
+    const prevPoint = this.pathPoints.getLast();
     if (!prevPoint) {
       throw new Error("No points available to create a curve.");
     }
 
-    this.points = this.points.add(point);
-    this.controlPoints = this.controlPoints.add(handle.start).add(handle.end);
+    this.pathPoints = this.pathPoints.add(point);
+    this.curveControlPoints = this.curveControlPoints.add(handle.start).add(handle.end);
     this.connections = this.connections.add(
       new CubicBezierConnection({
         startPointId: prevPoint.id,
         endPointId: point.id,
         control1Id: handle.start.id,
         control2Id: handle.end.id,
+        resolution,
       })
     );
 
@@ -91,13 +98,13 @@ export class YoyoCurveBuilder {
   }
 
   public addLine(point: Point, restraint?: RestraintOptions) {
-    const prevPoint = this.points.getLast();
+    const prevPoint = this.pathPoints.getLast();
     if (!prevPoint) {
       throw new Error(
         "No previous point available to create a horizontal line."
       );
     }
-    this.points = this.points.add(point);
+    this.pathPoints = this.pathPoints.add(point);
     this.connections = this.connections.add(
       new LineConnection(prevPoint.id, point.id)
     );
@@ -113,16 +120,13 @@ export class YoyoCurveBuilder {
     return this;
   }
 
-  public getBearingSeat() {
-    return this.bearingSeat;
-  }
-  public getPoints() {
-    return [...this.points.getPoints(), ...this.controlPoints.getPoints()];
-  }
-  public getConnections() {
-    return this.connections.getConnections();
-  }
-  public getRestraints() {
-    return this.restraints;
-  }
+  public build(): YoyoShape {
+    const initialPoints = [...this.pathPoints.getPoints(), ...this.curveControlPoints.getPoints()];
+    const initialPointMap = new PointMap(initialPoints);
+    const connections = this.connections.getConnections();
+    const restraints = this.restraints;
+    const bearing = this.bearing;
+
+    return new YoyoShape(initialPointMap, connections, restraints, bearing);
+  } 
 }
