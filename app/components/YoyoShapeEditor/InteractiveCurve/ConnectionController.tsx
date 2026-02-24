@@ -3,7 +3,7 @@
  */
 
 import { CubicBezierConnectionController } from "./CurveComponent/CubicBezierConnectionController";
-import { Connection } from "../../../modules/yoyo";
+import { Connection } from "../../../modules/yoyo/Connection";
 
 type Props = {
   connection: Connection;

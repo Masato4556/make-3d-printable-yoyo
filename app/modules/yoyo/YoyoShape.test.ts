@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { YoyoShape, Point, CSizeBearingPresetYoyoShapeBuilder } from "./index";
+import { YoyoShape } from "./YoyoShape";
+import { CSizeBearingPresetYoyoShapeBuilder } from "./YoyoShapeBuilder";
+import { Point } from "./Point";
 
 describe("YoyoShape", () => {
   describe("createDefault", () => {

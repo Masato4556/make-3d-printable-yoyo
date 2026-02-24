@@ -5,12 +5,12 @@
 import { Line, Group } from "react-konva";
 import { ConnectionController } from "./ConnectionController";
 import { useMemo } from "react";
-import { Vector2 } from "../../../modules/math";
 import { PATH_COLOR } from "../style";
 import { useCurves } from "./useCurves";
-import { Bearing } from "../../../modules/yoyo";
 import { DraggableCircle } from "./DraggableCircle";
 import { useGeometryStore } from "../../../stores/useGeometryStore";
+import { Vector2 } from "../../../modules/math/vector2";
+import { Bearing } from "../../../modules/yoyo/bearing";
 
 type Props = {
   bearing: Bearing;

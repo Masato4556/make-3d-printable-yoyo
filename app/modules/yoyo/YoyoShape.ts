@@ -1,11 +1,14 @@
-import { Vector2 } from "../math";
-import { Connection, createPathFromConnections } from "./Connection";
-import { Point, PointsSnapshot } from "./Point";
+
+import { Vector2 } from "../math/vector2";
+import { Connection } from "./Connection";
+import { Point } from "./Point";
+import { Snapshot } from "./Snapshot";
 import { Bearing } from "./bearing";
+import { createPathFromConnections } from "./functions/createPathFromConnections";
 
 /**
  * yoyoの形状クラス
- * @property {PointsSnapshot} points - 各点の位置を管理するスナップショット
+ * @property {Snapshot} points - 各点の位置を管理するスナップショット
  * @property {Connection[]} connections - 各点間の接続を管理するリスト
  * @property {Bearing} bearing - yoyoのベアリング情報
  * 
@@ -16,7 +19,7 @@ export class YoyoShape {
   private _path: Vector2[] | null = null;
 
   constructor(
-    private readonly points: PointsSnapshot,
+    private readonly points: Snapshot,
     private readonly connections: Connection[],
     private readonly bearing: Bearing
   ) { }

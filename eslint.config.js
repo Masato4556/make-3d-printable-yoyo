@@ -20,7 +20,7 @@ const cleanCodeRules = {
   eqeqeq: ["error", "always"],
   // 最終的にはfunction宣言かアロー関数のどちらかに統一する
   "func-style": ["error", "declaration", { allowArrowFunctions: true }],
-  "max-classes-per-file": ["error", 1],
+  "max-classes-per-file": ["error", 3],
   "max-lines": [
     "error",
     { max: 500, skipComments: false, skipBlankLines: false },

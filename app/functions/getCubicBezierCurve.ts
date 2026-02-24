@@ -1,4 +1,4 @@
-import { Vector2 } from "../modules/math";
+import { Vector2 } from "../modules/math/vector2";
 
 type Vector2Like = {
   x: number;

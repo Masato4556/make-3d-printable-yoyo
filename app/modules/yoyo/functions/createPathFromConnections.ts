@@ -1,8 +1,8 @@
-import { getCubicBezierCurve } from "../../../../functions/getCubicBezierCurve";
-import { Vector2 } from "../../../math";
-import { Point } from "../../Point";
+import { getCubicBezierCurve } from "../../../functions/getCubicBezierCurve";
+import { Point } from "../Point";
 import { Connection } from "../Connection";
 import { generateConnectionsWithEffects } from "./generateConnectionsWithEffects";
+import { Vector2 } from "../../math/vector2";
 
 export const createPathFromConnections = (
   connections: Connection[],

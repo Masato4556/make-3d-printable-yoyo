@@ -1,8 +1,11 @@
-import type { CornerEffect } from "../CornerEffect";
-
 type Option = {
   editable?: boolean;
   fixed?: { x?: boolean; y?: boolean };
+};
+
+type CornerEffect = {
+  type: 'fillet' | 'chamfer';
+  size: number;
 };
 
 type ConstructorProps = {

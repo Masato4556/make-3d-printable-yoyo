@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { generateConnectionsWithEffects } from "./generateConnectionsWithEffects";
-import { Point } from "../../Point";
-import { LineConnection } from "../LineConnection";
+import { Point } from "../Point";
+import { LineConnection } from "../Connection";
 
 describe("generateConnectionsWithEffects", () => {
   it("should apply chamfer to a corner", () => {

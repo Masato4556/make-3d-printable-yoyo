@@ -1,7 +1,8 @@
 import { Point } from "./Point";
-import type { Restraint } from "../Restraint/BaseRestraint";
+import { Restraint } from "./Restraint";
 
-export class PointsSnapshot {
+// TODO: YoyoShapeとSnapshotという2つのクラスに分離する意味があるか、考える
+export class Snapshot {
     private points: Map<string, Point> = new Map();
     private restraints: Restraint[] = [];
 
@@ -21,7 +22,7 @@ export class PointsSnapshot {
     /**
      * 特定の点を更新し、制約を適用した新しいPointsSnapshotを返す
      */
-    public movePoint(pointId: string, newX: number, newY: number): PointsSnapshot {
+    public movePoint(pointId: string, newX: number, newY: number): Snapshot {
         const nextSnapshot = this.clone();
         const pointToModify = nextSnapshot.get(pointId);
         if (!pointToModify) {
@@ -34,16 +35,16 @@ export class PointsSnapshot {
 
         this.restraints.forEach((restraint) => {
             restraint.apply({
-                before: this,
-                after: nextSnapshot,
+                before: this.points,
+                after: nextSnapshot.points,
             });
         });
 
         return nextSnapshot;
     }
 
-    private clone(): PointsSnapshot {
-        return new PointsSnapshot(
+    private clone(): Snapshot {
+        return new Snapshot(
             [...this.points.values()].map((point) => point.clone()),
             this.restraints
         );

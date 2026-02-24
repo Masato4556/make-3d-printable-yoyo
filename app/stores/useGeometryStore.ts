@@ -1,11 +1,8 @@
 import { create } from "zustand";
 import { BufferGeometry } from "three";
-import {
-  GeometryFactory,
-  YoyoShape,
-  Bearing,
-  BEARING_SIZE,
-} from "../modules/yoyo";
+import { createGeometry } from "../modules/yoyo-geometry/createGeometry";
+import { Bearing, BEARING_SIZE } from "../modules/yoyo/bearing";
+import { YoyoShape } from "../modules/yoyo/YoyoShape";
 
 type GeometryStore = {
   wingGeometry: BufferGeometry | undefined;
@@ -25,11 +22,10 @@ export const useGeometryStore = create<GeometryStore & GeometryActions>(
     shoudUpdate: true, // 初回は必ず更新する
     updateGeometry: (bearingType: "sizeC", shape: YoyoShape) => {
       const path = shape.getPath();
-      const geometryFactory = new GeometryFactory(bearingType, path);
-      const newWingGeometry = geometryFactory.getWingGeometry();
+      const { bearing, wingGeometry } = createGeometry(bearingType, path);
       set({
-        wingGeometry: newWingGeometry,
-        bearing: geometryFactory.getBearing(),
+        wingGeometry,
+        bearing,
         shoudUpdate: false, // 更新完了したのでfalseにする
       });
     },

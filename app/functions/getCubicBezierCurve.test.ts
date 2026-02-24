@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { getCubicBezierCurve } from "./getCubicBezierCurve";
-import { Vector2 } from "../modules/math";
+import { Vector2 } from "../modules/math/vector2";
 
 describe("getCubicBezierCurve", () => {
   it("should return the correct number of points for a simple curve", () => {

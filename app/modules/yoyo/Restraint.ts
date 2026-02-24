@@ -1,4 +1,13 @@
-import { Restraint, PointsTransition } from "./BaseRestraint";
+import { Point } from "./Point";
+
+export interface PointsTransition {
+  before: Map<string, Point>;
+  after: Map<string, Point>;
+}
+
+export interface Restraint {
+  apply: (transition: PointsTransition) => void;
+}
 
 export class FollowRestraint implements Restraint {
   constructor(

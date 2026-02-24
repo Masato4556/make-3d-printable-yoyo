@@ -1,6 +1,8 @@
 import { create } from "zustand";
-import { Vector2 } from "../modules/math";
-import { Point, YoyoShape, CSizeBearingPresetYoyoShapeBuilder } from "../modules/yoyo";
+import { Vector2 } from "../modules/math/vector2";
+import { YoyoShape } from "../modules/yoyo/YoyoShape";
+import { CSizeBearingPresetYoyoShapeBuilder } from "../modules/yoyo/YoyoShapeBuilder";
+import { Point } from "../modules/yoyo/Point";
 
 type CurveStore = {
   shape: YoyoShape;
